@@ -1,0 +1,23 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: yunjia
+ * Date: 2016/3/27
+ * Time: 16:18
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function goods_menu()
+{
+    $items['goods'] = array(
+        'title' => t('产品管理'),
+        'page callback' => 'goods_page_callback',
+        'access arguments' => array('access content'),
+        'type' => MENU_SUGGESTED_ITEM,
+        'file' => 'goods.pages.inc',
+    );
+
+    return $items;
+}

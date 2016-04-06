@@ -1,0 +1,7 @@
+1.auto assign role 模块，用于注册时选择角色
+2.entity+profile2+profile2_regpath:设置不同用户的字段
+3.l10n_update 模块用于自动翻译站点页面、模块
+4.entity reference 模块 用于节点之间的关联
+5.workbench+workbench_access+workbench_moderation  工作台流程模块，用于审核机制
+6.menu_per_role 模块 用于指定特定菜单只能特定角色看见
+7.panels 模块，面板形式
