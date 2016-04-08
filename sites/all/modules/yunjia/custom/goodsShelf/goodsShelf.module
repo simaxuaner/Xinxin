@@ -11,7 +11,7 @@
  */
 function goodsShelf_menu()
 {
-    $items['goodsshelf'] = array(
+    $items['admin/goodsshelf'] = array(
         'title' => t('货架管理'),
         'page callback' => 'goods_shelf_callback',
         'access callback' => TRUE, //访问权限，设为TRUE的话任何人都能访问
