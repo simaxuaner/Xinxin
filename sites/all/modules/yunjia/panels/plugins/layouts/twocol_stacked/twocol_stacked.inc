@@ -4,9 +4,9 @@
 $plugin = array(
   'title' => t('Two column stacked'),
   'category' => t('Columns: 2'),
-  'icon' => 'twocol_stacked.png',
-  'theme' => 'panels_twocol_stacked',
-  'css' => 'twocol_stacked.css',
+  'icon' => 'front.png',
+  'theme' => 'panels_front',
+  'css' => 'front.css',
   'regions' => array(
     'top' => t('Top'),
     'left' => t('Left side'),

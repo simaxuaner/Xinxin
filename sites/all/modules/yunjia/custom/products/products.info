@@ -1,0 +1,10 @@
+name = Products
+description = 用于产品管理的模块.
+package = My
+version = VERSION
+core = 7.x
+
+; Information added by yunjia on 2016-04-11
+version = "7.43"
+project = "drupal"
+datestamp = "1456343506"

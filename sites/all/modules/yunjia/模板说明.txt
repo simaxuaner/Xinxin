@@ -5,3 +5,8 @@
 5.workbench+workbench_access+workbench_moderation  工作台流程模块，用于审核机制
 6.menu_per_role 模块 用于指定特定菜单只能特定角色看见
 7.panels 模块，面板形式
+8.ckeditor 模块用于建立所见所得编辑器，让编辑内容页面中的body更加可视化
+9.imce 模块用于ckeditor模块编辑上传图片的可视化工具
+10.transliteration 模块：是上传中文名称的图片时不会报错，即也可以上传中文图片，但是保存的名称会是英文
+11.field validation 模块用于字段验证，是验证输入的字段的正确性
+12.views_bulk_operations 模块用于和views配合，可以在页面上显示对数据的操作
