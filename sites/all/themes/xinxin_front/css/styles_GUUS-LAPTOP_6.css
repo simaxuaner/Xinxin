@@ -1,0 +1,335 @@
+#slider
+{
+	background-color: #000000;
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+}
+#slider img
+{
+	max-height: 704px;
+	max-width: 100%;
+}
+*
+{
+	border: 0;
+	box-sizing: border-box;
+	color: #4d4d4d;
+	font-family: calibri, arial, sans-serif;
+}
+.currentSubPage
+{
+	background-color: #dcdcdc;
+}
+.hidden
+{
+	display: none;
+}
+.homenav
+{
+	text-align: center;
+	width: 100%;
+}
+.homenav .bigbutton
+{
+	background-color: #eeeeee;
+	float: left;
+	height: 192px;
+	text-align: center;
+	width: 25%;
+}
+.homenav .bigbutton h2
+{
+	margin-bottom: 0;
+}
+.homenav .bigbutton img
+{
+	width: 128px;
+}
+.homenav .bigbutton:hover
+{
+	background-color: #dddddd;
+}
+.homenav .bigbutton:hover h2
+{
+	color: #0fa5d9;
+}
+.magazines
+{
+	
+}
+.magazine
+{
+	background-color: #E6E6E6;
+}
+.mainmenu
+{
+	font-weight: bold;
+	line-height: 64px;
+}
+.mainmenu a
+{
+	color: #4d4d4d;
+	text-decoration: none;
+}
+.mainmenu ul
+{
+	min-width: 480px;
+}
+.mainmenu ul li
+{
+	float: left;
+	max-width: 180px;
+	width: 25%;
+}
+.mainmenu ul li:hover
+{
+	background-color: #dddddd;
+}
+.mainmenu ul li:hover a
+{
+	color: #0fa5d9;
+}
+.newsItem{
+	width: 100%;
+	min-width: 640px;
+	max-height: 256px;
+	overflow: hidden;
+	background-color: #E6E6E6;
+	margin-bottom: 32px;
+	cursor: pointer;
+}
+.newsItem .dateBlock{
+	width: 64px;
+	height: 64px;
+	position: absolute;
+	margin-left: -16px;
+	margin-top: -16px;
+	background-color: #4e93e3;
+	color: #ffffff;
+	text-align: center;
+	line-height: 32px;
+	font-size: 2em;
+	letter-spacing:0.05em;
+	font-weight: bold;
+	
+}
+.newsItem h2{
+	width: 80%;
+	padding: 0 16px;
+	margin: 8px 0;
+	float: left;
+	text-align: left;
+	color: #4e93e3;
+}
+.newsItem img{
+	width: 20%;
+	min-width: 128px;
+	max-width: 256px;
+	float: left;
+}
+.newsItem p{
+	margin: 0;
+	padding: 0 16px 16px;
+	width: 80%;
+	float: left;
+}
+.newsItem .readMore{
+	color: #4e93e3;
+	text-decoration: underline;
+	position: absolute;
+	text-align: right;
+	right: 40px;
+}
+.newsItem .readMore:hover{
+	cursor: pointer;
+}
+.sideNav
+{
+	float: left;
+	font-size: 1.2em;
+	min-width: 104px;
+	width: 15%;
+}
+.sideNav ul li
+{
+	padding: 16px 0;
+}
+
+footer
+{
+	background-color: #cccccc;
+	display: inline-block;
+}
+footer .copyright
+{
+	background-color: #aaaaaa;
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+}
+footer .copyright p
+{
+	margin: 0;
+}
+footer .links
+{
+	float: left;
+	margin-left: 12.5%;
+}
+footer .links p
+{
+	margin: 16px 0;
+}
+footer .social
+{
+	float: right;
+	margin: 16px 0;
+	margin-right: 12.5%;
+}
+footer .social img
+{
+	margin-left: 8px;
+	width: 64px;
+}
+header
+{
+	background-color: #eeeeee;
+	font-size: 1.5em;
+	line-height: 0;
+	margin: 0;
+	padding: 0;
+}
+header .headerImg
+{
+	width: 100%;
+}
+header .logo
+{
+	float: left;
+	height: 64px;
+	min-width: 64px;
+	padding: 0 32px;
+}
+header .logo a
+{
+	height: inherit;
+}
+header .logo img
+{
+	height: inherit;
+}
+header, main, footer
+{
+	width: 100%;
+}
+html, body
+{
+	height: 100%;
+	margin: 0;
+	min-width: 480px;
+	padding: 0;
+}
+main
+{
+	background-color: #d2d2d2;
+	width: 100%;
+	overflow: hidden;
+}
+main > content
+{
+	background-color: #dcdcdc;
+	display: inline-block;
+	min-height: 400px;
+	overflow: hidden;
+	padding: 0 32px 32px;
+	width: 85%;
+	float: right;
+}
+main content .showcaseImg
+{
+	margin-bottom: 32px;
+	width: 100%;
+}
+main content embed
+{
+	height: 480px;
+	max-width: 854px;
+	width: 100%;
+}
+main content h1, main content h2
+{
+	text-align: left;
+}
+nav ul
+{
+	list-style: none;
+	margin: 0;
+	overflow: auto;
+	padding: 0;
+	text-align: center;
+}
+nav:hover
+{
+	cursor: pointer;
+}
+@media screen and (max-width: 720px)
+{
+	#slider
+	{
+		margin-bottom: 8px;
+	}
+	.homenav
+	{
+	}
+	.homenav .bigbutton
+	{
+		width: 50%;
+	}
+	.mainmenu
+	{
+		background-color: #eeeeee;
+		margin-bottom: 8px;
+	}
+	.mainmenu ul li
+	{
+		max-width: none;
+		width: 50%;
+	}
+	.sideNav{
+		width: 100%;
+	}
+	body
+	{
+		padding: 8px;
+	}
+	footer
+	{
+		margin-top: 8px;
+	}
+	header
+	{
+		margin-bottom: 8px;
+		background: none;
+	}
+	header .logo
+	{
+		background-color: #eeeeee;
+		float: initial;
+		height: 64px;
+		margin-bottom: 8px;
+		padding: 0;
+		text-align: center;
+	}
+	header .logo:hover
+	{
+		background-color: #dddddd;
+	}
+	main content{
+		width: 100%;
+	}
+	main content h1, main content h2
+{
+	text-align: center;
+}
+}

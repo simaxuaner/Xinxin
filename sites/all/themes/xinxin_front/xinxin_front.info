@@ -1,0 +1,26 @@
+name = xinxin_front Template
+description = A customized theme for the Xinxin Project.
+package = Core
+version = VERSION
+core = 7.x
+
+stylesheets[all][] = style.css
+stylesheets[all][] = styles_GUUS-LAPTOP_1.css
+stylesheets[all][] = styles_GUUS-LAPTOP_2.css
+stylesheets[all][] = styles_GUUS-LAPTOP_3.css
+stylesheets[all][] = styles_GUUS-LAPTOP_4.css
+stylesheets[all][] = styles_GUUS-LAPTOP_5.css
+stylesheets[all][] = styles_GUUS-LAPTOP_6.css
+scripts[] = scripts.js
+scripts[] = scripts_GUUS-LAPTOP_1.js
+scripts[] = scripts_GUUS-LAPTOP_2.js
+scripts[] = scripts_GUUS-LAPTOP_3.js
+regions[header] = Header
+regions[content] = Content
+regions[footer] = Footer
+regions[footer] = Footer
+
+version = "7.x-1.0"
+project = "Xinxin"
+datestamp = "1355944003"
+author = "Wang Xiaoli"
