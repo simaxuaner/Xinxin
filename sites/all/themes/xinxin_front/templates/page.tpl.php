@@ -2,8 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>title><?php print $head_title ?></title>
-    <?php print $styles ?>
     <script type="text/javascript" src="../js/scripts.js"></script>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
