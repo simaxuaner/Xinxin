@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the productShelf module.
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+function productShelf_install() {
+  // Set the weight of the productShelf.module to 1 so it is loaded after the taxonomy.module.
+  db_update('system')
+    ->fields(array('weight' => 1))
+    ->condition('name', 'shelf')
+    ->execute();
+  // Forum topics are published by default, but do not have any other default
+  // options set (for example, they are not promoted to the front page).
+  variable_set('vocabulary_options_shelf', array('status'));
+}
+
+
+function productShelf_enable() {
+  // If we enable forum at the same time as taxonomy we need to call
+  // field_associate_fields() as otherwise the field won't be enabled until
+  // hook modules_enabled is called which takes place after hook_enable events.
+  field_associate_fields('taxonomy');
+  // Create the forum vocabulary if it does not exist.
+  $vocabulary = taxonomy_vocabulary_load(variable_get('shelf_vocabulary', 0));
+  if (!$vocabulary) {
+    $edit = array(
+      'name' => t('ProductShelf'),
+      'machine_name' => 'shelf',
+      'description' => t('ProductShelf navigation vocabulary'),
+      'hierarchy' => 1,
+      'module' => 'productShelf',
+      'weight' => -10,
+    );
+    $vocabulary = (object) $edit;
+    taxonomy_vocabulary_save($vocabulary);
+    variable_set('shelf_vocabulary', $vocabulary->vid);
+  }
+ }
+
+/**
+ * Implements hook_uninstall().
+ */
+function productShelf_uninstall() {
+  // Load the dependent Taxonomy module, in case it has been disabled.
+  drupal_load('module', 'taxonomy');
+}
+
+

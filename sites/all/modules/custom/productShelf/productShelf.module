@@ -1,0 +1,119 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: yunjia
+ * Date: 2016/4/12
+ * Time: 16:18
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function productShelf_menu()
+{
+    $items['admin/productShelf'] = array(
+        'title' => t('货架管理'),
+        'description' => '对站点中的产品进行货架管理，货架管理要求只有管理员可以看到',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('taxonomy_overview_terms'),
+        'access arguments' => array('administer taxonomy'),
+        'file' => 'productShelf.pages.inc',
+    );
+
+    $items['admin/productShelf/%taxonomy_term'] = array(
+        'title' => t('productShelf term'),
+        'title callback' => 'taxonomy_term_title',
+        'title arguments' => array(2),
+        'page callback' => 'productShelf_term_page',
+        'page arguments' => array(2),
+        'access arguments' => array('access content'),
+        'file' => 'shelf_term.pages.inc',
+    );
+
+    $items['admin/productShelf/%/ajax'] = array(
+            'page callback' => 'option_ajax_callback',
+            'delivery callback' => 'ajax_deliver',
+            'access callback' => TRUE,
+        )+ $items['admin/productShelf/%taxonomy_term'];
+
+    $items['admin/productShelf/add'] = array(
+        'title' => 'Add term',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('shelf_form_term', array()),
+        'access arguments' => array('administer taxonomy'),
+        'type' => MENU_LOCAL_ACTION,
+        'file' => 'productShelf.pages.inc',
+    );
+
+    return $items;
+}
+
+/**
+ *
+ * Ajax callback for out shelf actions
+ * @return
+ * 	An array of ajax commands.
+ */
+function option_ajax_callback($nid){
+    $commands = array();
+    $node = node_load($nid);
+    $out_shelf_form = drupal_get_form('out_shelf_form', $node);
+    $commands[] = ajax_command_append("#outshelf-links", drupal_render($out_shelf_form));
+    return array(
+        '#type' => 'ajax',
+        '#commands' => $commands,
+    );
+}
+
+/**
+ * Generate a out shelf form
+ * @param $node
+ */
+function out_shelf_form($form, &$form_state, $node) {
+    $form['#node'] = (array)$node;
+    $form['#id'] = "out_shelf_form-node-{$node->nid}";
+
+    $form['textfields'] = array(
+        '#prefix' => '<div id="textfields">',
+        '#suffix' => '</div>',
+        '#type' => 'fieldset',
+        '#description' => t('确认要下架此产品吗？'),
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('确定'),
+        '#ajax' => array(
+            'callback' => 'shelf_node_del_form_ajax_submit',
+            'wrapper' => $form['#id'],
+            'effect' => 'fade',
+        ),
+    );
+    return $form;
+}
+
+/**
+ * Ajax out shelf  form callback function.
+ * @param $form
+ * @param $form_state
+ */
+function shelf_node_del_form_ajax_submit($form, $form_state){
+
+    if(form_get_errors())
+        return $form;
+
+    $node_uri = $form['#node'];
+    $node_uri['field_product_shelf'] = NULL;
+    $node = node_submit((object)$node_uri);
+    node_save($node);
+
+    $update_node = node_load($node->vid);
+    $shelf = $update_node->field_product_shelf;
+    if(count($shelf)==0){
+        return t('下架产品成功!');
+    }
+    else{
+        form_set_error('message', t('产品未下架成功'));
+    }
+    return $form;
+}

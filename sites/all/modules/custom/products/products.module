@@ -1,0 +1,153 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: yunjia
+ * Date: 2016/4/11
+ * Time: 16:18
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function products_menu()
+{
+    $items['admin/products'] = array(
+        'title' => t('产品管理'),
+        'description' => '对站点中的产品进行管理,进行编辑、删除、上下架等操作',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('node_admin_content'),
+        'access arguments' => array('access content overview'),
+        'file' => 'products.pages.inc',
+    );
+
+    $items['admin/products/%'] = array(
+        'page callback' => 'product_user_page',
+        'page arguments' => array(2),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['admin/products/%/ajax'] = array(
+            'page callback' => 'onshelf_ajax_callback',
+            'delivery callback' => 'ajax_deliver',
+            'access callback' => TRUE,
+            )+ $items['admin/products/%'];
+
+    $items['admin/products/add'] = array(
+        'title' => '添加产品',
+        'title callback' => 'check_plain',
+        'page callback' => 'product_add',
+        'access callback' => 'node_access',
+        'access arguments' => array('create', 'product'),
+        'type' => MENU_LOCAL_ACTION,
+        'file' => 'products.pages.inc',
+    );
+
+    return $items;
+}
+
+/**
+ * Page callback: displaying a product page for the object
+ *
+ * @see shareto_menu()
+ */
+function product_user_page($action, $nid){
+    if (is_numeric($nid)) {
+        $node = node_load($nid);
+        if (!$node )
+            return MENU_NOT_FOUND;
+
+        if (!node_access('view', $node))
+            return MENU_ACCESS_DENIED;
+
+        drupal_goto("node/{$nid}");
+    }
+
+    return MENU_NOT_FOUND;
+}
+
+/**
+ *
+ * Ajax callback for on shelf action
+ * @return
+ * 	An array of ajax commands.
+ */
+function onshelf_ajax_callback($nid){
+    $commands = array();
+    $node = node_load($nid);
+    $on_shelf_form = drupal_get_form('on_shelf_form', $node);
+    $commands[] = ajax_command_after("#onshelf-links", drupal_render($on_shelf_form));
+    return array(
+        '#type' => 'ajax',
+        '#commands' => $commands,
+    );
+}
+
+/**
+ * Generate a on shelf form
+ * @param $node
+ */
+function on_shelf_form($form, &$form_state, $node) {
+
+    //获取货架的信息
+    $vocabulary = taxonomy_vocabulary_load(variable_get('shelf_vocabulary',0));
+    if (!$vocabulary){
+        return array();
+    }
+
+    $tree = taxonomy_get_tree($vocabulary->vid);
+    $tree_names = array();
+    foreach($tree as $term){
+        //array_unshift($tree_names,$term->name);
+        $tree_names[$term->tid] = $term->name;
+    }
+
+    $form['#node'] = (array)$node;
+    $form['#id'] = "out_shelf_form-node-{$node->nid}";
+
+    $form['shelf_term'] = array(
+        '#type' => 'select',
+        '#options' => $tree_names,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('确定'),
+        '#ajax' => array(
+            'callback' => 'node_on_shelf_form_ajax_submit',
+            'wrapper' => $form['#id'],
+            'effect' => 'fade',
+        ),
+    );
+    return $form;
+}
+
+/**
+ * Ajax out shelf  form callback function.
+ * @param $form
+ * @param $form_state
+ */
+function node_on_shelf_form_ajax_submit($form, $form_state){
+
+    if(form_get_errors())
+        return $form;
+
+    $node_uri = $form['#node'];
+    $product_shelf_id = $form['shelf_term']['#value'];
+    $node_uri['field_product_shelf']['und'][0]['tid'] = $product_shelf_id;
+
+    //将更新的node保存到数据库
+    $node = node_submit((object)$node_uri);
+    node_save($node);
+    taxonomy_node_insert($node);
+
+    //查询上架操作是否保存到数据库
+    $update_node = node_load($node->nid);
+    $shelf = $update_node->field_product_shelf;
+    if(count($shelf)!=0){
+        return t('产品上架成功!');
+    }
+    else{
+        form_set_error('message', t('产品未上架成功'));
+    }
+    return $form;
+}
