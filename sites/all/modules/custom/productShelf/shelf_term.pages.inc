@@ -43,7 +43,7 @@ function productShelf_term_page($term)
     // Set the non-aliased path as a default shortlink.
     drupal_add_html_head_link(array('rel' => 'shortlink', 'href' => url($uri['path'], array_merge($uri['options'], array('alias' => TRUE)))), TRUE);
 
-    $header = array('名称', '图片','作者','下架');
+    $header = array('名称', '图片','作者','操作');
     $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
     $nodes = node_load_multiple($nids);
     $count = count($nodes);
