@@ -7,39 +7,56 @@
  */
 
 /**
+ * Implements hook_node_info()
+ * Create the product node.
+ */
+function product_node_info(){
+    return array(
+        'product'=>array(
+            'name' => t('product'),
+            'module' => 'product',
+            'base' => 'node_content',
+            'description' => 'the product node type for the company',
+            'has_title' => TRUE,
+            'has_body' => TRUE
+        )
+    );
+}
+
+/**
  * Implements hook_menu().
  */
-function products_menu()
+function product_menu()
 {
-    $items['admin/products'] = array(
+    $items['admin/product'] = array(
         'title' => t('产品管理'),
         'description' => '对站点中的产品进行管理,进行编辑、删除、上下架等操作',
         'page callback' => 'drupal_get_form',
-        'page arguments' => array('node_admin_content'),
+        'page arguments' => array('product_admin_content'),
         'access arguments' => array('access content overview'),
-        'file' => 'products.pages.inc',
+        'file' => 'product.pages.inc',
     );
 
-    $items['admin/products/%'] = array(
+    $items['admin/product/%'] = array(
         'page callback' => 'product_user_page',
         'page arguments' => array(2),
         'type' => MENU_CALLBACK,
     );
 
-    $items['admin/products/%/ajax'] = array(
+    $items['admin/product/%/ajax'] = array(
             'page callback' => 'onshelf_ajax_callback',
             'delivery callback' => 'ajax_deliver',
             'access callback' => TRUE,
-            )+ $items['admin/products/%'];
+            )+ $items['admin/product/%'];
 
-    $items['admin/products/add'] = array(
+    $items['admin/product/add'] = array(
         'title' => '添加产品',
         'title callback' => 'check_plain',
         'page callback' => 'product_add',
         'access callback' => 'node_access',
         'access arguments' => array('create', 'product'),
         'type' => MENU_LOCAL_ACTION,
-        'file' => 'products.pages.inc',
+        'file' => 'product.pages.inc',
     );
 
     return $items;

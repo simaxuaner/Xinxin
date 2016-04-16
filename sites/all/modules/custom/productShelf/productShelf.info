@@ -8,3 +8,5 @@ core = 7.x
 version = "7.43"
 project = "drupal"
 datestamp = "1456343506"
+
+dependencies[] = product

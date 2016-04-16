@@ -6,60 +6,38 @@
  */
 
 /**
- * Menu callback: confirm rebuilding of permissions.
- *
- * @see node_configure_rebuild_confirm_submit()
- * @see node_menu()
- * @ingroup forms
- */
-function node_configure_rebuild_confirm() {
-    return confirm_form(array(), t('Are you sure you want to rebuild the permissions on site content?'),
-        'admin/reports/status', t('This action rebuilds all permissions on site content, and may be a lengthy process. This action cannot be undone.'), t('Rebuild permissions'), t('Cancel'));
-}
-
-/**
- * Handler for wipe confirmation
- *
- * @see node_configure_rebuild_confirm()
- */
-function node_configure_rebuild_confirm_submit($form, &$form_state) {
-    node_access_rebuild(TRUE);
-    $form_state['redirect'] = 'admin/reports/status';
-}
-
-/**
  * Implements hook_node_operations().
  */
-function node_node_operations() {
+function product_node_operations() {
     $operations = array(
         'publish' => array(
             'label' => t('Publish selected content'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED)),
         ),
         'unpublish' => array(
             'label' => t('Unpublish selected content'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_NOT_PUBLISHED)),
         ),
         'promote' => array(
             'label' => t('Promote selected content to front page'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'promote' => NODE_PROMOTED)),
         ),
         'demote' => array(
             'label' => t('Demote selected content from front page'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('promote' => NODE_NOT_PROMOTED)),
         ),
         'sticky' => array(
             'label' => t('Make selected content sticky'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'sticky' => NODE_STICKY)),
         ),
         'unsticky' => array(
             'label' => t('Make selected content not sticky'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('sticky' => NODE_NOT_STICKY)),
         ),
         'delete' => array(
@@ -76,7 +54,7 @@ function node_node_operations() {
  * @return
  *   An associative array of filters.
  */
-function node_filters() {
+function product_filters() {
     // Regular filters
     $filters['status'] = array(
         'title' => t('status'),
@@ -144,20 +122,20 @@ function node_build_filter_query(SelectQueryInterface $query) {
 }
 
 /**
- * Returns the node administration filters form array to node_admin_content().
+ * Returns the node administration filters form array to product_admin_content().
  *
- * @see node_admin_nodes()
- * @see node_admin_nodes_submit()
- * @see node_admin_nodes_validate()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see product_admin_nodes()
+ * @see product_admin_nodes_submit()
+ * @see product_admin_nodes_validate()
+ * @see product_filter_form_submit()
+ * @see product_multiple_delete_confirm()
+ * @see product_multiple_delete_confirm_submit()
  *
  * @ingroup forms
  */
-function node_filter_form() {
+function product_filter_form() {
     $session = isset($_SESSION['node_overview_filter']) ? $_SESSION['node_overview_filter'] : array();
-    $filters = node_filters();
+    $filters = product_filters();
 
     $i = 0;
     $form['filters'] = array(
@@ -228,18 +206,18 @@ function node_filter_form() {
 }
 
 /**
- * Form submission handler for node_filter_form().
+ * Form submission handler for product_filter_form().
  *
- * @see node_admin_content()
- * @see node_admin_nodes()
- * @see node_admin_nodes_submit()
- * @see node_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see product_admin_content()
+ * @see product_admin_nodes()
+ * @see product_admin_nodes_submit()
+ * @see product_admin_nodes_validate()
+ * @see product_filter_form()
+ * @see product_multiple_delete_confirm()
+ * @see product_multiple_delete_confirm_submit()
  */
-function node_filter_form_submit($form, &$form_state) {
-    $filters = node_filters();
+function product_filter_form_submit($form, &$form_state) {
+    $filters = product_filters();
     switch ($form_state['values']['op']) {
         case t('Filter'):
         case t('Refine'):
@@ -273,20 +251,20 @@ function node_filter_form_submit($form, &$form_state) {
  * work correctly.
  *
  * @param array $nodes
- *   Array of node nids to update.
+ *   Array of product nids to update.
  * @param array $updates
  *   Array of key/value pairs with node field names and the value to update that
  *   field to.
  */
-function node_mass_update($nodes, $updates) {
+function product_mass_update($nodes, $updates) {
     // We use batch processing to prevent timeout when updating a large number
     // of nodes.
     if (count($nodes) > 10) {
         $batch = array(
             'operations' => array(
-                array('_node_mass_update_batch_process', array($nodes, $updates))
+                array('_product_mass_update_batch_process', array($nodes, $updates))
             ),
-            'finished' => '_node_mass_update_batch_finished',
+            'finished' => '_product_mass_update_batch_finished',
             'title' => t('Processing'),
             // We use a single multi-pass operation, so the default
             // 'Remaining x of y operations' message will be confusing here.
@@ -300,7 +278,7 @@ function node_mass_update($nodes, $updates) {
     }
     else {
         foreach ($nodes as $nid) {
-            _node_mass_update_helper($nid, $updates);
+            _product_mass_update_helper($nid, $updates);
         }
         drupal_set_message(t('The update has been performed.'));
     }
@@ -317,9 +295,9 @@ function node_mass_update($nodes, $updates) {
  * @return object
  *   An updated node object.
  *
- * @see node_mass_update()
+ * @see product_mass_update()
  */
-function _node_mass_update_helper($nid, $updates) {
+function _product_mass_update_helper($nid, $updates) {
     $node = node_load($nid, NULL, TRUE);
     // For efficiency manually save the original node before applying any changes.
     $node->original = clone $node;
@@ -333,7 +311,7 @@ function _node_mass_update_helper($nid, $updates) {
 /**
  * Implements callback_batch_operation().
  *
- * Executes a batch operation for node_mass_update().
+ * Executes a batch operation for product_mass_update().
  *
  * @param array $nodes
  *   An array of node IDs.
@@ -342,7 +320,7 @@ function _node_mass_update_helper($nid, $updates) {
  * @param array $context
  *   An array of contextual key/values.
  */
-function _node_mass_update_batch_process($nodes, $updates, &$context) {
+function _product_mass_update_batch_process($nodes, $updates, &$context) {
     if (!isset($context['sandbox']['progress'])) {
         $context['sandbox']['progress'] = 0;
         $context['sandbox']['max'] = count($nodes);
@@ -354,7 +332,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
     for ($i = 1; $i <= $count; $i++) {
         // For each nid, load the node, reset the values, and save it.
         $nid = array_shift($context['sandbox']['nodes']);
-        $node = _node_mass_update_helper($nid, $updates);
+        $node = _product_mass_update_helper($nid, $updates);
 
         // Store result for post-processing in the finished callback.
         $context['results'][] = l($node->title, 'node/' . $node->nid);
@@ -373,7 +351,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
 /**
  * Implements callback_batch_finished().
  *
- * Reports the status of batch operation for node_mass_update().
+ * Reports the status of batch operation for product_mass_update().
  *
  * @param bool $success
  *   A boolean indicating whether the batch mass update operation successfully
@@ -383,7 +361,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
  * @param array $operations
  *   An array of function calls (not used in this function).
  */
-function _node_mass_update_batch_finished($success, $results, $operations) {
+function _product_mass_update_batch_finished($success, $results, $operations) {
     if ($success) {
         drupal_set_message(t('The update has been performed.'));
     }
@@ -398,24 +376,24 @@ function _node_mass_update_batch_finished($success, $results, $operations) {
 /**
  * Page callback: Form constructor for the content administration form.
  *
- * @see node_admin_nodes()
- * @see node_admin_nodes_submit()
- * @see node_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_menu()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see product_admin_nodes()
+ * @see product_admin_nodes_submit()
+ * @see product_admin_nodes_validate()
+ * @see product_filter_form()
+ * @see product_filter_form_submit()
+ * @see product_menu()
+ * @see product_multiple_delete_confirm()
+ * @see product_multiple_delete_confirm_submit()
  * @ingroup forms
  */
-function node_admin_content($form, $form_state) {
+function product_admin_content($form, $form_state) {
 
     if (isset($form_state['values']['operation']) && $form_state['values']['operation'] == 'delete') {
-        return node_multiple_delete_confirm($form, $form_state, array_filter($form_state['values']['nodes']));
+        return product_multiple_delete_confirm($form, $form_state, array_filter($form_state['values']['nodes']));
     }
-    $form['filter'] = node_filter_form();
-    $form['#submit'][] = 'node_filter_form_submit';
-    $form['admin'] = node_admin_nodes();
+    $form['filter'] = product_filter_form();
+    $form['#submit'][] = 'product_filter_form_submit';
+    $form['admin'] = product_admin_nodes();
 
     return $form;
 }
@@ -423,16 +401,16 @@ function node_admin_content($form, $form_state) {
 /**
  * Form builder: Builds the node administration overview.
  *
- * @see node_admin_nodes_submit()
- * @see node_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see product_admin_nodes_submit()
+ * @see product_admin_nodes_validate()
+ * @see product_filter_form()
+ * @see product_filter_form_submit()
+ * @see product_multiple_delete_confirm()
+ * @see product_multiple_delete_confirm_submit()
  *
  * @ingroup forms
  */
-function node_admin_nodes() {
+function product_admin_nodes() {
     $admin_access = user_access('administer nodes');
 
     // Build the 'Update options' form.
@@ -457,8 +435,8 @@ function node_admin_nodes() {
     $form['options']['submit'] = array(
         '#type' => 'submit',
         '#value' => t('Update'),
-        '#validate' => array('node_admin_nodes_validate'),
-        '#submit' => array('node_admin_nodes_submit'),
+        '#validate' => array('product_admin_nodes_validate'),
+        '#submit' => array('product_admin_nodes_submit'),
     );
 
     // Enable language column if translation module is enabled or if we have any
@@ -592,7 +570,7 @@ function node_admin_nodes() {
         //上架的ajax处理
         drupal_add_library('system', 'drupal.ajax');
         $class = "rp-shelf rp-shelf-on";
-        $url = "admin/products/".$node->vid."/nojs";
+        $url = "admin/product/".$node->vid."/nojs";
        // $title = l('上架', $url, array('attributes'=>array('class'=>"use-ajax {$class}",'id'=>"onshelf-links")));
         if (!$product_shelf) {
             $operations['onshelf'] = array(
@@ -652,19 +630,19 @@ function node_admin_nodes() {
 }
 
 /**
- * Validate node_admin_nodes form submissions.
+ * Validate product_admin_nodes form submissions.
  *
  * Checks whether any nodes have been selected to perform the chosen 'Update
  * option' on.
  *
- * @see node_admin_nodes()
- * @see node_admin_nodes_submit()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see product_admin_nodes()
+ * @see product_admin_nodes_submit()
+ * @see product_filter_form()
+ * @see product_filter_form_submit()
+ * @see product_multiple_delete_confirm()
+ * @see product_multiple_delete_confirm_submit()
  */
-function node_admin_nodes_validate($form, &$form_state) {
+function product_admin_nodes_validate($form, &$form_state) {
     // Error if there are no items to select.
     if (!is_array($form_state['values']['nodes']) || !count(array_filter($form_state['values']['nodes']))) {
         form_set_error('', t('No items selected.'));
@@ -672,18 +650,18 @@ function node_admin_nodes_validate($form, &$form_state) {
 }
 
 /**
- * Process node_admin_nodes form submissions.
+ * Process product_admin_nodes form submissions.
  *
  * Executes the chosen 'Update option' on the selected nodes.
  *
- * @see node_admin_nodes()
- * @see node_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see product_admin_nodes()
+ * @see product_admin_nodes_validate()
+ * @see product_filter_form()
+ * @see product_filter_form_submit()
+ * @see product_multiple_delete_confirm()
+ * @see product_multiple_delete_confirm_submit()
  */
-function node_admin_nodes_submit($form, &$form_state) {
+function product_admin_nodes_submit($form, &$form_state) {
     $operations = module_invoke_all('node_operations');
     $operation = $operations[$form_state['values']['operation']];
     // Filter out unchecked nodes
@@ -708,17 +686,17 @@ function node_admin_nodes_submit($form, &$form_state) {
 }
 
 /**
- * Multiple node deletion confirmation form for node_admin_content().
+ * Multiple node deletion confirmation form for product_admin_content().
  *
- * @see node_admin_nodes()
- * @see node_admin_nodes_submit()
- * @see node_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm_submit()
+ * @see product_admin_nodes()
+ * @see product_admin_nodes_submit()
+ * @see product_admin_nodes_validate()
+ * @see product_filter_form()
+ * @see product_filter_form_submit()
+ * @see product_multiple_delete_confirm_submit()
  * @ingroup forms
  */
-function node_multiple_delete_confirm($form, &$form_state, $nodes) {
+function product_multiple_delete_confirm($form, &$form_state, $nodes) {
     $form['nodes'] = array('#prefix' => '<ul>', '#suffix' => '</ul>', '#tree' => TRUE);
     // array_filter returns only elements with TRUE values
     foreach ($nodes as $nid => $value) {
@@ -731,7 +709,7 @@ function node_multiple_delete_confirm($form, &$form_state, $nodes) {
         );
     }
     $form['operation'] = array('#type' => 'hidden', '#value' => 'delete');
-    $form['#submit'][] = 'node_multiple_delete_confirm_submit';
+    $form['#submit'][] = 'product_multiple_delete_confirm_submit';
     $confirm_question = format_plural(count($nodes),
         'Are you sure you want to delete this item?',
         'Are you sure you want to delete these items?');
@@ -742,16 +720,16 @@ function node_multiple_delete_confirm($form, &$form_state, $nodes) {
 }
 
 /**
- * Form submission handler for node_multiple_delete_confirm().
+ * Form submission handler for product_multiple_delete_confirm().
  *
- * @see node_admin_nodes()
- * @see node_admin_nodes_submit()
- * @see node_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
+ * @see product_admin_nodes()
+ * @see product_admin_nodes_submit()
+ * @see product_admin_nodes_validate()
+ * @see product_filter_form()
+ * @see product_filter_form_submit()
+ * @see product_multiple_delete_confirm()
  */
-function node_multiple_delete_confirm_submit($form, &$form_state) {
+function product_multiple_delete_confirm_submit($form, &$form_state) {
     if ($form_state['values']['confirm']) {
         node_delete_multiple(array_keys($form_state['values']['nodes']));
         cache_clear_all();
@@ -778,7 +756,7 @@ function product_add() {
     $types = node_type_get_types();
     $node = (object) array('uid' => $user->uid, 'name' => (isset($user->name) ? $user->name : ''), 'type' => $type, 'language' => LANGUAGE_NONE);
     drupal_set_title(t('Create @name', array('@name' => $types[$type]->name)), PASS_THROUGH);
-    $output = drupal_get_form($type . '_node_form', $node);
+    $output = drupal_get_form($type . '_form', $node);
 
     return $output;
 }
@@ -786,12 +764,12 @@ function product_add() {
 /**
  * Form constructor for the node add/edit form.
  *
- * @see node_form_submit()
- * @see node_form_build_preview()
- * @see node_form_delete_submit()
+ * @see product_form_submit()
+ * @see product_form_build_preview()
+ * @see product_form_delete_submit()
  * @ingroup forms
  */
-function node_form($form, &$form_state, $node) {
+function product_form($form, &$form_state, $node) {
     global $user;
 
     // During initial form build, add the node entity to the form state for use
@@ -809,8 +787,8 @@ function node_form($form, &$form_state, $node) {
     }
 
     // Some special stuff when previewing a node.
-    if (isset($form_state['node_preview'])) {
-        $form['#prefix'] = $form_state['node_preview'];
+    if (isset($form_state['product_preview'])) {
+        $form['#prefix'] = $form_state['product_preview'];
         $node->in_preview = TRUE;
     }
     else {
@@ -978,35 +956,35 @@ function node_form($form, &$form_state, $node) {
     $form['actions'] = array('#type' => 'actions');
     $form['actions']['submit'] = array(
         '#type' => 'submit',
-        '#access' => variable_get('node_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_REQUIRED || (!form_get_errors() && isset($form_state['node_preview'])),
+        '#access' => variable_get('product_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_REQUIRED || (!form_get_errors() && isset($form_state['product_preview'])),
         '#value' => t('Save'),
         '#weight' => 5,
-        '#submit' => array('node_form_submit'),
+        '#submit' => array('product_form_submit'),
     );
     $form['actions']['preview'] = array(
-        '#access' => variable_get('node_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_DISABLED,
+        '#access' => variable_get('product_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_DISABLED,
         '#type' => 'submit',
         '#value' => t('Preview'),
         '#weight' => 10,
-        '#submit' => array('node_form_build_preview'),
+        '#submit' => array('product_form_build_preview'),
     );
     if (!empty($node->nid) && node_access('delete', $node)) {
         $form['actions']['delete'] = array(
             '#type' => 'submit',
             '#value' => t('Delete'),
             '#weight' => 15,
-            '#submit' => array('node_form_delete_submit'),
+            '#submit' => array('product_form_delete_submit'),
         );
     }
     // This form uses a button-level #submit handler for the form's main submit
-    // action. node_form_submit() manually invokes all form-level #submit handlers
+    // action. product_form_submit() manually invokes all form-level #submit handlers
     // of the form. Without explicitly setting #submit, Form API would auto-detect
-    // node_form_submit() as submit handler, but that is the button-level #submit
+    // product_form_submit() as submit handler, but that is the button-level #submit
     // handler for the 'Save' action. To maintain backwards compatibility, a
     // #submit handler is auto-suggested for custom node type modules.
-    $form['#validate'][] = 'node_form_validate';
-    if (!isset($form['#submit']) && function_exists($node->type . '_node_form_submit')) {
-        $form['#submit'][] = $node->type . '_node_form_submit';
+    $form['#validate'][] = 'product_form_validate';
+    if (!isset($form['#submit']) && function_exists($node->type . '_product_form_submit')) {
+        $form['#submit'][] = $node->type . '_product_form_submit';
     }
     $form += array('#submit' => array());
 
@@ -1015,12 +993,12 @@ function node_form($form, &$form_state, $node) {
 }
 
 /**
- * Form submission handler for node_form().
+ * Form submission handler for product_form().
  *
- * @see node_form()
+ * @see product_form()
  */
-function node_form_submit($form, &$form_state) {
-    $node = node_form_submit_build_node($form, $form_state);
+function product_form_submit($form, &$form_state) {
+    $node = product_form_submit_build_node($form, $form_state);
     $insert = empty($node->nid);
     node_save($node);
     $node_link = l(t('view'), 'node/' . $node->nid);
@@ -1051,26 +1029,26 @@ function node_form_submit($form, &$form_state) {
 }
 
 /**
- * Form submission handler for node_form().
+ * Form submission handler for product_form().
  *
  * Handles the 'Preview' button on the node form.
  *
- * @see node_form()
+ * @see product_form()
  */
-function node_form_build_preview($form, &$form_state) {
-    $node = node_form_submit_build_node($form, $form_state);
-    $form_state['node_preview'] = node_preview($node);
+function product_form_build_preview($form, &$form_state) {
+    $node = product_form_submit_build_node($form, $form_state);
+    $form_state['product_preview'] = product_preview($node);
     $form_state['rebuild'] = TRUE;
 }
 
 /**
- * Form submission handler for node_form().
+ * Form submission handler for product_form().
  *
  * Handles the 'Delete' button on the node form.
  *
- * @see node_form()
+ * @see product_form()
  */
-function node_form_delete_submit($form, &$form_state) {
+function product_form_delete_submit($form, &$form_state) {
     $destination = array();
     if (isset($_GET['destination'])) {
         $destination = drupal_get_destination();
@@ -1081,12 +1059,12 @@ function node_form_delete_submit($form, &$form_state) {
 }
 
 /**
- * Form validation handler for node_form().
+ * Form validation handler for product_form().
  *
- * @see node_form()
- * @see node_form_submit()
+ * @see product_form()
+ * @see product_form_submit()
  */
-function node_form_validate($form, &$form_state) {
+function product_form_validate($form, &$form_state) {
     // $form_state['node'] contains the actual entity being edited, but we must
     // not update it with form values that have not yet been validated, so we
     // create a pseudo-entity to use during validation.
@@ -1104,9 +1082,9 @@ function node_form_validate($form, &$form_state) {
  * wizard to update the form state's entity with the current step's values
  * before proceeding to the next step.
  *
- * @see node_form()
+ * @see product_form()
  */
-function node_form_submit_build_node($form, &$form_state) {
+function product_form_submit_build_node($form, &$form_state) {
     // @todo Legacy support for modules that extend the node form with form-level
     //   submit handlers that adjust $form_state['values'] prior to those values
     //   being used to update the entity. Module authors are encouraged to instead
@@ -1137,9 +1115,9 @@ function node_form_submit_build_node($form, &$form_state) {
  * @return
  *   An HTML-formatted string of a node preview.
  *
- * @see node_form_build_preview()
+ * @see product_form_build_preview()
  */
-function node_preview($node) {
+function product_preview($node) {
     // Clone the node before previewing it to prevent the node itself from being
     // modified.
     $cloned_node = clone $node;
@@ -1169,7 +1147,7 @@ function node_preview($node) {
         // Display a preview of the node.
         if (!form_get_errors()) {
             $cloned_node->in_preview = TRUE;
-            $output = theme('node_preview', array('node' => $cloned_node));
+            $output = theme('product_preview', array('node' => $cloned_node));
             unset($cloned_node->in_preview);
         }
         drupal_set_title(t('Preview'), PASS_THROUGH);

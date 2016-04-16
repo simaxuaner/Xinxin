@@ -1,4 +1,4 @@
-name = Products
+name = Product
 description = 产品管理模块.
 package = My
 version = VERSION
@@ -8,3 +8,6 @@ core = 7.x
 version = "7.43"
 project = "drupal"
 datestamp = "1456343506"
+
+dependencies[] = number
+dependencies[] = field

@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: yunjia
+ * Date: 2016/4/16
+ * Time: 16:18
+ */
+
+/**
+ * Implements hook_node_info()
+ * Create the farm node.
+ */
+function farm_node_info(){
+    return array(
+        'farm'=>array(
+            'name' => t('farm'),
+            'module' => 'farm',
+            'base' => 'node_content',
+            'description' => 'the farm node type for the company',
+            'has_title' => TRUE,
+            'has_body' => TRUE
+        )
+    );
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function farm_menu()
+{
+    $items['admin/farm'] = array(
+        'title' => t('农场管理'),
+        'description' => '对站点中的农场进行管理,进行增加、编辑、删除等操作',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('farm_admin_content'),
+        'access arguments' => array('access content overview'),
+        'file' => 'farm.pages.inc',
+    );
+
+    $items['admin/farm/add'] = array(
+        'title' => '添加农场',
+        'title callback' => 'check_plain',
+        'page callback' => 'farm_add',
+        'access callback' => 'node_access',
+        'access arguments' => array('create', 'farm'),
+        'type' => MENU_LOCAL_ACTION,
+        'file' => 'farm.pages.inc',
+    );
+
+    return $items;
+}

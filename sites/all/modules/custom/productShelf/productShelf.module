@@ -37,7 +37,7 @@ function productShelf_menu()
         )+ $items['admin/productShelf/%taxonomy_term'];
 
     $items['admin/productShelf/add'] = array(
-        'title' => 'Add term',
+        'title' => '添加货架',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('shelf_form_term', array()),
         'access arguments' => array('administer taxonomy'),
