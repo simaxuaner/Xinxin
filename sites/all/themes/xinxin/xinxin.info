@@ -10,7 +10,7 @@ stylesheets[all][] = xinxin.css
 scripts[] = xinxin.js
 
 regions[header] = Header
-regions[highlighted] = Highlighted
+regions[highlighter] = Highlighter
 regions[content] = Content
 regions[footer] = Footer
 

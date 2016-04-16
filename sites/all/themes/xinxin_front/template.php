@@ -29,12 +29,14 @@ function xinxin_front_preprocess_html(&$vars) {
 
     // Add default styles.
     drupal_add_css($xinxin_front . '/css/styles.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_css($xinxin_front . '/css/bootstrap.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/member.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_css($xinxin_front . '/css/xinxin.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
-    drupal_add_js($xinxin_front . '/js/scripts.js');
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_1.js');
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_2.js');
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_3.js');
+    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_1.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_2.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_3.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_js($xinxin_front . '/js/scripts.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
 }
 
@@ -48,16 +50,15 @@ function xinxin_front_preprocess_page(&$vars) {
     if (isset($vars['main_menu'])) {
         $menu_links = '<ul>';
         foreach ( $vars['main_menu'] as $menu_item ) {
-            $class = array();
-//            $class[] = 'mainmenu';
-            global $language_url;
-            if (isset($menu_item['href']) && ($menu_item['href'] == $_GET['q'] || ($menu_item['href'] == '<front>' && drupal_is_front_page())) && (empty($menu_item['language']) || $menu_item['language']->language == $language_url->language)) {
-//                $class[] = 'mainmenu ul';
-            }
-            $menu_links .= '<li> '/* . drupal_attributes(array('class' => $class)) . '>'*/ . l($menu_item['title'], $menu_item['href']) . '</li>';
+//            $class = array();
+//            $class[] = 'xinxin-nav';
+//            global $language_url;
+//            if (isset($menu_item['href']) && ($menu_item['href'] == $_GET['q'] || ($menu_item['href'] == '<front>' && drupal_is_front_page())) && (empty($menu_item['language']) || $menu_item['language']->language == $language_url->language)) {
+//                $class[] = 'xinxin-active'; /*. drupal_attributes(array('class' => $class)) .*/
+//            }
+            $menu_links .= '<li>' . l($menu_item['title'], $menu_item['href']) . '</li>';
         }
-        $menu_links='</ul>';
-        $vars['primary_nav'] = $menu_links;
+        $vars['primary_nav'] = $menu_links.'</ul>';
     }
     else {
         $vars['primary_nav'] = FALSE;
@@ -92,7 +93,7 @@ function xinxin_front_preprocess_page(&$vars) {
             $filepath = $user->picture->uri;
         }
         else{
-            $filepath = variable_get('user_picture_default', 'sites/all/themes/xinxin_front/images/users/users0.jpg');
+            $filepath = variable_get('user_picture_default', 'sites/all/themes/xinxin_front/images/users/user0.jpg');
         }
         if (module_exists('image') && file_valid_uri($filepath) ) {
             $vars['user_avatar'] = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));

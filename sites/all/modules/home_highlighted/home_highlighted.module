@@ -28,10 +28,33 @@ function home_highlighted_block_view($delta = '')
 {
     $module_path = drupal_get_path('module', 'home_highlighted');
     $block = array();
-    $html = '<div id="slider">
-		<img id="sliderImg" src="'.$module_path.'/images/2.jpg" alt="slider"/>
-	</div>';
+    $html = '<nav class="homenav">
+		<a href="news.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'/images/news.png" alt="news"/>
+				<h2>活动报道</h2>
+			</div>
+		</a>
+		<a href="farms.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'/images/farms.png" alt="farms"/>
+				<h2>农场信息</h2>
+			</div>
+		</a>
+		<a href="products.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'/images/products.png" alt="products"/>
+				<h2>农产品信息</h2>
+			</div>
+		</a>
+		<a href="classes.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'/images/training.png" alt="training"/>
+				<h2>培训方案</h2>
+			</div>
+		</a>
+	</nav>';
 //    $block['subject'] = t('home highlighted');
-    $block['highlighted'] = $html;
+    $block['content'] = $html;
     return $block;
 }
