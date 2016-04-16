@@ -74,7 +74,7 @@ function productShelf_term_page($term)
             //下架的ajax处理
             drupal_add_library('system', 'drupal.ajax');
             $class = "rp-shelf rp-shelf-out";
-            $url = "admin/productShelf/".$node->vid."/nojs";
+            $url = "admin/productShelf/".$node->nid."/nojs";
             $title = l('下架', $url, array('attributes'=>array('class'=>"use-ajax {$class}",'id'=>"outshelf-links")));
             $rows[$key]['option'] = $title;
         }

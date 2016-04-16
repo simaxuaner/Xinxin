@@ -570,7 +570,7 @@ function product_admin_nodes() {
         //上架的ajax处理
         drupal_add_library('system', 'drupal.ajax');
         $class = "rp-shelf rp-shelf-on";
-        $url = "admin/product/".$node->vid."/nojs";
+        $url = "admin/product/".$node->nid."/nojs";
        // $title = l('上架', $url, array('attributes'=>array('class'=>"use-ajax {$class}",'id'=>"onshelf-links")));
         if (!$product_shelf) {
             $operations['onshelf'] = array(
