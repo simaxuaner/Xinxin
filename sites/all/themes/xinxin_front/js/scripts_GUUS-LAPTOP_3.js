@@ -63,8 +63,7 @@ function resetHighlights(i) {
 function highlightCurrentPage(i) {
 	getSideNavItem(i).className = "currentSubPage";
 }
-//}
-//
-//function expandParent(this){
-// console.log(this.innerHTML);
-//}
+
+function expandParent(this){
+ console.log(this.innerHTML);
+}

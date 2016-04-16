@@ -24,11 +24,13 @@
             <?php endif; ?>
         </ul>
     </header>
+
     <?php if ($page['highlighted']): ?>
         <highlighted id="highlighted">
-            <?php print render($page['highlighted']); ?>
+            <?php print render($page['highlighted']); print "123"?>
         </highlighted>
     <?php endif; ?>
+
     <main id="mainSection">
         <nav class="sideNav" id="sideNav">
             <?php if ($page['sidebar_left']): print render($page['sidebar_left']); endif; ?>
@@ -37,6 +39,7 @@
             <?php print render($page['content']); ?>
         </div>
     </main>
+
     <footer>
         <div class="links">
             <p>

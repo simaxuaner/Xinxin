@@ -1,0 +1,60 @@
+<?php
+/**
+ * @file
+ * Create a block for friend recommendation
+ * @author Wang Xiaoli (creator)
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function home_content_block_info()
+{
+    global $user;
+
+    $blocks['home content'] = array(
+        'info' => t('home content'),
+        'cache' => DRUPAL_NO_CACHE,
+    );
+    $blocks['home_content']['properties']['administrative'] = TRUE;
+
+    return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function home_content_block_view($delta = '')
+{
+    $module_path = drupal_get_path('module', 'home_content');
+    $block = array();
+    $html = '<nav class="homenav">
+		<a href="news.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'images/news.png" alt="news"/>
+				<h2>活动报道</h2>
+			</div>
+		</a>
+		<a href="farms.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'images/farms.png" alt="farms"/>
+				<h2>农场信息</h2>
+			</div>
+		</a>
+		<a href="products.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'images/products.png" alt="products"/>
+				<h2>农产品信息</h2>
+			</div>
+		</a>
+		<a href="classes.php">
+			<div class="bigbutton">
+				<img src="'.$module_path.'images/training.png" alt="training"/>
+				<h2>培训方案</h2>
+			</div>
+		</a>
+	</nav>';
+//    $block['subject'] = t('home content');
+    $block['highlighted'] = $html;
+    return $block;
+}

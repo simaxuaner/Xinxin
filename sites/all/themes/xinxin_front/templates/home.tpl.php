@@ -1,89 +1,61 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="../js/scripts.js"></script>
-    <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-</head>
+<div id="wrapper">
+    <header>
+        <div class="logo">
+            <a href="index.html"><img alt="logo" src="sites/all/themes/xinxin_front/images/icons/logo.png"></a>
+        </div>
+        <nav class="mainmenu">
+            <?php if ($primary_nav): print $primary_nav; endif; ?>
+        </nav>
 
-<body onLoad="startSlider()">
-<script src="../js/scripts.js"></script>
-<header>
-    <div class="logo">
-        <a href="#">
-            <img src="../images/icons/#" alt="logo"/>
-        </a>
-    </div>
-    <nav class="mainmenu">
-        <ul>
-            <li>
-                <a href="#">About</a>
-            </li>
-            <li>
-                <a href="#">News</a>
-            </li>
-            <li>
-                <a href="#">Exhibition</a>
-            </li>
-            <li>
-                <a href="#">Members</a>
-            </li>
+        <ul class="usermenu">
+            <?php if ($search_form): ?>
+                <li><?php print render($search_form); ?></li>
+            <?php endif; ?>
+            <?php if (user_is_logged_in()): ?>
+                <li class="dropdown rp-account">
+                    <a href="#" class="dropdown-toggle rp-thumbnail" data-toggle="dropdown">
+                        <?php print $user_avatar; ?>
+                    </a>
+                    <?php if ($secondary_nav): print $secondary_nav; endif; ?>
+                </li>
+            <?php else : ?>
+                <a class="navbar-right navbar-btn btn rp-login" href="<?php print url('user/login'); ?>"><?php print t('Sign in'); ?></a>
+                <a class="navbar-right navbar-btn btn rp-register" href="<?php print url('user/register'); ?>"><?php print t('Sign up'); ?></a>
+            <?php endif; ?>
         </ul>
-    </nav>
-</header>
-<main>
-    <div id="slider">
-        <img id="sliderImg" src="../images/slider/2.jpg" alt="slider"/>
-    </div>
-    <nav class="homenav">
-        <a href="#">
-            <div class="bigbutton">
-                <img src="../images/icons/news.png" alt="news"/>
-                <h2>News</h2>
-            </div>
-        </a>
-        <a href="#">
-            <div class="bigbutton">
-                <img src="../images/icons/farms.png" alt="farms"/>
-                <h2>Farms</h2>
-            </div>
-        </a>
-        <a href="#">
-            <div class="bigbutton">
-                <img src="../images/icons/products.png" alt="products"/>
-                <h2>Products</h2>
-            </div>
-        </a>
-        <a href="#">
-            <div class="bigbutton">
-                <img src="../images/icons/training.png" alt="training"/>
-                <h2>Training</h2>
-            </div>
-        </a>
-    </nav>
-</main>
-<footer>
-    <div class="links">
-        <p>
-            <a href="#">sdfsdf</a>
-        </p>
-        <p>
-            <a href="#">sdfsdf</a>
-        </p>
-        <p>
-            <a href="#">sdfsdf</a>
-        </p>
-    </div>
-    <div class="social">
-        <a href="#"><img src="images/icons/qq.png" alt="qq"/></a>
-        <a href="#"><img src="images/icons/wechat.png" alt="wechat"/></a>
-        <a href="#"><img src="images/icons/weibo.png" alt="weibo"/></a>
-    </div>
-    <div class="copyright">
-        <p>Copyright 2016</p>
-    </div>
-</footer>
-</body>
-</html>
+    </header>
+
+    <highlighted>
+        <div id="slider">
+            <img id="sliderImg" src="sites/all/themes/xinxin_front/images/slider/2.jpg" alt="slider"/>
+        </div>
+    </highlighted>
+
+    <main id="mainSection">
+        <nav class="homenav">
+            <?php if ($page['home_content']): print render($page['home_content']); endif; ?>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="links">
+            <p>
+                <a href="#">6.6涂岭论坛</a>
+            </p>
+            <p>
+                <a href="#">12.12论坛</a>
+            </p>
+            <p>
+                <a href="#">在线商城</a>
+            </p>
+        </div>
+        <div class="social">
+            <a href="#"><img src="sites/all/themes/xinxin_front/images/icons/qq.png" alt="qq"/></a>
+            <a href="#"><img src="sites/all/themes/xinxin_front/images/icons/wechat.png" alt="wechat"/></a>
+            <a href="#"><img src="sites/all/themes/xinxin_front/images/icons/weibo.png" alt="weibo"/></a>
+        </div>
+        <div class="copyright">
+            <p>Copyright 2016</p>
+        </div>
+    </footer>
+</div>

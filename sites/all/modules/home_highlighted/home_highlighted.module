@@ -1,0 +1,37 @@
+<?php
+/**
+ * @file
+ * Create a block for friend recommendation
+ * @author Wang Xiaoli (creator)
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function home_highlighted_block_info()
+{
+    global $user;
+
+    $blocks['home highlighted'] = array(
+        'info' => t('home highlighted'),
+        'cache' => DRUPAL_NO_CACHE,
+    );
+    $blocks['home_highlighted']['properties']['administrative'] = TRUE;
+
+    return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function home_highlighted_block_view($delta = '')
+{
+    $module_path = drupal_get_path('module', 'home_highlighted');
+    $block = array();
+    $html = '<div id="slider">
+		<img id="sliderImg" src="'.$module_path.'/images/2.jpg" alt="slider"/>
+	</div>';
+//    $block['subject'] = t('home highlighted');
+    $block['highlighted'] = $html;
+    return $block;
+}

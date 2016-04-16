@@ -1,6 +1,7 @@
 function startSlider() {
 	var totalSlides = 3;
 	var slideIndex = 0;
+	console.log(window.innerHeight);
 	setInterval(function() {
 		slideIndex = slide(slideIndex);
 	}, 5000);
