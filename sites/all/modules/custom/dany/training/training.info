@@ -1,0 +1,6 @@
+name = Training
+description = 新农人培训主菜单
+package = Dany
+version = VERSION
+core = 7.x
+

@@ -1,0 +1,59 @@
+<?php
+/**
+ * Create by Visual Studio Code
+ * Author : Dany
+ * E-mail : ifeifei@stu.xmu.edu.cn
+ * Data = 2016-04-15 18:26
+ */
+ 
+/**
+ * Implements hook_menu()
+ */
+function training_menu(){
+    $items['training'] = array(
+        'title' => t('Training'),
+        'page callback' => 'training_course_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+        'menu_name' => 'main-menu',
+    );
+    $items['training/courses'] = array(
+        'title' => t('Courses'),
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+    $items['training/teachers'] = array(
+        'title' => t('Teachers'),
+        'page callback' => 'training_teacher_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+        'weight' => 5,
+    );
+    return $items;
+}
+
+function training_course_page_callback() {
+    $module_path = drupal_get_path('module', 'training');
+    drupal_add_css($module_path . '/css/style.css');
+    drupal_add_js($module_path.'/js/script.js');
+    return theme("courses_page", array());
+}
+
+function training_teacher_page_callback() {
+    return "Hello world1";
+}
+
+/**
+ * Implements hook_theme()
+ */
+function training_theme() {
+    return array(
+        'courses_page' => array(
+            'variables' => array(),
+            'template' => 'courses',
+        ),
+    );
+}
+
+function template_preprocess_courses_page(&$variables) {
+    $variables['imageLinkPathHead']=drupal_get_path('module','training');
+}

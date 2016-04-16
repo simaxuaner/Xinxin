@@ -1,0 +1,21 @@
+<?php
+/**
+ * Create by Visual Studio Code
+ * Author : Dany
+ * E-mail : ifeifei@stu.xmu.edu.cn
+ * Data = 2016-04-15 18:26
+ */
+ 
+/**
+ * Implements hook_menu()
+ */
+function news_menu(){
+    $items['news'] = array(
+        'title' => t('News'),
+        'page callback' => '',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+        'menu_name' => 'main-menu',
+    );
+    return $items;
+}

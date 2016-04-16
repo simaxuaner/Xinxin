@@ -1,0 +1,5 @@
+name = News
+description = 品牌论坛
+package = Dany
+version = VERSION
+core = 7.x
