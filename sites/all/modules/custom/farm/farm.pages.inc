@@ -19,15 +19,15 @@
  *   Array of key/value pairs with node field names and the value to update that
  *   field to.
  */
-function farm_mass_update($nodes, $updates) {
+function node_mass_update($nodes, $updates) {
     // We use batch processing to prevent timeout when updating a large number
     // of nodes.
     if (count($nodes) > 10) {
         $batch = array(
             'operations' => array(
-                array('_farm_mass_update_batch_process', array($nodes, $updates))
+                array('_node_mass_update_batch_process', array($nodes, $updates))
             ),
-            'finished' => '_farm_mass_update_batch_finished',
+            'finished' => '_node_mass_update_batch_finished',
             'title' => t('Processing'),
             // We use a single multi-pass operation, so the default
             // 'Remaining x of y operations' message will be confusing here.
@@ -41,7 +41,7 @@ function farm_mass_update($nodes, $updates) {
     }
     else {
         foreach ($nodes as $nid) {
-            _farm_mass_update_helper($nid, $updates);
+            _node_mass_update_helper($nid, $updates);
         }
         drupal_set_message(t('The update has been performed.'));
     }
@@ -58,9 +58,9 @@ function farm_mass_update($nodes, $updates) {
  * @return object
  *   An updated node object.
  *
- * @see farm_mass_update()
+ * @see node_mass_update()
  */
-function _farm_mass_update_helper($nid, $updates) {
+function _node_mass_update_helper($nid, $updates) {
     $node = node_load($nid, NULL, TRUE);
     // For efficiency manually save the original node before applying any changes.
     $node->original = clone $node;
@@ -74,7 +74,7 @@ function _farm_mass_update_helper($nid, $updates) {
 /**
  * Implements callback_batch_operation().
  *
- * Executes a batch operation for farm_mass_update().
+ * Executes a batch operation for node_mass_update().
  *
  * @param array $nodes
  *   An array of node IDs.
@@ -83,7 +83,7 @@ function _farm_mass_update_helper($nid, $updates) {
  * @param array $context
  *   An array of contextual key/values.
  */
-function _farm_mass_update_batch_process($nodes, $updates, &$context) {
+function _node_mass_update_batch_process($nodes, $updates, &$context) {
     if (!isset($context['sandbox']['progress'])) {
         $context['sandbox']['progress'] = 0;
         $context['sandbox']['max'] = count($nodes);
@@ -95,7 +95,7 @@ function _farm_mass_update_batch_process($nodes, $updates, &$context) {
     for ($i = 1; $i <= $count; $i++) {
         // For each nid, load the node, reset the values, and save it.
         $nid = array_shift($context['sandbox']['nodes']);
-        $node = _farm_mass_update_helper($nid, $updates);
+        $node = _node_mass_update_helper($nid, $updates);
 
         // Store result for post-processing in the finished callback.
         $context['results'][] = l($node->title, 'node/' . $node->nid);
@@ -114,7 +114,7 @@ function _farm_mass_update_batch_process($nodes, $updates, &$context) {
 /**
  * Implements callback_batch_finished().
  *
- * Reports the status of batch operation for farm_mass_update().
+ * Reports the status of batch operation for node_mass_update().
  *
  * @param bool $success
  *   A boolean indicating whether the batch mass update operation successfully
@@ -124,7 +124,7 @@ function _farm_mass_update_batch_process($nodes, $updates, &$context) {
  * @param array $operations
  *   An array of function calls (not used in this function).
  */
-function _farm_mass_update_batch_finished($success, $results, $operations) {
+function _node_mass_update_batch_finished($success, $results, $operations) {
     if ($success) {
         drupal_set_message(t('The update has been performed.'));
     }
