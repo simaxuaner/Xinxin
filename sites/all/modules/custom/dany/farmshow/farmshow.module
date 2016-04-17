@@ -11,25 +11,26 @@
  */
 function farmshow_menu() {
     $items['farmshow'] = array(
-        'title' => t('Farms'),
+        'title' =>'农业展馆',
         'page pagecallback' => 'farmshow_leisurefarm_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'menu_name' => 'main-menu',
+        'weight'=>2,
     );
     $items['farmshow/leisurefarm'] = array(//创建子菜单
-        'title' => t('Leisure Farm'),
+        'title' =>'休闲农庄',
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
     $items['farmshow/product'] = array(
-        'title' => t('Product'),
+        'title' =>'农业展品',
         'page callback' => 'farmshow_product_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 5,
     );
     $items['farmshow/forum'] = array(
-        'title' => t('Agricultural Exhibition Hall Forum'),
+        'title' =>'农业展馆论坛',
         'page callback' => 'farmshow_forum_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
