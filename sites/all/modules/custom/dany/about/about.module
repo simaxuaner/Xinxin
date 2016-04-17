@@ -14,7 +14,7 @@ function about_menu() {
         'title' => '产业园基地',
 //        'page callback' => 'about_introduction_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
+        'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
         'weight'=>1,
     );

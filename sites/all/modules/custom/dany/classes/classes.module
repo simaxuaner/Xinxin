@@ -14,7 +14,7 @@ function classes_menu(){
         'title' => t('Classes'),
         'page callback' => 'classes_class_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
+        'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
     );
     $items['classes/class'] = array(

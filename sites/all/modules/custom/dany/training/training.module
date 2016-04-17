@@ -14,7 +14,7 @@ function training_menu(){
         'title' => t('Training'),
         'page callback' => 'training_course_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
+        'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
     );
     $items['training/courses'] = array(
