@@ -56,4 +56,17 @@ function training_theme() {
 
 function template_preprocess_courses_page(&$variables) {
     $variables['imageLinkPathHead']=drupal_get_path('module','training');
+    //测试使用的数据，应该从数据库获取
+    foreach(range(0,10) as $value)
+    {
+        $productList[$value]=array(
+        'imgurl'      => 'images/farms/product-list.jpg',
+        'productName' => 'productName1'.$value,
+        'farmName'    => 'farmName1'.$value,
+        'customers'   => 1001+$value,
+        'comments'    => 'comments1.$value'
+    );
+    }
+    $variables['productList']=$productList;
+    
 }

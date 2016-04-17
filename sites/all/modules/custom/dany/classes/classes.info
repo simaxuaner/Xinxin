@@ -1,0 +1,5 @@
+name = Classes
+description = 新农人培训主菜单，替代原有的Training,0416
+package = Dany
+version = VERSION
+core = 7.x
