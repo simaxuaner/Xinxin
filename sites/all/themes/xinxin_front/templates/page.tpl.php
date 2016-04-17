@@ -10,11 +10,6 @@
     </header>
 
     <main id="mainSection">
-        <?php if ($page['sidebar_left']): ?>
-            <nav class="sideNav" id="sideNav">
-                <?php print render($page['sidebar_left']); ?>
-            </nav>
-        <?php endif; ?>
         <div id="container" class="clearfix container">
             <?php print render($page['content']); ?>
         </div>

@@ -2,24 +2,18 @@
         imageLinkPathHead   :图片连接位置
     -->
 	<main>
-        <!-- 子菜单导航! -->
-		<nav id="sideNav" class="w20">
-			<ul>
-
-				<li class="activeNavItem"> <a href="classes">精品推荐</a> </li>
-				<li> <a href="teachers">课程</a> </li>
-			</ul>
-		</nav>
+        <!-- 子菜单导航! 0417丢弃-->
+		
         
         <!-- 标题不份额-->
-		<section class="w80">
+		<section class="w100">
 			<div class="bar">
 				<h1>精品推荐</h1>
 			</div>
 			<div id="slider" class="w100"> <img id="sliderImg" src="<?php print $imageLinkPathHead?>/images/slider/2.jpg" alt="slider" /> </div>
 		</section>
         
-		<section class="w80">
+		<section class="w100">
 			<div class="bar">
 			  <h1>课程</h1> <select>
 			  <option value="volvo">种植培养</option>
@@ -28,7 +22,7 @@
 			  <option value="audi">金融</option>
 			  </select> 
                 <div class="search floatRight">
-                    <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search.jpg" alt="search"></a>
+                    <a href="#"><img src="<?php print $imageLinkPathHead?>/images/farms/search_bar.png" alt="search"></a>
                     <input type="text" name="search">
                 </div> 
             </div>
@@ -55,7 +49,7 @@
             ?>
 		</section>
         
-		<section class="w80">
+		<section class="w100">
             <div class="bar">
 				<h2>Recommended</h2>
 			</div>
@@ -80,7 +74,7 @@
             }
             ?>	
 		</section>		
-		<section class="w40">
+		<section class="w50">
             <div class="bar">
 				<h2>Favorites</h2>
 			</div>
@@ -105,7 +99,7 @@
             }
             ?>
 		</section>		
-		<section class="w40">
+		<section class="w50">
 			<div class="bar">
 				<h2>Recently visited</h2>
 			</div>
