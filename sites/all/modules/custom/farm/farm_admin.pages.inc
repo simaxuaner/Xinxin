@@ -6,6 +6,50 @@
  */
 
 /**
+ * farm_operations(). 更新选项
+ */
+function farm_operations() {
+    $operations = array(
+        'publish' => array(
+            'label' => t('Publish selected content'),
+            'callback' => 'farm_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED)),
+        ),
+        'unpublish' => array(
+            'label' => t('Unpublish selected content'),
+            'callback' => 'farm_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_NOT_PUBLISHED)),
+        ),
+        'promote' => array(
+            'label' => t('Promote selected content to front page'),
+            'callback' => 'farm_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'promote' => NODE_PROMOTED)),
+        ),
+        'demote' => array(
+            'label' => t('Demote selected content from front page'),
+            'callback' => 'farm_mass_update',
+            'callback arguments' => array('updates' => array('promote' => NODE_NOT_PROMOTED)),
+        ),
+        'sticky' => array(
+            'label' => t('Make selected content sticky'),
+            'callback' => 'farm_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'sticky' => NODE_STICKY)),
+        ),
+        'unsticky' => array(
+            'label' => t('Make selected content not sticky'),
+            'callback' => 'farm_mass_update',
+            'callback arguments' => array('updates' => array('sticky' => NODE_NOT_STICKY)),
+        ),
+        'delete' => array(
+            'label' => t('Delete selected content'),
+            'callback' => NULL,
+        ),
+    );
+    return $operations;
+}
+
+
+/**
  * Make mass update of nodes, changing all nodes in the $nodes array
  * to update them with the field values in $updates.
  *
@@ -19,15 +63,15 @@
  *   Array of key/value pairs with node field names and the value to update that
  *   field to.
  */
-function node_mass_update($nodes, $updates) {
+function farm_mass_update($nodes, $updates) {
     // We use batch processing to prevent timeout when updating a large number
     // of nodes.
     if (count($nodes) > 10) {
         $batch = array(
             'operations' => array(
-                array('_node_mass_update_batch_process', array($nodes, $updates))
+                array('_farm_mass_update_batch_process', array($nodes, $updates))
             ),
-            'finished' => '_node_mass_update_batch_finished',
+            'finished' => '_farm_mass_update_batch_finished',
             'title' => t('Processing'),
             // We use a single multi-pass operation, so the default
             // 'Remaining x of y operations' message will be confusing here.
@@ -41,7 +85,7 @@ function node_mass_update($nodes, $updates) {
     }
     else {
         foreach ($nodes as $nid) {
-            _node_mass_update_helper($nid, $updates);
+            _farm_mass_update_helper($nid, $updates);
         }
         drupal_set_message(t('The update has been performed.'));
     }
@@ -58,9 +102,9 @@ function node_mass_update($nodes, $updates) {
  * @return object
  *   An updated node object.
  *
- * @see node_mass_update()
+ * @see farm_mass_update()
  */
-function _node_mass_update_helper($nid, $updates) {
+function _farm_mass_update_helper($nid, $updates) {
     $node = node_load($nid, NULL, TRUE);
     // For efficiency manually save the original node before applying any changes.
     $node->original = clone $node;
@@ -74,7 +118,7 @@ function _node_mass_update_helper($nid, $updates) {
 /**
  * Implements callback_batch_operation().
  *
- * Executes a batch operation for node_mass_update().
+ * Executes a batch operation for farm_mass_update().
  *
  * @param array $nodes
  *   An array of node IDs.
@@ -83,7 +127,7 @@ function _node_mass_update_helper($nid, $updates) {
  * @param array $context
  *   An array of contextual key/values.
  */
-function _node_mass_update_batch_process($nodes, $updates, &$context) {
+function _farm_mass_update_batch_process($nodes, $updates, &$context) {
     if (!isset($context['sandbox']['progress'])) {
         $context['sandbox']['progress'] = 0;
         $context['sandbox']['max'] = count($nodes);
@@ -95,7 +139,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
     for ($i = 1; $i <= $count; $i++) {
         // For each nid, load the node, reset the values, and save it.
         $nid = array_shift($context['sandbox']['nodes']);
-        $node = _node_mass_update_helper($nid, $updates);
+        $node = _farm_mass_update_helper($nid, $updates);
 
         // Store result for post-processing in the finished callback.
         $context['results'][] = l($node->title, 'node/' . $node->nid);
@@ -114,7 +158,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
 /**
  * Implements callback_batch_finished().
  *
- * Reports the status of batch operation for node_mass_update().
+ * Reports the status of batch operation for farm_mass_update().
  *
  * @param bool $success
  *   A boolean indicating whether the batch mass update operation successfully
@@ -124,7 +168,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
  * @param array $operations
  *   An array of function calls (not used in this function).
  */
-function _node_mass_update_batch_finished($success, $results, $operations) {
+function _farm_mass_update_batch_finished($success, $results, $operations) {
     if ($success) {
         drupal_set_message(t('The update has been performed.'));
     }
@@ -299,7 +343,7 @@ function farm_admin_nodes() {
     );
 
     $options = array();
-    foreach (module_invoke_all('node_operations') as $operation => $array) {
+    foreach (farm_operations() as $operation => $array) {
         $options[$operation] = $array['label'];
     }
     $form['options']['operation'] = array(
@@ -325,7 +369,8 @@ function farm_admin_nodes() {
         'title' => array('data' => t('Title'), 'field' => 'n.title'),
         'author' => t('Author'),
         'status' => array('data' => t('Status'), 'field' => 'n.status'),
-        'changed' => array('data' => t('Updated'), 'field' => 'n.changed', 'sort' => 'desc')
+        'changed' => array('data' => t('Updated'), 'field' => 'n.changed', 'sort' => 'desc'),
+         'product' => t('产品'),
     );
 
     $header['operations'] = array('data' => t('Operations'));
@@ -382,6 +427,13 @@ function farm_admin_nodes() {
             'author' => theme('username', array('account' => $node)),
             'status' => $node->status ? t('published') : t('not published'),
             'changed' => format_date($node->changed, 'short'),
+            'product' => array(
+                'data'=>array(
+                    '#type' => 'link',
+                    '#title' => t('管理'),
+                    '#href' => 'admin/farm/'.$node->nid,
+                ),
+            ),
         );
 
         // Build a list of all the accessible operations for the current node.
@@ -553,7 +605,7 @@ function farm_build_filter_query(SelectQueryInterface $query) {
  * @see node_multiple_delete_confirm_submit()
  */
 function farm_admin_nodes_submit($form, &$form_state) {
-    $operations = module_invoke_all('node_operations');
+    $operations = farm_operations();
     $operation = $operations[$form_state['values']['operation']];
     // Filter out unchecked nodes
     $nodes = array_filter($form_state['values']['nodes']);

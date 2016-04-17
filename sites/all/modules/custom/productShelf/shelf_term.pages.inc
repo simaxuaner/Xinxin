@@ -47,7 +47,7 @@ function productShelf_term_page($term)
     $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
     $nodes = node_load_multiple($nids);
     $count = count($nodes);
-    if(count($nodes)==0){
+    if($count==0){
         $build = "此货架中还没有添加产品.";
         return $build;
     }

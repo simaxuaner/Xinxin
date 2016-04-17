@@ -1,7 +1,7 @@
 <div id="wrapper">
     <header>
         <div class="logo">
-            <a href="?q=frontpage"><img alt="logo" src="sites/all/themes/xinxin_front/images/icons/logo colored.png"></a>
+            <a href="?q=homepage"><img alt="logo" src="sites/all/themes/xinxin_front/images/icons/logo colored.png"></a>
         </div>
         <nav class="mainmenu">
             <?php if ($primary_nav): print $primary_nav; endif; ?>

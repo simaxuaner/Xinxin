@@ -35,7 +35,7 @@ function farm_menu()
         'page callback' => 'drupal_get_form',
         'page arguments' => array('farm_admin_content'),
         'access arguments' => array('access content overview'),
-        'file' => 'farm.pages.inc',
+        'file' => 'farm_admin.pages.inc',
     );
 
     $items['admin/farm/add'] = array(
@@ -45,7 +45,26 @@ function farm_menu()
         'access callback' => 'node_access',
         'access arguments' => array('create', 'farm'),
         'type' => MENU_LOCAL_ACTION,
-        'file' => 'farm.pages.inc',
+        'file' => 'farm_admin.pages.inc',
+    );
+
+    $items['admin/farm/%node'] = array(
+        'title' => t('farm product'),
+        'page callback' => 'farm_product_page',
+        'page arguments' => array(2),
+        'access arguments' => array('access content'),
+        'file' => 'farm_product_admin.pages.inc',
+    );
+
+    $items['admin/farm/%/add'] = array(
+        'title' => '添加产品',
+        'title callback' => 'check_plain',
+        'page callback' => 'farm_product_add',
+        'page arguments' => array(2),
+        'access callback' => 'node_access',
+        'access arguments' => array('create', 'product'),
+        'type' => MENU_LOCAL_ACTION,
+        'file' => 'farm_product_admin.pages.inc',
     );
 
     return $items;

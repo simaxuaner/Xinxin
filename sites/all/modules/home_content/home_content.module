@@ -5,16 +5,41 @@
  * @author Wang Xiaoli (creator)
  */
 
+function home_content_enable() {
+    variable_set('site_frontpage', 'homepage');
+}
+
+function home_content_menu() {
+    $items['homepage'] = array(
+        'title' => '首页',
+        'page callback' => 'homepage_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_SUGGESTED_ITEM,
+        'weight'=>1,
+    );
+    return $items;
+}
+
+function homepage_page_callback() {
+    return '';
+}
+
 /**
  * Implements hook_block_info().
  */
 function home_content_block_info()
 {
-    $blocks['home content'] = array(
+    $blocks['home_content'] = array(
         'info' => t('home content'),
         'cache' => DRUPAL_NO_CACHE,
     );
     $blocks['home_content']['properties']['administrative'] = TRUE;
+
+    $blocks['home_highlighted'] = array(
+        'info' => t('home highlighted'),
+        'cache' => DRUPAL_NO_CACHE,
+    );
+    $blocks['home_highlighted']['properties']['administrative'] = TRUE;
 
     return $blocks;
 }
@@ -25,11 +50,44 @@ function home_content_block_info()
 function home_content_block_view($delta = '')
 {
     $module_path = drupal_get_path('module', 'home_content');
-    $block = array();
-    $html = '<div id="slider">
-		<img id="sliderImg" src="'.$module_path.'/images/2.jpg" alt="slider"/>
-	</div>';
-//    $block['subject'] = t('home content');
-    $block['content'] = $html;
-    return $block;
+    if ($delta == 'home_content') {
+        $block = array();
+        $html = '<div id="slider">
+            <img id="sliderImg" src="'.$module_path.'/images/2.jpg" alt="slider"/>
+        </div>';
+    //    $block['subject'] = t('home content');
+        $block['content'] = $html;
+        return $block;
+    }
+    else if ($delta == 'home_highlighted') {
+        $block = array();
+        $html ='<nav class="homenav">
+		<a href="news.php">
+			<div class="bigbutton">
+				<img src="' . $module_path . '/images/news.png" alt="news"/>
+				<h2>活动报道</h2>
+			</div>
+		</a>
+		<a href="farms.php">
+			<div class="bigbutton">
+				<img src="' . $module_path . '/images/farms.png" alt="farms"/>
+				<h2>农场信息</h2>
+			</div>
+		</a>
+		<a href="products.php">
+			<div class="bigbutton">
+				<img src="' . $module_path . '/images/products.png" alt="products"/>
+				<h2>农产品信息</h2>
+			</div>
+		</a>
+		<a href="classes.php">
+			<div class="bigbutton">
+				<img src="' . $module_path . '/images/training.png" alt="training"/>
+				<h2>培训方案</h2>
+			</div>
+		</a>
+	</nav>';
+        $block['content'] = $html;
+        return $block;
+    }
 }

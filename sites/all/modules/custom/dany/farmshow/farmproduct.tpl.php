@@ -5,10 +5,10 @@
 * Time: 10:43
 */
 <main>
-    <nav id="sideNav" class="w20">
+    <nav id="sideNav" class="sideNav">
         <ul>
-            <li><a href="farms.php">农庄</a></li>
-            <li class="activeNavItem"><a href="products.php">农产品</a></li>
+            <li class="activeNavItem0"><a href="farms.php">农庄</a></li>
+            <li class="activeNavItem1"><a href="products.php">农产品</a></li>
         </ul>
     </nav>
     <section class="w80">

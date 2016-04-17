@@ -6,38 +6,39 @@
  */
 
 /**
- * Implements hook_node_operations().
+ * product_operations().
+ * 更新操作
  */
-function node_node_operations() {
+function product_operations() {
     $operations = array(
         'publish' => array(
             'label' => t('Publish selected content'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED)),
         ),
         'unpublish' => array(
             'label' => t('Unpublish selected content'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_NOT_PUBLISHED)),
         ),
         'promote' => array(
             'label' => t('Promote selected content to front page'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'promote' => NODE_PROMOTED)),
         ),
         'demote' => array(
             'label' => t('Demote selected content from front page'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('promote' => NODE_NOT_PROMOTED)),
         ),
         'sticky' => array(
             'label' => t('Make selected content sticky'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'sticky' => NODE_STICKY)),
         ),
         'unsticky' => array(
             'label' => t('Make selected content not sticky'),
-            'callback' => 'node_mass_update',
+            'callback' => 'product_mass_update',
             'callback arguments' => array('updates' => array('sticky' => NODE_NOT_STICKY)),
         ),
         'delete' => array(
@@ -256,15 +257,15 @@ function product_filter_form_submit($form, &$form_state) {
  *   Array of key/value pairs with node field names and the value to update that
  *   field to.
  */
-function node_mass_update($nodes, $updates) {
+function product_mass_update($nodes, $updates) {
     // We use batch processing to prevent timeout when updating a large number
     // of nodes.
     if (count($nodes) > 10) {
         $batch = array(
             'operations' => array(
-                array('_node_mass_update_batch_process', array($nodes, $updates))
+                array('_product_mass_update_batch_process', array($nodes, $updates))
             ),
-            'finished' => '_node_mass_update_batch_finished',
+            'finished' => '_product_mass_update_batch_finished',
             'title' => t('Processing'),
             // We use a single multi-pass operation, so the default
             // 'Remaining x of y operations' message will be confusing here.
@@ -278,7 +279,7 @@ function node_mass_update($nodes, $updates) {
     }
     else {
         foreach ($nodes as $nid) {
-            _node_mass_update_helper($nid, $updates);
+            _product_mass_update_helper($nid, $updates);
         }
         drupal_set_message(t('The update has been performed.'));
     }
@@ -295,9 +296,9 @@ function node_mass_update($nodes, $updates) {
  * @return object
  *   An updated node object.
  *
- * @see node_mass_update()
+ * @see product_mass_update()
  */
-function _node_mass_update_helper($nid, $updates) {
+function _product_mass_update_helper($nid, $updates) {
     $node = node_load($nid, NULL, TRUE);
     // For efficiency manually save the original node before applying any changes.
     $node->original = clone $node;
@@ -311,7 +312,7 @@ function _node_mass_update_helper($nid, $updates) {
 /**
  * Implements callback_batch_operation().
  *
- * Executes a batch operation for node_mass_update().
+ * Executes a batch operation for product_mass_update().
  *
  * @param array $nodes
  *   An array of node IDs.
@@ -320,7 +321,7 @@ function _node_mass_update_helper($nid, $updates) {
  * @param array $context
  *   An array of contextual key/values.
  */
-function _node_mass_update_batch_process($nodes, $updates, &$context) {
+function _product_mass_update_batch_process($nodes, $updates, &$context) {
     if (!isset($context['sandbox']['progress'])) {
         $context['sandbox']['progress'] = 0;
         $context['sandbox']['max'] = count($nodes);
@@ -332,7 +333,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
     for ($i = 1; $i <= $count; $i++) {
         // For each nid, load the node, reset the values, and save it.
         $nid = array_shift($context['sandbox']['nodes']);
-        $node = _node_mass_update_helper($nid, $updates);
+        $node = _product_mass_update_helper($nid, $updates);
 
         // Store result for post-processing in the finished callback.
         $context['results'][] = l($node->title, 'node/' . $node->nid);
@@ -351,7 +352,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
 /**
  * Implements callback_batch_finished().
  *
- * Reports the status of batch operation for node_mass_update().
+ * Reports the status of batch operation for product_mass_update().
  *
  * @param bool $success
  *   A boolean indicating whether the batch mass update operation successfully
@@ -361,7 +362,7 @@ function _node_mass_update_batch_process($nodes, $updates, &$context) {
  * @param array $operations
  *   An array of function calls (not used in this function).
  */
-function _node_mass_update_batch_finished($success, $results, $operations) {
+function _product_mass_update_batch_finished($success, $results, $operations) {
     if ($success) {
         drupal_set_message(t('The update has been performed.'));
     }
@@ -422,9 +423,11 @@ function product_admin_nodes() {
     );
 
     $options = array();
-    foreach (module_invoke_all('node_operations') as $operation => $array) {
+    $operations = product_operations();
+    foreach($operations as $operation => $array){
         $options[$operation] = $array['label'];
     }
+
     $form['options']['operation'] = array(
         '#type' => 'select',
         '#title' => t('Operation'),
@@ -448,15 +451,12 @@ function product_admin_nodes() {
         'title' => array('data' => t('Title'), 'field' => 'n.title'),
         'type' => array('data' => t('Type'), 'field' => 'n.type'),
         'shelf' => array('data' => t('货架'), 'field' => 'n.shelf'),//增添了货架列
+        'farm' => array('data' => t('农场'), 'field' => 'n.farm'),//增添了货架列
         'author' => t('Author'),
         'status' => array('data' => t('Status'), 'field' => 'n.status'),
         'changed' => array('data' => t('Updated'), 'field' => 'n.changed', 'sort' => 'desc')
     );
 
-    //删除语言列
-   /* if ($multilanguage) {
-        $header['language'] = array('data' => t('Language'), 'field' => 'n.language');
-    }*/
     $header['operations'] = array('data' => t('Operations'));
 
     $query = db_select('node', 'n')->extend('PagerDefault')->extend('TableSort');
@@ -500,6 +500,17 @@ function product_admin_nodes() {
         $tid = $myfield['tid'];
         $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
 
+        //查询产品的农场
+        $myfield_array = field_get_items('node', $node,'field_product_farm');
+        $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
+        if($myfield)
+        {
+            $fid = $myfield['value'];
+            $product_farm = node_load($fid);
+        }else{
+            $product_farm = NULL;
+        }
+
         //查询产品的货架
         $myfield_array = field_get_items('node', $node,'field_product_shelf');
         $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
@@ -538,19 +549,21 @@ function product_admin_nodes() {
                 'data' => array(
                     '#type' => 'link',
                     '#title' => $product_shelf->name,
-                    '#href' => 'taxonomy/term/'.$product_shelf->tid,
+                    '#href' => 'admin/productShelf/'.$product_shelf->tid,
                 ),
             );
         }
-        //不需要语言列的数据
-        /*if ($multilanguage) {
-            if ($langcode == LANGUAGE_NONE || isset($languages[$langcode])) {
-                $options[$node->nid]['language'] = $langcode == LANGUAGE_NONE ? t('Language neutral') : t($languages[$langcode]->name);
-            }
-            else {
-                $options[$node->nid]['language'] = t('Undefined language (@langcode)', array('@langcode' => $langcode));
-            }
-        }*/
+        if(!$product_farm){
+            $options[$node->nid]['farm'] = '不在农场' ;
+        }else{
+            $options[$node->nid]['farm'] = array(
+                'data' => array(
+                    '#type' => 'link',
+                    '#title' => $product_farm->title,
+                    '#href' => 'node/'.$product_farm->nid,
+                ),
+            );
+        }
         // Build a list of all the accessible operations for the current node.
         $operations = array();
         if (node_access('update', $node)) {
@@ -662,7 +675,7 @@ function product_admin_nodes_validate($form, &$form_state) {
  * @see product_multiple_delete_confirm_submit()
  */
 function product_admin_nodes_submit($form, &$form_state) {
-    $operations = module_invoke_all('node_operations');
+    $operations = product_operations();
     $operation = $operations[$form_state['values']['operation']];
     // Filter out unchecked nodes
     $nodes = array_filter($form_state['values']['nodes']);
