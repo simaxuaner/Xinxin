@@ -12,14 +12,15 @@
 function about_menu() {
     $items['about'] = array(
         'title' => '产业园基地',
-//        'page callback' => 'about_introduction_page_callback',
+        'page callback' => 'about_introduction_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
+        'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
         'weight'=>1,
     );
     $items['about/introduction'] = array(
         'title' =>'企业介绍',
+        'access callback' => TRUE,
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
     $items['about/parkstyle'] = array(
@@ -32,39 +33,26 @@ function about_menu() {
     return $items;
 }
 
-//function about_introduction_page_callback() {
-//    $module_path = drupal_get_path('module', 'about');
-////    drupal_add_css($module_path . '/css/about.css');
-////   drupal_add_js();
-//    return theme("courses_page", array('imglink' => 'http://img.png'));
-//}
-//
-//function about_parkstyle_page_callback() {
-//    return "Hello world1";
-//}
-//
-///**
-// * Implements hook_theme()
-// */
-//function about_theme() {
-//    return array(
-//        'courses_page' => array(
-//            'variables' => array('imglink' => NULL),
-//            'template' => 'courses',
-//        ),
-//    );
-//}
-//
-///**
-// * Processes variables for member-page.tpl.php.
-// *
-// * @param $variables
-// *   An associative array containing the following key:
-// *   - link
-// *   - content
-// *
-// * @see courses.tpl.php
-// */
-//function template_preprocess_courses_page(&$variables) {
-//    $variables['imglink'] = 'http://img.png';
-//}
+function about_introduction_page_callback() {
+    global $user;
+    $module_path = drupal_get_path('module', 'about');
+//    drupal_add_css($module_path . '/css/about.css');
+//   drupal_add_js();
+    return theme("aboutpage_page");
+}
+
+function about_parkstyle_page_callback() {
+    global $user;
+    return "Hello world1";
+}
+
+/**
+ * Implements hook_theme()
+ */
+function about_theme() {
+    return array(
+        'aboutpage_page' => array(
+            'template' => 'aboutpage',
+        ),
+    );
+}

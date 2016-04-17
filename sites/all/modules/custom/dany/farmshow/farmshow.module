@@ -12,17 +12,18 @@
 function farmshow_menu() {
     $items['farmshow'] = array(
         'title' =>'农业展馆',
-        'page pagecallback' => 'farmshow_leisurefarm_page_callback',
+        'page callback' => 'farmshow_leisurefarm_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
+        'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
         'weight'=>2,
     );
-    $items['farmshow/leisurefarm'] = array(//创建子菜单
+    $items['farmshowsdf/leisurefarm'] = array(//创建子菜单
         'title' =>'休闲农庄',
+        'access callback' => TRUE,
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
-    $items['farmshow/product'] = array(
+    $items['farmshowsdf/product'] = array(
         'title' =>'农业展品',
         'page callback' => 'farmshow_product_page_callback',
         'access callback' => TRUE,
@@ -40,6 +41,7 @@ function farmshow_menu() {
 }
 
 function farmshow_leisurefarm_page_callback() {
+    global $user;
     $module_path = drupal_get_path('module', 'farmshow');
     drupal_add_css($module_path . '/css/farmshow.css');
     // drupal_add_js();
