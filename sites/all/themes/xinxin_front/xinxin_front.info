@@ -17,7 +17,6 @@ scripts[] = scripts_GUUS-LAPTOP_3.js
 regions[header] = Header
 regions[highlighted] = Highlighted
 regions[content] = Content
-regions[siderbar_left] = Siderbar_Left
 regions[footer] = Footer
 
 version = "7.x-1.0"

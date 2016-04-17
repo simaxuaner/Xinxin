@@ -10,8 +10,6 @@
  */
 function home_highlighted_block_info()
 {
-    global $user;
-
     $blocks['home highlighted'] = array(
         'info' => t('home highlighted'),
         'cache' => DRUPAL_NO_CACHE,
