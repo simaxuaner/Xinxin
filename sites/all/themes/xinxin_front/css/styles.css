@@ -63,33 +63,45 @@
 	background-color: #E6E6E6;
 	float: left;
 }
-.mainmenu
-{
+.mainmenu {
 	font-weight: bold;
-	line-height: 64px;
+	height: 64px;
 }
-.mainmenu a
-{
-	color: #4d4d4d;
-	text-decoration: none;
+.mainmenu ul {
+	height: inherit;
 }
-.mainmenu ul
-{
-	min-width: 480px;
-}
-.mainmenu ul li
-{
+.mainmenu ul li {
 	float: left;
-	max-width: 180px;
-	width: 25%;
+	width: 180px;
+	margin-top: 20px;
+}
+.mainmenu ul li a{
+	height: inherit;
+	color: #4d4d4d;
+}
+.mainmenu ul li ul{
+	width: 180px;
+	background-color: #d2d2d2;
 }
 .mainmenu ul li:hover
 {
 	background-color: #dddddd;
 }
+
 .mainmenu ul li:hover a
 {
 	color: #0fa5d9;
+}
+.mainmenu ul li:hover ul{
+	display:block;
+	z-index:99;
+	width: 180px;
+}
+
+.mainmenu ul li:hover ul li{
+	width:100%;
+	display:block;
+	float: none;
 }
 .newsItem{
 	width: 100%;
@@ -270,9 +282,25 @@ nav ul
 	padding: 0;
 	text-align: center;
 }
-nav:hover
-{
-	cursor: pointer;
+nav ul li {
+	padding: 0;
+}
+nav ul li a {
+	display: block;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 16px 0;
+}
+nav ul li a:hover {
+	background-color: #dcdcdc;
+}
+nav ul li ul{
+	display:none;
+	position:absolute;
+	height: auto !important;
+}
+nav ul li ul li{
+	width: 100%;
 }
 @media screen and (max-width: 720px)
 {

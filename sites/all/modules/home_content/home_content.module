@@ -10,8 +10,6 @@
  */
 function home_content_block_info()
 {
-    global $user;
-
     $blocks['home content'] = array(
         'info' => t('home content'),
         'cache' => DRUPAL_NO_CACHE,

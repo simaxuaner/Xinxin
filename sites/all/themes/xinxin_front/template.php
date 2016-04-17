@@ -9,7 +9,8 @@
 /**
  * Override or insert variables into the maintenance page template.
  */
-function xinxin_front_preprocess_maintenance_page(&$vars) {
+function xinxin_front_preprocess_maintenance_page(&$vars)
+{
     // While markup for normal pages is split into page.tpl.php and html.tpl.php,
     // the markup for the maintenance page is all in the single
     // maintenance-page.tpl.php template. So, to have what's done in
@@ -20,9 +21,10 @@ function xinxin_front_preprocess_maintenance_page(&$vars) {
 
 
 /**
-* Override or insert variables into the html template.
-*/
-function xinxin_front_preprocess_html(&$vars) {
+ * Override or insert variables into the html template.
+ */
+function xinxin_front_preprocess_html(&$vars)
+{
 
     // Get adminimal folder path.
     $xinxin_front = drupal_get_path('theme', 'xinxin_front');
@@ -31,36 +33,40 @@ function xinxin_front_preprocess_html(&$vars) {
     drupal_add_css($xinxin_front . '/css/styles.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/bootstrap.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/member.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_css($xinxin_front . '/css/xinxin.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_1.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_2.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_3.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_js($xinxin_front . '/js/scripts.js', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_js($xinxin_front . '/js/scripts.js');
 
 }
 
 /**
  * Override or insert variables into the page template.
  */
-function xinxin_front_preprocess_page(&$vars) {
+function xinxin_front_preprocess_page(&$vars)
+{
     if (empty($vars['tabs']['#primary']) && empty($vars['tabs']['#secondary']))
         $vars['tabs'] = FALSE;
 
     if (isset($vars['main_menu'])) {
         $menu_links = '<ul>';
-        foreach ( $vars['main_menu'] as $menu_item ) {
+        foreach ($vars['main_menu'] as $menu_item) {
 //            $class = array();
 //            $class[] = 'xinxin-nav';
 //            global $language_url;
 //            if (isset($menu_item['href']) && ($menu_item['href'] == $_GET['q'] || ($menu_item['href'] == '<front>' && drupal_is_front_page())) && (empty($menu_item['language']) || $menu_item['language']->language == $language_url->language)) {
 //                $class[] = 'xinxin-active'; /*. drupal_attributes(array('class' => $class)) .*/
 //            }
-            $menu_links .= '<li>' . l($menu_item['title'], $menu_item['href']) . '</li>';
+            $menu_links .= '<li><a href="' . url($menu_item['href']) . '">' . $menu_item['title'] .'</a>
+            <ul>
+				<li>
+					<a>企业介绍</a>
+				</li>
+				<li>
+					<a href="about.php">园区风貌</a>
+				</li>
+			</ul></li>';
         }
-        $vars['primary_nav'] = $menu_links.'</ul>';
-    }
-    else {
+        $vars['primary_nav'] = $menu_links . '</ul>';
+    } else {
         $vars['primary_nav'] = FALSE;
     }
     if (isset($vars['secondary_menu'])) {
@@ -70,13 +76,12 @@ function xinxin_front_preprocess_page(&$vars) {
                 'class' => array('dropdown-menu'),
             ),
         ));
-    }
-    else {
+    } else {
         $vars['secondary_nav'] = FALSE;
     }
 
     $vars['search_form'] = FALSE;
-    if ( isset($vars['page']['header']) && isset($vars['page']['header']['search_form']) ) {
+    if (isset($vars['page']['header']) && isset($vars['page']['header']['search_form'])) {
         if (isset($vars['page']['header']['search_form'])) {
             $vars['search_form'] = $vars['page']['header']['search_form'];
             $vars['search_form']['actions']['submit']['#value'] = '';
@@ -89,16 +94,14 @@ function xinxin_front_preprocess_page(&$vars) {
         $alt = t("@user's picture", array('@user' => format_username($user)));
         $style = variable_get('user_picture_style', 'thumbnail');
         $filepath = '';
-        if ($user->picture){
+        if ($user->picture) {
             $filepath = $user->picture->uri;
-        }
-        else{
+        } else {
             $filepath = variable_get('user_picture_default', 'sites/all/themes/xinxin_front/images/users/user0.jpg');
         }
-        if (module_exists('image') && file_valid_uri($filepath) ) {
+        if (module_exists('image') && file_valid_uri($filepath)) {
             $vars['user_avatar'] = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
-        }
-        else {
+        } else {
             $vars['user_avatar'] = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
         }
     }
@@ -107,7 +110,8 @@ function xinxin_front_preprocess_page(&$vars) {
 /**
  * Override or insert variables into the block template.
  */
-function xinxin_front_preprocess_block(&$vars) {
+function xinxin_front_preprocess_block(&$vars)
+{
     // In the header region visually hide block titles.
     if ($vars['block']->region == 'header') {
         $vars['title_attributes_array']['class'][] = 'element-invisible';
@@ -119,7 +123,8 @@ function xinxin_front_preprocess_block(&$vars) {
 /**
  * Override or insert variables into the page template.
  */
-function xinxin_front_process_page(&$vars) {
+function xinxin_front_process_page(&$vars)
+{
     // Hook into color.module
     if (module_exists('color')) {
         _color_page_alter($vars);

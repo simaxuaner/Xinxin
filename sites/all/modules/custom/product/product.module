@@ -150,21 +150,32 @@ function node_on_shelf_form_ajax_submit($form, $form_state){
 
     $node_uri = $form['#node'];
     $product_shelf_id = $form['shelf_term']['#value'];
-    $node_uri['field_product_shelf']['und'][0]['tid'] = $product_shelf_id;
-
-    //将更新的node保存到数据库
-    $node = node_submit((object)$node_uri);
-    node_save($node);
-    taxonomy_node_insert($node);
-
-    //查询上架操作是否保存到数据库
-    $update_node = node_load($node->nid);
-    $shelf = $update_node->field_product_shelf;
-    if(count($shelf)!=0){
-        return t('产品上架成功!');
+    $shelf = taxonomy_term_load($product_shelf_id);
+    $shelf_uri = (array)$shelf;
+    $count = $shelf_uri['field_shelf_product_count']['und'][0]['value'];
+    if($count==0){
+        form_set_error('message', t('此货架栏位已满！'));
     }
     else{
-        form_set_error('message', t('产品未上架成功'));
+        $count --;
+        $shelf_uri['field_shelf_product_count']['und'][0]['value'] = $count;
+        $node_uri['field_product_shelf']['und'][0]['tid'] = $product_shelf_id;
+        //将更新的node保存到数据库
+        $node = node_submit((object)$node_uri);
+        node_save((object)$node_uri);
+        taxonomy_term_save((object)$shelf_uri);
+        taxonomy_node_insert($node);
+
+        //查询上架操作是否保存到数据库
+        $update_node = node_load($node->nid);
+        $shelf = $update_node->field_product_shelf;
+        if(count($shelf)!=0){
+            return t('产品上架成功!');
+        }
+        else{
+            form_set_error('message', t('产品未上架成功'));
+        }
     }
+
     return $form;
 }

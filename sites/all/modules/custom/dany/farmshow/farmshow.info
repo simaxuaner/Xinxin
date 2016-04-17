@@ -1,5 +1,5 @@
-name = Farms
-description = "Create farms pages."
+name = Farms Show
+description = "Create a block for farms show."
 package = "Xinxin"
 core = 7.x
 
