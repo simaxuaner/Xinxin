@@ -52,7 +52,6 @@ function home_highlighted_block_view($delta = '')
 			</div>
 		</a>
 	</nav>';
-//    $block['subject'] = t('home highlighted');
     $block['content'] = $html;
     return $block;
 }

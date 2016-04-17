@@ -51,15 +51,11 @@ function farmshow_product_page_callback() {
 }
 
 function farmshow_forum_page_callback() {
-    $sidebar_left_html='<ul>
-            <li><a href="farms.php">农庄</a></li>
-            <li class="activeNavItem"><a href="products.php">农产品</a></li>
-        </ul>';
     $product=array();
     $recommend=array();
     $favorites=array();
     $recently_visited=array();
-    return theme('farmproduct_page',array('sidebar_left'=>$sidebar_left_html));
+    return theme('farmproduct_page',array());
 }
 
 /**
@@ -85,7 +81,6 @@ function farmshow_theme() {
  * @see farmproduct.tpl.php
  */
 function template_preprocess_farmproduct_page(&$variables) {
-    $variables['sidebar_left']=null;
     $variables['product']=null;
     $variables['recommend']=null;
     $variables['favorites']=null;
