@@ -1,9 +1,3 @@
-/**
-* Created by IntelliJ IDEA.
-* User: Sadako
-* Date: 2016/4/17
-* Time: 10:43
-*/
 <main>
     <nav id="sideNav" class="sideNav">
         <ul>
@@ -13,7 +7,7 @@
     </nav>
     <section class="w80">
         <?php if ($product): print render($product); endif; ?>
-        <!--<div class="bar">
+        <div class="bar">
             <h1>农产品</h1>
             <select>
                 <option value="volvo">种植培养</option>
@@ -73,13 +67,13 @@
             <p><span class="farmName">asdf</span><span class="floatRight">01</span><span class="floatRight">02</span>
             </p>
         </div>
-    </section>-->
+    </section>
     <section class="w80">
         <div class="bar">
             <h2>Recommended for you</h2>
         </div>
         <?php if ($recommend): print render($recommend); endif; ?>
-        <!--<div class="block"><span class="fav">喜爱</span> <img src="images/products/product0.jpg"/>
+        <div class="block"><span class="fav">喜爱</span> <img src="images/products/product0.jpg"/>
             <a href="products/product0.php"><h3>产品名称</h3></a>
 
             <p><span class="farmName">asdf</span><span class="floatRight">01</span><span class="floatRight">02</span>
@@ -102,14 +96,14 @@
 
             <p><span class="farmName">asdf</span><span class="floatRight">01</span><span class="floatRight">02</span>
             </p>
-        </div>-->
+        </div>
     </section>
     <section class="w40">
         <div class="bar">
             <h2>Favorites</h2>
         </div>
         <?php if ($favorites): print render($favorites); endif; ?>
-        <!--<div class="block"><span class="fav">喜爱</span> <img src="images/products/product0.jpg"/>
+        <div class="block"><span class="fav">喜爱</span> <img src="images/products/product0.jpg"/>
             <a href="products/product0.php"><h3>产品名称</h3></a>
 
             <p><span class="farmName">asdf</span><span class="floatRight">01</span><span class="floatRight">02</span>
@@ -132,14 +126,14 @@
 
             <p><span class="farmName">asdf</span><span class="floatRight">01</span><span class="floatRight">02</span>
             </p>
-        </div>-->
+        </div>
     </section>
     <section class="w40">
         <div class="bar">
             <h2>Recently Visited</h2>
         </div>
         <?php if ($recently_visited): print render($recently_visited); endif; ?>
-        <!--<div class="block"><span class="fav">喜爱</span> <img src="images/products/product0.jpg"/>
+        <div class="block"><span class="fav">喜爱</span> <img src="images/products/product0.jpg"/>
             <a href="products/product0.php"><h3>产品名称</h3></a>
 
             <p><span class="farmName">asdf</span><span class="floatRight">01</span><span class="floatRight">02</span>
@@ -162,6 +156,6 @@
 
             <p><span class="farmName">asdf</span><span class="floatRight">01</span><span class="floatRight">02</span>
             </p>
-        </div>-->
+        </div>
     </section>
 </main>

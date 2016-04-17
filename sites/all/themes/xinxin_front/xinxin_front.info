@@ -6,7 +6,6 @@ core = 7.x
 
 stylesheets[all][] = styles.css
 stylesheets[all][] = member.css
-stylesheets[all][] = bootstrap.css
 stylesheets[all][] = xinxin.css
 
 scripts[] = scripts.js
