@@ -103,9 +103,18 @@ function shelf_node_del_form_ajax_submit($form, $form_state){
         return $form;
 
     $node_uri = $form['#node'];
+    $shelfid = $node_uri['field_product_shelf'][und][0]['tid'];
+    $shelf = taxonomy_term_load($shelfid);
+    $count = $shelf->field_shelf_product_count[und][0]['value'];
+
     $node_uri['field_product_shelf'] = NULL;
+    $count++;
+    $shelf_uri = (array)$shelf;
+    $shelf_uri['field_shelf_product_count'][und][0]['value'] = $count;
+    //更新数据保存到数据库中
     $node = node_submit((object)$node_uri);
-    node_save($node);
+    node_save((object)$node_uri);
+    taxonomy_term_save((object)$shelf_uri);
 
     $update_node = node_load($node->vid);
     $shelf = $update_node->field_product_shelf;
