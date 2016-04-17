@@ -11,25 +11,26 @@
  */
 function farmshow_menu() {
     $items['farmshow'] = array(
-        'title' => t('Farms'),
+        'title' =>'农业展馆',
         'page pagecallback' => 'farmshow_leisurefarm_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'menu_name' => 'main-menu',
+        'weight'=>2,
     );
     $items['farmshow/leisurefarm'] = array(//创建子菜单
-        'title' => t('Leisure Farm'),
+        'title' =>'休闲农庄',
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
     $items['farmshow/product'] = array(
-        'title' => t('Product'),
+        'title' =>'农业展品',
         'page callback' => 'farmshow_product_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 5,
     );
     $items['farmshow/forum'] = array(
-        'title' => t('Agricultural Exhibition Hall Forum'),
+        'title' =>'农业展馆论坛',
         'page callback' => 'farmshow_forum_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
@@ -50,15 +51,11 @@ function farmshow_product_page_callback() {
 }
 
 function farmshow_forum_page_callback() {
-    $sidebar_left_html='<ul>
-            <li><a href="farms.php">农庄</a></li>
-            <li class="activeNavItem"><a href="products.php">农产品</a></li>
-        </ul>';
     $product=array();
     $recommend=array();
     $favorites=array();
     $recently_visited=array();
-    return theme('farmproduct_page',array('sidebar_left'=>$sidebar_left_html));
+    return theme('farmproduct_page',array());
 }
 
 /**
@@ -84,7 +81,6 @@ function farmshow_theme() {
  * @see farmproduct.tpl.php
  */
 function template_preprocess_farmproduct_page(&$variables) {
-    $variables['sidebar_left']=null;
     $variables['product']=null;
     $variables['recommend']=null;
     $variables['favorites']=null;

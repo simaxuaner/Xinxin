@@ -11,19 +11,20 @@
  */
 function about_menu() {
     $items['about'] = array(
-        'title' => t('About'),
+        'title' => '产业园基地',
 //        'page callback' => 'about_introduction_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'menu_name' => 'main-menu',
+        'weight'=>1,
     );
     $items['about/introduction'] = array(
-        'title' => t('Courses'),
+        'title' =>'企业介绍',
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
     $items['about/parkstyle'] = array(
-        'title' => t('Park Style'),
-//        'page callback' => 'about_parkstyle_page_callback',
+        'title' =>'园区风貌',
+        'page callback' => 'about_parkstyle_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 5,
