@@ -16,7 +16,7 @@
 			<div class="bar">
 				<h1>精品推荐</h1>
 			</div>
-			<div id="slider" class="w100"> <img id="sliderImg" src="images/slider/2.jpg" alt="slider" /> </div>
+			<div id="slider" class="w100"> <img id="sliderImg" src="<?php print $imageLinkPathHead?>/images/slider/2.jpg" alt="slider" /> </div>
 		</section>
         
 		<section class="w80">
@@ -28,7 +28,7 @@
 			  <option value="audi">金融</option>
 			  </select> 
                 <div class="search floatRight">
-                    <a href="#"><img src="images/icons/search.jpg" alt="search"></a>
+                    <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search.jpg" alt="search"></a>
                     <input type="text" name="search">
                 </div> 
             </div>
@@ -37,16 +37,7 @@
             <?php 
             foreach($classList as $key => $value)
             {
-            ?>    
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>"/>
-                    <p class="productName"><?php print $value['productName'] ?></p>
-                    <p>
-                        <span class="farmName"><?php print $value['farmName'] ?></span>
-                        <span class="customers"><?php print $value['customers'] ?></span>
-                        <span class="comments"><?php print $value['comments'] ?></span>
-                    </p>
-                </div>
-                
+            ?>           
                 <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">喜爱</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
@@ -72,16 +63,7 @@
             <?php 
             foreach($classList as $key => $value)
             {
-            ?>    
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>"/>
-                    <p class="productName"><?php print $value['productName'] ?></p>
-                    <p>
-                        <span class="farmName"><?php print $value['farmName'] ?></span>
-                        <span class="customers"><?php print $value['customers'] ?></span>
-                        <span class="comments"><?php print $value['comments'] ?></span>
-                    </p>
-                </div>
-                
+            ?> 
                 <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">喜爱</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
@@ -107,15 +89,6 @@
             foreach($classList as $key => $value)
             {
             ?>    
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>"/>
-                    <p class="productName"><?php print $value['productName'] ?></p>
-                    <p>
-                        <span class="farmName"><?php print $value['farmName'] ?></span>
-                        <span class="customers"><?php print $value['customers'] ?></span>
-                        <span class="comments"><?php print $value['comments'] ?></span>
-                    </p>
-                </div>
-                
                 <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">喜爱</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
@@ -140,16 +113,7 @@
             <?php 
             foreach($classList as $key => $value)
             {
-            ?>    
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>"/>
-                    <p class="productName"><?php print $value['productName'] ?></p>
-                    <p>
-                        <span class="farmName"><?php print $value['farmName'] ?></span>
-                        <span class="customers"><?php print $value['customers'] ?></span>
-                        <span class="comments"><?php print $value['comments'] ?></span>
-                    </p>
-                </div>
-                
+            ?>
                 <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">喜爱</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
