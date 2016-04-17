@@ -12,10 +12,43 @@
 function news_menu(){
     $items['news'] = array(
         'title' => t('News'),
-        'page callback' => '',
+        'page callback' => 'news_allnews_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'menu_name' => 'main-menu',
     );
+    $items['news/allnews']=array(
+        'title' => t('News'),
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+    $items['news/news66']=array(
+        'title' => t('Teachers'),
+        'page callback' => 'news_news66_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+        'weight' => 5,
+    );
+    $items['news/news1212']=array(
+        'title' => t('News 1212'),
+        'page callback' => 'news_news1212_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+        'weight' => 5,
+    );
     return $items;
+}
+
+function news_allnews_page_callback()
+{
+    return "Hello news";
+}
+
+function news_news66_page_callback()
+{
+    return  "Hello 66666666666";
+}
+
+function news_news1212_page_callback()
+{
+    return  "Hello 121212121212";
 }

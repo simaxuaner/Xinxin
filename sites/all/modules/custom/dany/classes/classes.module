@@ -1,0 +1,57 @@
+<?php
+/**
+ * Create by Visual Studio Code
+ * Author : Dany
+ * E-mail : ifeifei@stu.xmu.edu.cn
+ * Data = 2016-04-16 16:16
+ */
+ 
+ /**
+  * Implements hook_menu()
+  */
+function classes_menu(){
+    $items['classes'] = array(
+        'title' => t('Classes'),
+        'page callback' => 'classes_class_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+        'menu_name' => 'main-menu',
+    );
+    return $items;
+}
+
+function classes_class_page_callback() {
+    $module_path = drupal_get_path('module', 'classes');
+    return theme("classes_page", array());
+}
+
+/**
+ * Implements hook_theme()
+ */
+function classes_theme() {
+    return array(
+        'classes_page' => array(
+            'variables' => array(),
+            'template' => 'classes',
+        ),
+    );
+}
+
+function template_preprocess_classes_page(&$variables) {
+    $module_path = drupal_get_path('module','classes');
+    $variables['imageLinkPathHead']=$module_path;
+    //测试使用的数据，应该从数据库获取
+    foreach(range(0,4) as $value)
+    {
+        $productList[$value]=array(
+        'imgurl'      => 'images/farms/product-list.jpg',
+        'productName' => 'productName1'.$value,
+        'farmName'    => 'farmName1'.$value,
+        'customers'   => 1001+$value,
+        'comments'    => 'comments1.$value'
+        );
+    }
+    drupal_add_css($module_path.'/css/styles.css');
+    drupal_add_js($module_path.'/js/scripts.js');
+    $variables['classList']=$productList;
+}
