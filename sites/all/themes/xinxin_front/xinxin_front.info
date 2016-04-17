@@ -10,9 +10,6 @@ stylesheets[all][] = bootstrap.css
 stylesheets[all][] = xinxin.css
 
 scripts[] = scripts.js
-scripts[] = scripts_GUUS-LAPTOP_1.js
-scripts[] = scripts_GUUS-LAPTOP_2.js
-scripts[] = scripts_GUUS-LAPTOP_3.js
 
 regions[header] = Header
 regions[highlighted] = Highlighted

@@ -33,11 +33,7 @@ function xinxin_front_preprocess_html(&$vars)
     drupal_add_css($xinxin_front . '/css/styles.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/bootstrap.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/member.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_css($xinxin_front . '/css/xinxin.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_1.js');
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_2.js');
-    drupal_add_js($xinxin_front . '/js/scripts_GUUS-LAPTOP_3.js');
     drupal_add_js($xinxin_front . '/js/scripts.js');
 
 }
