@@ -1,9 +1,12 @@
+<!--
+	imageLinkPathHead   :图片连接位置
+-->
 <main>
 	<section class="w100">
 		<div class="bar">
 			<h1>创业园地</h1>
 		</div>
-		<img class="w40 floatRight marginLeft marginBottom" src="images/campus/campus0.jpg"/>
+		<img class="w40 floatRight marginLeft marginBottom" src="<?php print $imageLinkPathHead?>images/campus/campus0.jpg"/>
 		<p>厦门大学（Xiamen University），简称厦大（XMU），由著名爱国华侨领袖陈嘉庚先生于1921年创办，是中国近代教育史上第一所华侨创办的大学，也是国家“211工程”和“985工程”重点建设的高水平大学。
 		</p>
 		<br/>

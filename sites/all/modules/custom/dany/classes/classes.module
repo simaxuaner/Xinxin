@@ -68,17 +68,17 @@ function classes_teacher_page_callback(){
 
 function classes_campus_page_callback(){
     $module_path = drupal_get_path('module', 'classes');
-    return theme("teachers_page", array());
+    return theme("campus_page", array());
 }
 
 function classes_admission_page_callback(){
     $module_path = drupal_get_path('module', 'classes');
-    return theme("teachers_page", array());
+    return theme("admission_page", array());
 }
 
 function classes_files_page_callback(){
     $module_path = drupal_get_path('module', 'classes');
-    return theme("teachers_page", array());
+    return theme("files_page", array());
 }
 
 /**
@@ -123,8 +123,8 @@ function template_preprocess_classes_page(&$variables) {
         'comments'    => 'comments1.$value'
         );
     }
-    drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_js($module_path.'/js/scripts.js');
+    //drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    //drupal_add_js($module_path.'/js/scripts.js');
     $variables['classList']=$productList;
 }
 
@@ -143,7 +143,7 @@ function template_preprocess_teachers_page(&$variables) {
         );
     }
     //drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_js($module_path.'/js/scripts.js');
+    //drupal_add_js($module_path.'/js/scripts.js');
     $variables['teacherList']=$productList;
 }
 
