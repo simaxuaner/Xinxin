@@ -90,7 +90,7 @@ function template_preprocess_teachers_page(&$variables) {
         'comments'    => 'comments1.$value'
         );
     }
-    drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    //drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_js($module_path.'/js/scripts.js');
     $variables['teacherList']=$productList;
 }

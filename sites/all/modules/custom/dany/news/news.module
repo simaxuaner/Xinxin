@@ -18,25 +18,25 @@ function news_menu(){
         'menu_name' => 'main-menu',
     );
     $items['news/allnews']=array(
-        'title' => t('News'),
+        'title' => t('All News'),
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
     $items['news/news66']=array(
-        'title' => t('Teachers'),
+        'title' => t('News 6_6'),
         'page callback' => 'news_news66_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 5,
     );
     $items['news/news1212']=array(
-        'title' => t('News 1212'),
+        'title' => t('News 12_12'),
         'page callback' => 'news_news1212_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 5,
     );
     $items['news/newsxinhui']=array(
-        'title' => t('News 1212'),
+        'title' => t('News Of XinhuiDa'),
         'page callback' => 'news_newsxinhui_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
@@ -52,17 +52,17 @@ function news_allnews_page_callback()
 
 function news_news66_page_callback()
 {
-    return  "Hello 66666666666";
+    return theme("allNews_page", array());
 }
 
 function news_news1212_page_callback()
 {
-    return  "Hello 121212121212";
+    return theme("allNews_page", array());
 }
 
 function news_newsxinhui_page_callback()
 {
-    return  "Hello xinhuida";
+    return theme("allNews_page", array());
 }
 
 /**
@@ -84,7 +84,7 @@ function news_theme() {
         ),
         'newsXinhui_page' => array(
             'variables'=> array(),
-            'template' => 'xinhuiNews',
+            'template' => 'allNews',
         ),
     );
 }
@@ -116,7 +116,7 @@ function template_preprocess_allNews_page(&$variables) {
     }
     foreach(range(0,4) as $value)
     {
-        $noteList[$value]=array(
+        $magzineList[$value]=array(
         'imgurl'      => 'images/news/66.jpg',
         'date' => 'Jackie Chan'.$value,
         'title'    => 'farmName1'.$value,
@@ -125,7 +125,7 @@ function template_preprocess_allNews_page(&$variables) {
     }
     foreach(range(0,4) as $value)
     {
-        $magzineList[$value]=array(
+        $noteList[$value]=array(
         'imgurl'      => 'images/teachers/teacher0_thumb.jpg',
         'date' => '22 MAR',
         'title'    => '借鉴台湾精细农业经验 将建泉港休闲农业示范园',

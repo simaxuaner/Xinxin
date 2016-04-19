@@ -7,7 +7,7 @@
 <main id="mainSection">
 	<section class="w100">
 		<div class="bar">
-			<h1>All News</h1>
+			<h1><?php print $newsTitle?></h1>
 		</div>
         <!--动态获取课程列表 -->
         <?php 
@@ -15,12 +15,12 @@
         {
         ?>
             <div class="newsItem">
-                <span class="dateBlock"><?php print $noteList['date'] ?></span>
-                <img class="floatRight w40" src="<?php print $imageLinkPathHead.'/'.$noteList['imgurl']?>"/>
+                <span class="dateBlock"><?php print $value['date'] ?></span>
+                <img class="floatRight w40" src="<?php print $imageLinkPathHead.'/'.$value['imgurl']?>"/>
                 <div class="floatRight w100">
-                <h2><?php print $noteList['title'] ?></h2>
+                <h2><?php print $value['title'] ?></h2>
                 <p>
-                    <?php print $noteList['content'] ?>
+                    <?php print $value['content'] ?>
                 </p>
                 </div>
             </div>
@@ -39,7 +39,7 @@
         ?>
             <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                 <span class="fav">喜爱</span> 
-                <img src=<?php print $imageLinkPathHead?>"/images/products/product0.jpg" />
+                <img src="<?php print $imageLinkPathHead?>/images/products/product0.jpg" />
                 <a href="#" ><h3>Magazine</h3></a>
                 <p>
                     <span class="farmName">asdf</span>
