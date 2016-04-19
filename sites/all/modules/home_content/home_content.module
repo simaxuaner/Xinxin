@@ -5,22 +5,25 @@
  * @author Wang Xiaoli (creator)
  */
 
-function home_content_enable() {
-    variable_set('site_frontpage', 'homepage');
+function home_content_enable()
+{
+    variable_set('site_frontpage', 'homepage');//TODO 不起作用
 }
 
-function home_content_menu() {
+function home_content_menu()
+{
     $items['homepage'] = array(
         'title' => '首页',
         'page callback' => 'homepage_page_callback',
         'access callback' => TRUE,
         'type' => MENU_SUGGESTED_ITEM,
-        'weight'=>1,
+        'weight' => 1,
     );
     return $items;
 }
 
-function homepage_page_callback() {
+function homepage_page_callback()
+{
     return '';
 }
 
@@ -30,14 +33,24 @@ function homepage_page_callback() {
 function home_content_block_info()
 {
     $blocks['home_content'] = array(
-        'info' => t('home content'),
-        'cache' => DRUPAL_NO_CACHE,
+        'info' => t('Home Content'),
+        'cache' => DRUPAL_NO_CACHE,//TODO 不起作用
+        'status' => 1,
+        'weight' => 0,
+        'region' => 'Content',
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => true,
     );
     $blocks['home_content']['properties']['administrative'] = TRUE;
 
     $blocks['home_highlighted'] = array(
         'info' => t('home highlighted'),
         'cache' => DRUPAL_NO_CACHE,
+        'status' => 1,
+        'weight' => 0,
+        'region' => 'Highlighted',
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => true,
     );
     $blocks['home_highlighted']['properties']['administrative'] = TRUE;
 
@@ -52,16 +65,19 @@ function home_content_block_view($delta = '')
     $module_path = drupal_get_path('module', 'home_content');
     if ($delta == 'home_content') {
         $block = array();
-        $html = '<div id="slider">
-            <img id="sliderImg" src="'.$module_path.'/images/2.jpg" alt="slider"/>
+        $html = '<div id="slider" class="w100">
+            <img id="sliderImg0" src="'.$module_path.'/images/slider/0.jpg" alt="slider"/>
+            <img id="sliderImg1" class="hidden" src="'.$module_path.'/images/slider/1.jpg" alt="slider"/>
+            <img id="sliderImg2" class="hidden" src="'.$module_path.'/images/slider/2.jpg" alt="slider"/>
+            <img id="sliderImg3" class="hidden" src="'.$module_path.'/images/slider/3.jpg" alt="slider"/>
+            <img id="sliderImg4" class="hidden" src="'.$module_path.'/images/slider/4.jpg" alt="slider"/>
         </div>';
-    //    $block['subject'] = t('home content');
+        //    $block['subject'] = t('home content');
         $block['content'] = $html;
         return $block;
-    }
-    else if ($delta == 'home_highlighted') {
+    } else if ($delta == 'home_highlighted') {
         $block = array();
-        $html ='<nav class="homenav">
+        $html = '<nav class="homenav">
 		<a href="news.php">
 			<div class="bigbutton">
 				<img src="' . $module_path . '/images/news.png" alt="news"/>

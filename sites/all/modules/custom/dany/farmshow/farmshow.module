@@ -16,7 +16,7 @@ function farmshow_menu() {
         'access callback' => TRUE,
         'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
-        'weight'=>2,
+        'weight'=>-1,
     );
     $items['farmshow/leisurefarm'] = array(//创建子菜单
         'title' =>'休闲农庄',

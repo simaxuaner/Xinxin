@@ -6,7 +6,6 @@
         <nav class="mainmenu">
             <?php if ($primary_nav): print $primary_nav; endif; ?>
         </nav>
-
     </header>
 
     <main id="mainSection">
