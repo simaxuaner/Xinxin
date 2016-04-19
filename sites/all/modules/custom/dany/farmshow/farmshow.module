@@ -45,7 +45,7 @@ function farmshow_leisurefarm_page_callback() {
     $module_path = drupal_get_path('module', 'farmshow');
     drupal_add_css($module_path . '/css/farmshow.css');
     // drupal_add_js();
-    return theme("farmproduct_page", array('imglink' => 'http://img.png'));
+    return theme("farmproduct_page");
 }
 
 function farmshow_product_page_callback() {
@@ -66,7 +66,7 @@ function farmshow_forum_page_callback() {
 function farmshow_theme() {
     return array(
         'farmproduct_page' => array(
-//            'variables' => array('content'=>null,'sidebarleft'=>NULL),
+            'variables' => array('product'=>null,'recommend'=>NULL,'favorites'=>NULL,'recently_visited'=>NULL),
             'template' => 'farmproduct',//返回这个模板
         ),
     );

@@ -118,13 +118,13 @@ function farm_product_page($farm)
  * @return
  *   The themed form.
  */
-function farm_product_add($farm) {
+function farm_product_add($farmid) {
     global $user;
 
     $type = 'product';
     $types = node_type_get_types();
 
-    $farmid = $farm->nid;
+    //$farmid = $farm->nid;
     $node = (object) array(
         'uid' => $user->uid,
         'name' => (isset($user->name) ? $user->name : ''),
