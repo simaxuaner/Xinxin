@@ -16,7 +16,7 @@ function about_menu() {
         'access callback' => TRUE,
         'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
-        'weight'=>1,
+        'weight'=>-2,
     );
     $items['about/introduction'] = array(
         'title' =>'企业介绍',
@@ -28,7 +28,27 @@ function about_menu() {
         'page callback' => 'about_parkstyle_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
-        'weight' => 5,
+    );
+    $items['about/parkstyle'] = array(
+        'title' =>'园区风貌',
+        'page callback' => 'about_parkstyle_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+    );$items['about/parkstyle'] = array(
+        'title' =>'农业学校',
+//        'page callback' => 'about_parkstyle_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+    );$items['about/parkstyle'] = array(
+        'title' =>'园区招商',
+//        'page callback' => 'about_parkstyle_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+    );$items['about/parkstyle'] = array(
+        'title' =>'入驻企业',
+//        'page callback' => 'about_parkstyle_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
     );
     return $items;
 }
