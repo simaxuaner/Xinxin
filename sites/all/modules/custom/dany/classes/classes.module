@@ -11,19 +11,41 @@
   */
 function classes_menu(){
     $items['classes'] = array(
-        'title' => t('Classes'),
+        'title' => t('新农人培训'),
         'page callback' => 'classes_class_page_callback',
         'access callback' => TRUE,
+        'weight'=>0,
         'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
     );
     $items['classes/class'] = array(
-        'title' => t('Recomanded Class'),
+        'title' => t('农业课堂'),
         'type' => MENU_LOCAL_TASK,
     );
     $items['classes/teachers'] = array(
-        'title' => t('Famous Teachers'),
+        'title' => t('农业名师'),
         'page callback' => 'classes_teacher_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'menu_name' => 'main-menu',
+    );
+    $items['classes/campus'] = array(
+        'title' => t('创业园地'),
+        'page callback' => 'classes_campus_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'menu_name' => 'main-menu',
+    );
+    $items['classes/admission'] = array(
+        'title' => t('招生信息'),
+        'page callback' => 'classes_admission_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'menu_name' => 'main-menu',
+    );
+    $items['classes/files'] = array(
+        'title' => t('资料下载'),
+        'page callback' => 'classes_files_page_callback',
         'access callback' => TRUE,
         'type' => MENU_DEFAULT_LOCAL_TASK,
         'menu_name' => 'main-menu',
@@ -31,12 +53,30 @@ function classes_menu(){
     return $items;
 }
 
+/*
+ * functions of page callback
+ */
 function classes_class_page_callback() {
     $module_path = drupal_get_path('module', 'classes');
     return theme("classes_page", array());
 }
 
 function classes_teacher_page_callback(){
+    $module_path = drupal_get_path('module', 'classes');
+    return theme("teachers_page", array());
+}
+
+function classes_campus_page_callback(){
+    $module_path = drupal_get_path('module', 'classes');
+    return theme("teachers_page", array());
+}
+
+function classes_admission_page_callback(){
+    $module_path = drupal_get_path('module', 'classes');
+    return theme("teachers_page", array());
+}
+
+function classes_files_page_callback(){
     $module_path = drupal_get_path('module', 'classes');
     return theme("teachers_page", array());
 }
@@ -53,6 +93,18 @@ function classes_theme() {
         'teachers_page' => array(
             'variables'=> array(),
             'template' => 'teachers',
+        ),
+        'campus_page'  => array(
+            'variables'=> array(),
+            'template' => 'campus',
+        ),
+        'admission_page' => array(
+            'variables'=> array(),
+            'template' => 'admission',
+        ),
+        'files_page'  => array(
+            'variables'=> array(),
+            'template' => 'files',
         ),
     );
 }
@@ -93,4 +145,15 @@ function template_preprocess_teachers_page(&$variables) {
     //drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_js($module_path.'/js/scripts.js');
     $variables['teacherList']=$productList;
+}
+
+function template_preprocess_campus_page(&$variables) {
+    $module_path = drupal_get_path('module','classes');
+}
+function template_preprocess_admission_page(&$variables) {
+    $module_path = drupal_get_path('module','classes');
+}
+
+function template_preprocess_files_page(&$variables) {
+    $module_path = drupal_get_path('module','classes');
 }

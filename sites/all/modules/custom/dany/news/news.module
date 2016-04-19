@@ -11,32 +11,33 @@
  */
 function news_menu(){
     $items['news'] = array(
-        'title' => t('News'),
+        'title' => t('品牌论坛'),
         'page callback' => 'news_allnews_page_callback',
         'access callback' => TRUE,
+        'weight'=>1,
         'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
     );
     $items['news/allnews']=array(
-        'title' => t('All News'),
+        'title' => t('品牌论坛'),
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
     $items['news/news66']=array(
-        'title' => t('News 6_6'),
+        'title' => t('6.6涂岭论坛'),
         'page callback' => 'news_news66_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 5,
     );
     $items['news/news1212']=array(
-        'title' => t('News 12_12'),
+        'title' => t('12.12电商论坛'),
         'page callback' => 'news_news1212_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 5,
     );
     $items['news/newsxinhui']=array(
-        'title' => t('News Of XinhuiDa'),
+        'title' => t('海促会咨询'),
         'page callback' => 'news_newsxinhui_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,

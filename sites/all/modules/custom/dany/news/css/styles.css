@@ -90,6 +90,9 @@ em {
 .hidden {
     display: none;
 }
+.icon{
+height: 1em;
+}
 .homenav {
     text-align: center;
     width: 100%;
