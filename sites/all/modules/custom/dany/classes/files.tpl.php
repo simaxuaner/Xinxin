@@ -1,4 +1,7 @@
-<section class="w80">
+<!--
+	modulePath 	:模块的地址前缀
+-->
+<section class="w100">
 	<div class="bar">
 		<h1>资料下载</h1>
 	</div>
@@ -6,22 +9,22 @@
 	<br/>
 	<>
 		<li>
-			<a href="pdf/01.pdf" download>文档01 <img class="icon" src="images/icons/pdf.png" alt=".pdf"/></a>
+			<a href="<?php print $modulePath?>/pdf/01.pdf" download>文档01 <img class="icon" src="<?php print $modulePath?>/images/icons/pdf.png" alt=".pdf"/></a>
 		</li>
 		<li>
-			<a href="pdf/02.pdf" download>文档02 <img class="icon" src="images/icons/pdf.png" alt=".pdf"/></a>				
+			<a href="<?php print $modulePath?>/pdf/02.pdf" download>文档02 <img class="icon" src="<?php print $modulePath?>/images/icons/pdf.png" alt=".pdf"/></a>				
 		</li>
 		<li>
-			<a href="pdf/03.pdf" download>文档03 <img class="icon" src="images/icons/pdf.png" alt=".pdf"/></a>				
+			<a href="<?php print $modulePath?>/pdf/03.pdf" download>文档03 <img class="icon" src="<?php print $modulePath?>/images/icons/pdf.png" alt=".pdf"/></a>				
 		</li>
 		<li>
-			<a href="pdf/04.pdf" download>文档04 <img class="icon" src="images/icons/pdf.png" alt=".pdf"/></a>				
+			<a href="<?php print $modulePath?>/pdf/04.pdf" download>文档04 <img class="icon" src="<?php print $modulePath?>/images/icons/pdf.png" alt=".pdf"/></a>				
 		</li>
 		<li>
-			<a href="pdf/05.pdf" download>文档05 <img class="icon" src="images/icons/pdf.png" alt=".pdf"/></a>				
+			<a href="<?php print $modulePath?>/pdf/05.pdf" download>文档05 <img class="icon" src="<?php print $modulePath?>/images/icons/pdf.png" alt=".pdf"/></a>				
 		</li>
 		<li>
-			<a href="pdf/06.pdf" download>文档06 <img class="icon" src="images/icons/pdf.png" alt=".pdf"/></a>				
+			<a href="<?php print $modulePath?>/pdf/06.pdf" download>文档06 <img class="icon" src="<?php print $modulePath?>/images/icons/pdf.png" alt=".pdf"/></a>				
 		</li>
 	</ul>			
 </section>

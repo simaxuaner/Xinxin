@@ -149,11 +149,14 @@ function template_preprocess_teachers_page(&$variables) {
 
 function template_preprocess_campus_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
+    $variables['modulePath']=$module_path;
 }
 function template_preprocess_admission_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
+    $variables['modulePath']=$module_path;
 }
 
 function template_preprocess_files_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
+    $variables['modulePath']=$module_path;
 }
