@@ -29,24 +29,21 @@ function about_menu() {
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
     );
-    $items['about/parkstyle'] = array(
-        'title' =>'园区风貌',
-        'page callback' => 'about_parkstyle_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
-    );$items['about/parkstyle'] = array(
+    ;$items['about/agriculturalSchool'] = array(
         'title' =>'农业学校',
-//        'page callback' => 'about_parkstyle_page_callback',
+        'page callback' => 'about_agriculturalSchool_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
-    );$items['about/parkstyle'] = array(
+    )
+    ;$items['about/investmentPark'] = array(
         'title' =>'园区招商',
-//        'page callback' => 'about_parkstyle_page_callback',
+        'page callback' => 'about_investmentPark_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
-    );$items['about/parkstyle'] = array(
+    )
+    ;$items['about/settledEnterprise'] = array(
         'title' =>'入驻企业',
-//        'page callback' => 'about_parkstyle_page_callback',
+        'page callback' => 'about_settledEnterprise_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
     );
@@ -61,7 +58,19 @@ function about_introduction_page_callback() {
     return theme("aboutpage_page");
 }
 
-function about_parkstyle_page_callback() {
+function about_parkStyle_page_callback() {
+    global $user;
+    return "Hello world1";
+}
+function about_agriculturalSchool_page_callback() {
+    global $user;
+    return "Hello world1";
+}
+function about_investmentPark_page_callback() {
+    global $user;
+    return "Hello world1";
+}
+function about_settledEnterprise_page_callback() {
     global $user;
     return "Hello world1";
 }
