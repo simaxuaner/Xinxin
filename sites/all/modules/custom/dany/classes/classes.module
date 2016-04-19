@@ -11,7 +11,7 @@
   */
 function classes_menu(){
     $items['classes'] = array(
-        'title' => t('新农人培训'),
+        'title' => '新农人培训',
         'page callback' => 'classes_class_page_callback',
         'access callback' => TRUE,
         'weight'=>0,
