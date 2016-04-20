@@ -1,0 +1,48 @@
+<?php
+
+function admanage_menu() {
+  $items = array();
+
+  $items['admin/admanage'] = array(
+    'title' => t('广告管理'),
+    'description' => 'ads management page',
+    'page callback' => 'admanage_getHelloPage',
+    'access callback' => true,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function admanage_getHelloPage()
+{
+
+  $val=db_select('block_custom', 'b')
+    ->fields('b')
+    //->condition('status', 1) //Published.
+    //->condition('info','admanage_block%')
+    //->condition('info','admanage_block')
+    //->orderBy('created', 'DESC') //Most recent first.
+    //->condition('module','block')
+    ->execute(); 
+
+  $index=0;
+
+  foreach ($val as $key=>$block) {
+
+    if(!strpos($block->info, 'ge_block')) continue;
+
+    $rows[$index]['id']=$block->bid;
+    $rows[$index]['pos']=$block->info;//l($node->title, 'node/' . $node->nid);
+    $rows[$index]['image']=$block->body;
+    $rows[$index]['link']=l('edit','admin/structure/block/manage/block/'.$block->bid.'config');
+
+    $index++;
+  }
+
+  $header=array(t('id'),t('广告位'),t('预览'),t('编辑'));
+  $table = theme('table', array('header' => $header,'rows' => $rows ,'attributes' => array('class' => array('private-table'))));
+
+
+  return $table;
+}
