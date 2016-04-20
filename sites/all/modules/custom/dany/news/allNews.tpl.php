@@ -8,7 +8,20 @@
 	<section class="w100">
 		<div class="bar">
 			<h1><?php print $newsTitle?></h1>
+            <select>
+			  <option value="volvo">2011</option>
+			  <option value="saab">2012</option>
+			  <option value="mercedes">2013</option>
+			  <option value="audi">2014</option>
+              <option value="audi">2014</option>
+			</select> 
+            <select>
+			  <option value="volvo">参会指南</option>
+			  <option value="saab">论坛介绍</option>
+			  <option value="mercedes">园区信息</option>
+			</select> 
 		</div>
+        <article class="newsItem onClick="expandParent(this)">
         <!--动态获取课程列表 -->
         <?php 
         foreach($noteList as $key => $value)
@@ -39,7 +52,7 @@
         ?>
             <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                 <span class="fav">喜爱</span> 
-                <img src="<?php print $imageLinkPathHead?>/images/products/product0.jpg" />
+                <img src="<?php print $imageLinkPathHead.'/'.$value['imgurl']?>"/>
                 <a href="#" ><h3>Magazine</h3></a>
                 <p>
                     <span class="farmName">asdf</span>

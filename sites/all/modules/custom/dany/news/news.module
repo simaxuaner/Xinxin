@@ -72,7 +72,7 @@ function news_newsxinhui_page_callback()
 function news_theme() {
     return array(
         'allNews_page'  => array(
-            'variables'=> array('newsTitle'=>'All News'),
+            'variables'=> array('newsTitle'=>'品牌论坛'),
             'template' => 'allNews',
         ),
         'new66_page' => array(
@@ -84,7 +84,7 @@ function news_theme() {
             'template' => 'allNews',
         ),
         'newsXinhui_page' => array(
-            'variables'=> array(),
+            'variables'=> array('newsTitle'=>'海促会资讯'),
             'template' => 'allNews',
         ),
     );

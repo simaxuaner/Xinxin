@@ -3,16 +3,6 @@
     -->
 	<main>
         <!-- 子菜单导航! 0417丢弃-->
-		
-        
-        <!-- 标题不份额-->
-		<section class="w100">
-			<div class="bar">
-				<h1>精品推荐</h1>
-			</div>
-			<div id="slider" class="w100"> <img id="sliderImg" src="<?php print $imageLinkPathHead?>/images/slider/2.jpg" alt="slider" /> </div>
-		</section>
-        
 		<section class="w100">
 			<div class="bar">
 			  <h1>课程</h1> <select>
@@ -22,7 +12,7 @@
 			  <option value="audi">金融</option>
 			  </select> 
                 <div class="search floatRight">
-                    <a href="#"><img src="<?php print $imageLinkPathHead?>/images/farms/search_bar.png" alt="search"></a>
+                    <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search"></a>
                     <input type="text" name="search">
                 </div> 
             </div>
@@ -33,13 +23,34 @@
             {
             ?>           
                 <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">喜爱</span> 
+                    <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
-                        <h3>The best class ever</h3>
+                        <h3>课程名称</h3>
                     </a>
 				    <p>
-                        <span class="farmName">asdf</span>
+                        <span class="farmName">讲师名</span>
+                        <span class="floatRight">01</span>
+                        <span class="floatRight">02</span>
+                    </p>
+			   </div>
+            <?php
+            }
+            ?>
+            <!--动态获取课程列表 -->
+            <!--重复填充，观察效果-->
+            <?php 
+            foreach($classList as $key => $value)
+            {
+            ?>           
+                <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                    <span class="fav">收藏</span> 
+                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
+				    <a href="classes/class0.php" >
+                        <h3>课程名称</h3>
+                    </a>
+				    <p>
+                        <span class="farmName">讲师名</span>
                         <span class="floatRight">01</span>
                         <span class="floatRight">02</span>
                     </p>
@@ -49,9 +60,9 @@
             ?>
 		</section>
         
-		<section class="w100">
+		<section class="w80">
             <div class="bar">
-				<h2>Recommended</h2>
+				<h2>推荐</h2>
 			</div>
 		    <!--动态获取课程列表 -->
             <?php 
@@ -59,13 +70,13 @@
             {
             ?> 
                 <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">喜爱</span> 
+                    <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
-                        <h3>The best class ever</h3>
+                        <h3>课程名称</h3>
                     </a>
 				    <p>
-                        <span class="farmName">asdf</span>
+                        <span class="farmName">讲师名</span>
                         <span class="floatRight">01</span>
                         <span class="floatRight">02</span>
                     </p>
@@ -74,9 +85,9 @@
             }
             ?>	
 		</section>		
-		<section class="w50">
+		<section class="w40">
             <div class="bar">
-				<h2>Favorites</h2>
+				<h2>收藏列表</h2>
 			</div>
 			<!--动态获取课程列表 -->
             <?php 
@@ -84,13 +95,13 @@
             {
             ?>    
                 <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">喜爱</span> 
+                    <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
-                        <h3>The best class ever</h3>
+                        <h3>课程名称</h3>
                     </a>
 				    <p>
-                        <span class="farmName">asdf</span>
+                        <span class="farmName">讲师名</span>
                         <span class="floatRight">01</span>
                         <span class="floatRight">02</span>
                     </p>
@@ -99,9 +110,9 @@
             }
             ?>
 		</section>		
-		<section class="w50">
+		<section class="w40">
 			<div class="bar">
-				<h2>Recently visited</h2>
+				<h2>最近访问</h2>
 			</div>
 			<!--动态获取课程列表 -->
             <?php 

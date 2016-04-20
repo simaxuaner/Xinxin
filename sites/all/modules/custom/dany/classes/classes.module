@@ -116,14 +116,14 @@ function template_preprocess_classes_page(&$variables) {
     foreach(range(0,4) as $value)
     {
         $productList[$value]=array(
-        'imgurl'      => 'images/farms/product-list.jpg',
+        'imgurl'      => 'images/classes/class0'.($value+1).'.jpg',
         'productName' => 'productName1'.$value,
         'farmName'    => 'farmName1'.$value,
         'customers'   => $value,
         'comments'    => 'comments1.$value'
         );
     }
-    //drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_css($module_path.'/css/styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     //drupal_add_js($module_path.'/js/scripts.js');
     $variables['classList']=$productList;
 }
@@ -132,11 +132,11 @@ function template_preprocess_teachers_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
     $variables['imageLinkPathHead']=$module_path;
     //测试使用的数据，应该从数据库获取
-    foreach(range(0,4) as $value)
+    foreach(range(0,3) as $value)
     {
         $productList[$value]=array(
-        'imgurl'      => 'images/teachers/teacher0_thumb.jpg',
-        'teacherName' => 'Jackie Chan'.$value,
+        'imgurl'      => 'images/teachers/teacher0'.($value+1).'.jpg',
+        'teacherName' => '',
         'farmName'    => 'farmName1'.$value,
         'customers'   => $value,
         'comments'    => 'comments1.$value'
