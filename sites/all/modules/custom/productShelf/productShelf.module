@@ -58,7 +58,7 @@ function option_ajax_callback($nid){
     $commands = array();
     $node = node_load($nid);
     $out_shelf_form = drupal_get_form('out_shelf_form', $node);
-    $commands[] = ajax_command_append("#outshelf-links", drupal_render($out_shelf_form));
+    $commands[] = ajax_command_append("#outshelf-links".$node->nid, drupal_render($out_shelf_form));
     return array(
         '#type' => 'ajax',
         '#commands' => $commands,

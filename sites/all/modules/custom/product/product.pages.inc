@@ -588,7 +588,7 @@ function product_admin_nodes() {
             $operations['onshelf'] = array(
                 'title' => t('上架'),
                 'href' => $url,
-                'attributes' => array('class'=>"use-ajax {$class}",'id'=>"onshelf-links") ,
+                'attributes' => array('class'=>"use-ajax {$class}",'id'=>"onshelf-links".$node->nid) ,
             );
         }
 

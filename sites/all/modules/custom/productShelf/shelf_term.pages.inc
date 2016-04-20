@@ -75,7 +75,7 @@ function productShelf_term_page($term)
             drupal_add_library('system', 'drupal.ajax');
             $class = "rp-shelf rp-shelf-out";
             $url = "admin/productShelf/".$node->nid."/nojs";
-            $title = l('下架', $url, array('attributes'=>array('class'=>"use-ajax {$class}",'id'=>"outshelf-links")));
+            $title = l('下架', $url, array('attributes'=>array('class'=>"use-ajax {$class}",'id'=>"outshelf-links".$node->nid)));
             $rows[$key]['option'] = $title;
         }
         $table = theme('table', array('header' => $header,'rows' => $rows ,'attributes' => array('class' => array('shelf-term-table'))));
