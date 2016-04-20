@@ -451,7 +451,7 @@ function product_admin_nodes() {
         'title' => array('data' => t('Title'), 'field' => 'n.title'),
         'type' => array('data' => t('Type'), 'field' => 'n.type'),
         'shelf' => array('data' => t('货架'), 'field' => 'n.shelf'),//增添了货架列
-        'farm' => array('data' => t('农场'), 'field' => 'n.farm'),//增添了货架列
+        'farm' => array('data' => t('农场'), 'field' => 'n.farm'),//增添了农场列
         'author' => t('Author'),
         'status' => array('data' => t('Status'), 'field' => 'n.status'),
         'changed' => array('data' => t('Updated'), 'field' => 'n.changed', 'sort' => 'desc')
@@ -493,7 +493,6 @@ function product_admin_nodes() {
     $destination = drupal_get_destination();
     $options = array();
     foreach ($nodes as $node) {
-
         //查询产品的类型
         $myfield_array = field_get_items('node', $node,'field_product_type');
         $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';

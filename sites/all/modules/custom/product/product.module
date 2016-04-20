@@ -163,8 +163,8 @@ function node_on_shelf_form_ajax_submit($form, $form_state){
         //将更新的node保存到数据库
         $node = node_submit((object)$node_uri);
         node_save((object)$node_uri);
-        taxonomy_term_save((object)$shelf_uri);
-        taxonomy_node_insert($node);
+        //taxonomy_term_save((object)$shelf_uri);
+        //taxonomy_node_insert($node);
 
         //查询上架操作是否保存到数据库
         $update_node = node_load($node->nid);
