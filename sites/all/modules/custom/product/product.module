@@ -119,7 +119,7 @@ function on_shelf_form($form, &$form_state, $node) {
     }
 
     $form['#node'] = (array)$node;
-    $form['#id'] = "out_shelf_form-node-{$node->nid}";
+    $form['#id'] = "on_shelf_form-node-{$node->nid}";
 
     $form['shelf_term'] = array(
         '#type' => 'select',
