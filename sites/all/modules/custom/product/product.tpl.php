@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: yunjia
  * Date: 2016/4/21
- * Time: 18:48
+ * Time: 15:53
  */
 ?>
 <main>
@@ -15,8 +15,7 @@
         </ul>
     </nav>
     <section class="w80">
-        <?php print $search?>
-        <?php print $farm_term?>
+        <?php print $product_content?>
     </section>
 
 </main>

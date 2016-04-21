@@ -81,12 +81,6 @@ function farm_menu()
         'access callback' => TRUE,
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
-    $items['farmshow/product'] = array(
-        'title' => t('农业展品'),
-        'page callback' => 'farmshow_product_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-    );
 
     return $items;
 }
@@ -96,13 +90,6 @@ function farm_menu()
  */
 function farmshow_leisurefarm_page_callback(){
     return theme('farm_page',array());
-}
-
-/**
- * @return 休闲农庄页面
- */
-function farmshow_product_page_callback(){
-    return theme('product_page',array());
 }
 
 /**
@@ -125,7 +112,7 @@ function template_preprocess_farm_page(&$variables){
     $variables['farm_page']='farmshow/farm';
     $variables['product_page']='farmshow/product';
 
-    $build = array();
+    $build = "";
     $query = db_select('node', 'n')->extend('PagerDefault');
     $nids = $query
         ->fields('n', array('nid', 'created'))
@@ -139,32 +126,59 @@ function template_preprocess_farm_page(&$variables){
 
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
-        $build += node_view_multiple($nodes);
-        $build['pager'] = array(
-            '#theme' => 'pager',
-            '#weight' => 5,
-        );
     }
 
     foreach($nodes as $key=>$value){
+        //查找出农场图片
+        $farm_image_uri = $value->field_farm_image['und'][0]['uri'];
+        $farm_image_locate = explode('//', $farm_image_uri);
+        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
+
+        //查询出此农场中的产品
+        $query = db_select('field_data_field_product_farm', 'f')->extend('PagerDefault');
+        $pids = $query
+            ->fields('f', array('entity_id'))
+            ->condition('f.field_product_farm_value', $value->nid)
+            ->orderBy('entity_id', 'DESC')
+            ->addTag('node_access')
+            ->limit(10)
+            ->execute()
+            ->fetchCol();
+        $products = node_load_multiple($pids);
+        $product_images = array();
+        foreach($products as $key => $product) {
+            //获取产品图片
+            $myfield_array = field_get_items('node', $product, 'field_product_photo');
+            $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
+            $product_image_uri = $image['uri'];
+            // assuming that the uri starts with "public://"
+            $product_image_locate = explode('//', $product_image_uri);
+            $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
+            $product_images[$key] = $product_image_filepath;
+        }
+
         $build .= "<div class='wideBlock'>";
 
         $build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
                 <h3>地址：".$value->field_farm_location['und'][0]['value']."</h3></div>";
 
-        $build .="<img src='".image_style_url('fullwidth',$value->field_farm_image['und'][0]['filename'])."' class='w40 floatLeft'/>";
+        $build .="<img src='".$farm_image_filepath."' class='w40 floatLeft'/>";
 
         $build .="<div class='blockInformation w60 floatLeft'>
                 <p class='alignRight'><a href='#' class=''>加入收藏</p></a>";
         $build .="<p>".$value->body['und'][0]['value']."</p>";
         $build .="<p class='alignRight'><a href='farm.php'>详细信息 ></a></p>" ;
-        $build .="<div class='alignRight products'>
-                        <img src='images/products/product0.jpg'/>
-                        <img src='images/products/product0.jpg'/>
-                        <img src='images/products/product0.jpg'/>
-                        <img src='images/products/product0.jpg'/>
-                   </div></div>";
-        $build .="</div>";
+        $build .="<div class='alignRight products'>";
+        foreach($product_images as $value){
+            $build .= "<img src=".$value.">";
+        }
+        $build .="</div></div></div>";
     }
     $variables['farm_term'] = $build;
+
+    $build_search = "<div class='bar'><h1>农庄</h1>
+                    <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
+                    <div class='button floatRight'><a href='farms1.php'>+</a></div>
+                    </div>";
+    $variables['search'] = $build_search;
 }

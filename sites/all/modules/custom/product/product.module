@@ -59,6 +59,13 @@ function product_menu()
         'file' => 'product.pages.inc',
     );
 
+    $items['farmshow/product'] = array(
+        'title' => t('农业展品'),
+        'page callback' => 'farmshow_product_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+
     return $items;
 }
 
@@ -177,4 +184,63 @@ function node_on_shelf_form_ajax_submit($form, $form_state){
     }
 
     return $form;
+}
+
+/**
+ * @return 农产品页面
+ */
+function farmshow_product_page_callback(){
+    return theme('product_page',array());
+}
+
+/**
+ * @return array
+ */
+function product_theme(){
+    return array(
+        'product_page'=>array(
+            'variables'=> array('title'=>'农产品'),
+            'template' => 'product',
+        ),
+    );
+}
+
+function template_preprocess_product_page(&$variables){
+    $variables['farm_page']='farmshow/farm';
+    $variables['product_page']='farmshow/product';
+
+    $build = "";
+    $vocabulary = taxonomy_vocabulary_load(variable_get('shelf_vocabulary',0));
+    if (!$vocabulary){
+        return array();
+    }
+    $tree = taxonomy_get_tree($vocabulary->vid);
+    //获取所有货架的名称
+    $build_select = "<select>";
+    foreach($tree as $term){
+        $build_select .="<option value=".$term->tid.">".$term->name."</option>";
+    }
+    $build_select .= "</select>
+                    <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a>
+                    <input type='text' name='search'></div></div>";
+    foreach($tree as $key=>$term){
+        $build .="<div class='bar'><h1>".$term->name."</h1></div>";
+        if($key==0){
+            $build .= $build_select;
+        }
+        $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
+        $products = node_load_multiple($nids);
+        foreach($products as $pkey=>$product){
+            //获取产品图片
+            $product_image_uri = $product->field_product_photo['und'][0]['uri'];
+            $product_image_locate = explode('//', $product_image_uri);
+            $product_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $product_image_locate[1];
+            $build .="<div class='block'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
+				        <a href=\"product0.php\" ><h3>".$product->title."</h3></a>
+				        <p><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+			        </div>";
+        }
+    }
+    $variables['product_content'] = $build;
+
 }
