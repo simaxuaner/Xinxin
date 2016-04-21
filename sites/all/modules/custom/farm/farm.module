@@ -67,5 +67,104 @@ function farm_menu()
         'file' => 'farm_product_admin.pages.inc',
     );
 
+    //farm-front
+    $items['farmshow'] = array(
+        'title' => t('农业展馆'),
+        'page callback' => 'farmshow_leisurefarm_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_SUGGESTED_ITEM,
+        'menu_name'=>'main-menu',
+        'weight'=>-1,
+    );
+    $items['farmshow/farm'] = array(
+        'title' => t('休闲农庄'),
+        'access callback' => TRUE,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+    $items['farmshow/product'] = array(
+        'title' => t('农业展品'),
+        'page callback' => 'farmshow_product_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+
     return $items;
+}
+
+/**
+ * @return 休闲农庄页面
+ */
+function farmshow_leisurefarm_page_callback(){
+    return theme('farm_page',array());
+}
+
+/**
+ * @return 休闲农庄页面
+ */
+function farmshow_product_page_callback(){
+    return theme('product_page',array());
+}
+
+/**
+ * @return array
+ */
+function farm_theme(){
+    return array(
+        'farm_page'=>array(
+            'variables'=> array('title'=>'农庄'),
+            'template' => 'farm',
+        ),
+        'product_page'=>array(
+            'variables'=> array('title'=>'农产品'),
+            'template' => 'farm',
+        ),
+    );
+}
+
+function template_preprocess_farm_page(&$variables){
+    $variables['farm_page']='farmshow/farm';
+    $variables['product_page']='farmshow/product';
+
+    $build = array();
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $nids = $query
+        ->fields('n', array('nid', 'created'))
+        ->condition('type', 'farm')
+        ->condition('status', 1)
+        ->orderBy('created', 'DESC')
+        ->limit(variable_get('default_nodes_main', 10))
+        ->addTag('node_access')
+        ->execute()
+        ->fetchCol();
+
+    if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+        $build += node_view_multiple($nodes);
+        $build['pager'] = array(
+            '#theme' => 'pager',
+            '#weight' => 5,
+        );
+    }
+
+    foreach($nodes as $key=>$value){
+        $build .= "<div class='wideBlock'>";
+
+        $build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
+                <h3>地址：".$value->field_farm_location['und'][0]['value']."</h3></div>";
+
+        $build .="<img src='".image_style_url('fullwidth',$value->field_farm_image['und'][0]['filename'])."' class='w40 floatLeft'/>";
+
+        $build .="<div class='blockInformation w60 floatLeft'>
+                <p class='alignRight'><a href='#' class=''>加入收藏</p></a>";
+        $build .="<p>".$value->body['und'][0]['value']."</p>";
+        $build .="<p class='alignRight'><a href='farm.php'>详细信息 ></a></p>" ;
+        $build .="<div class='alignRight products'>
+                        <img src='images/products/product0.jpg'/>
+                        <img src='images/products/product0.jpg'/>
+                        <img src='images/products/product0.jpg'/>
+                        <img src='images/products/product0.jpg'/>
+                   </div></div>";
+        $build .="</div>";
+    }
+    $variables['farm_term'] = $build;
 }
