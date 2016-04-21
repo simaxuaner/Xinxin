@@ -343,14 +343,19 @@ main {
     overflow: hidden;
     min-height: 128px;
 	margin-top: -4px;
-	}
+    margin-left:5%;
+    margin-right:5%;
+}
 
 section {
+    width:calc(100%-64px);
     background-color: #dcdcdc;
     display: inline-block;
     overflow: hidden;
     padding: 0 32px 32px;
-    float: right;
+    float: left;
+    margin-left:calc(10%-32px);
+    margin-right: calc(10%-32px);
     min-height: inherit;
 	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);

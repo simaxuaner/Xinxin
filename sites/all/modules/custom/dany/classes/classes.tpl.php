@@ -85,7 +85,7 @@
             }
             ?>	
 		</section>		
-		<section class="w40">
+		<section class="w40" id="section401">
             <div class="bar">
 				<h2>收藏列表</h2>
 			</div>
@@ -110,7 +110,7 @@
             }
             ?>
 		</section>		
-		<section class="w40">
+		<section class="w40" id="section402">
 			<div class="bar">
 				<h2>最近访问</h2>
 			</div>
