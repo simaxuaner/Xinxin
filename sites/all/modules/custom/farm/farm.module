@@ -81,8 +81,91 @@ function farm_menu()
         'access callback' => TRUE,
         'type' => MENU_DEFAULT_LOCAL_TASK,
     );
+    $items['farm/%'] = array(
+        'title' => t('farm'),
+        'page callback' => 'farm_page_callback',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+    );
 
     return $items;
+}
+
+/**
+ * @param $fid 农场的nid
+ * @return 农场详细信息页面
+ */
+function farm_page_callback($fid){
+    $farm = node_load($fid);
+    //查找出农场图片
+    $farm_image_uri = $farm->field_farm_image['und'][0]['uri'];
+    $farm_image_locate = explode('//', $farm_image_uri);
+    $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
+    $build ="<main>
+		    <nav id='sideNav' class='w20'>
+			<ul>
+				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄信息</a> </li>
+				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品信息</a> </li>
+			</ul>
+		</nav>";
+    $build .="<section class='w80'>
+			<div class='bar'>
+				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄信息</a> >".$farm->title."</h1></div>
+			<img src=".$farm_image_filepath." alt='Jackie Chan' class='alignCenter w100'/>
+		</section>";
+    $build .="<section class='w80'>
+			<div class='bar w100'>
+				<h3>".$farm->field_farm_location['und'][0]['value']."</h3>
+				<div class='floatRight alignRight'> <a href='#' class='favLink'>加入收藏</a></div>
+			</div>
+			<div class='w100'>
+				<p>".$farm->body['und'][0]['value']."</p>
+				<h2>联系方式</h2>
+                <h3>".$farm->field_farm_telephone['und'][0]['value']."</h3>
+			</div>
+			</section>";
+    $build .="<section class='w80'>
+			<div class='bar'>
+				<h2>相关产品</h2>
+			</div>";
+    //查询出此农场中的产品
+    $query = db_select('field_data_field_product_farm', 'f')->extend('PagerDefault');
+    $pids = $query
+        ->fields('f', array('entity_id'))
+        ->condition('f.field_product_farm_value', $farm->nid)
+        ->orderBy('entity_id', 'DESC')
+        ->addTag('node_access')
+        ->limit(3)
+        ->execute()
+        ->fetchCol();
+    $products = node_load_multiple($pids);
+    $count = 0;
+    foreach($products as $key => $product) {
+        if($count==3){
+            break;
+        }
+        //查询产品的类型
+        $myfield_array = field_get_items('node', $product,'field_product_type');
+        $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
+        $tid = $myfield['tid'];
+        $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
+
+        //获取产品图片
+        $myfield_array = field_get_items('node', $product, 'field_product_photo');
+        $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
+        $product_image_uri = $image['uri'];
+        // assuming that the uri starts with "public://"
+        $product_image_locate = explode('//', $product_image_uri);
+        $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
+
+        $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
+				<a href='product0.php' ><h3>".$product->title."</h3></a>
+				<p><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+			</div>";
+        $count++;
+    }
+    $build .="</main>";
+    return $build;
 }
 
 /**
@@ -101,16 +184,15 @@ function farm_theme(){
             'variables'=> array('title'=>'农庄'),
             'template' => 'farm',
         ),
-        'product_page'=>array(
-            'variables'=> array('title'=>'农产品'),
-            'template' => 'farm',
-        ),
     );
 }
 
+/**
+ * @param $variables
+ */
 function template_preprocess_farm_page(&$variables){
-    $variables['farm_page']='farmshow/farm';
-    $variables['product_page']='farmshow/product';
+    $variables['farm_page']=$GLOBALS['base_url'] .'/farmshow/farm';
+    $variables['product_page']=$GLOBALS['base_url'] .'/farmshow/product';
 
     $build = "";
     $query = db_select('node', 'n')->extend('PagerDefault');
@@ -146,7 +228,11 @@ function template_preprocess_farm_page(&$variables){
             ->fetchCol();
         $products = node_load_multiple($pids);
         $product_images = array();
+        $count = 0;
         foreach($products as $key => $product) {
+            if($count==4){
+                break;
+            }
             //获取产品图片
             $myfield_array = field_get_items('node', $product, 'field_product_photo');
             $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
@@ -155,6 +241,7 @@ function template_preprocess_farm_page(&$variables){
             $product_image_locate = explode('//', $product_image_uri);
             $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
             $product_images[$key] = $product_image_filepath;
+            $count++;
         }
 
         $build .= "<div class='wideBlock'>";
@@ -167,7 +254,7 @@ function template_preprocess_farm_page(&$variables){
         $build .="<div class='blockInformation w60 floatLeft'>
                 <p class='alignRight'><a href='#' class=''>加入收藏</p></a>";
         $build .="<p>".$value->body['und'][0]['value']."</p>";
-        $build .="<p class='alignRight'><a href='farm.php'>详细信息 ></a></p>" ;
+        $build .="<p class='alignRight'><a href='".$GLOBALS['base_url'] ."/farm/".$value->nid."'>详细信息 ></a></p>" ;
         $build .="<div class='alignRight products'>";
         foreach($product_images as $value){
             $build .= "<img src=".$value.">";
