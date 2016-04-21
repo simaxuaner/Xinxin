@@ -72,7 +72,7 @@ function xinxin_front_preprocess_page(&$vars)
                 $sublink = $menu_item['below'];
                 $menu_links .= '<ul>';
                 foreach ($sublink as $sublinkitem) {
-                    $menu_links .= '<li><a href="' . $sublinkitem['link']['link_path'] . '">' . $sublinkitem['link']['title'] . '</a></li>';
+                    $menu_links .= '<li><a href="?q=' . $sublinkitem['link']['link_path'] . '">' . $sublinkitem['link']['title'] . '</a></li>';
                 }
                 $menu_links .= '</ul></li>';
             }

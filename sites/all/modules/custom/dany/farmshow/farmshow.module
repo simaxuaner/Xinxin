@@ -1,0 +1,246 @@
+<?php
+/**
+ * Created by IntelliJ IDEA.
+ * User: Sadako
+ * Date: 2016/4/15
+ * Time: 17:40
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function farmshow_menu() {
+    $items['farmshow'] = array(
+        'title' =>'农业展馆',
+        'page callback' => 'farmshow_farm_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_SUGGESTED_ITEM,
+        'menu_name' => 'main-menu',
+        'weight'=>4,
+    );
+    $items['farmshow/farm'] = array(//创建子菜单
+        'title' =>'休闲农庄',
+        'access callback' => TRUE,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+    $items['farmshow/product'] = array(
+        'title' =>'农业展品',
+        'page callback' => 'farmshow_product_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_LOCAL_TASK,
+        'weight' => 5,
+    );
+    return $items;
+}
+
+function farmshow_farm_page_callback() {
+    global $user;
+    $module_path = drupal_get_path('module', 'farmshow');
+    $farmhtml=<<<EOS
+	<section class="w80">
+			<div class="bar">
+				<h1>农庄</h1>
+
+				<div class="search floatRight"><a href="#"><img src="$module_path/images/icons/search_bar.png" alt="search"></a><input type="text" name="search"></div>
+				<div class="button floatRight"><a href="farms1.php">+</a></div>
+			</div>
+			<div class="wideBlock">
+				<div class="blockTitle">
+					<h2>牧蜂农场</h2>
+					<br/>
+					<h3>地址：新北市三芝区</h3>
+				</div>
+				<img src="$module_path/images/farms/farm01.jpg" class="w40 floatLeft"/>
+				<div class="blockInformation w60 floatLeft">
+					<p class="alignRight"><a href="#" class="">加入收藏</p></a>
+                    <p>牧蜂农场临近多个观光景点，农场内有大片林园，农田，生态池等景观，在金针花盛开时前往还能看到一大片黄金花海，牧蜂除了有养蜂示范教学外，还出售自产自销的伴手礼，龙眼蜂蜜，蜂蜜蜡，蜂王乳等都是优质产品。</p>
+                     <p>牧蜂农场临近多个观光景点，农场内有大片林园，农田，生态池等景观，在金针花盛开时前往还能看到一大片黄金花海，牧蜂除了有养蜂示范教学外，还出售自产自销的伴手礼，龙眼蜂蜜，蜂蜜蜡，蜂王乳等都是优质产品。</p>
+					<p class="alignRight"><a href="farm.php">详细信息 ></a></p>
+								<div class="alignRight products">
+					<img src="$module_path/images/products/product0.jpg"/>
+					<img src="$module_path/images/products/product01.jpg"/>
+					<img src="$module_path/images/products/product02.jpg"/>
+					<img src="$module_path/images/products/product03.jpg"/>
+				</div>
+				</div>
+			</div>			<div class="wideBlock">
+				<div class="blockTitle">
+					<h2>清境农场</h2>
+					<br/>
+					<h3>地址：台湾南投县仁爱乡</h3>
+				</div>
+				<img src="$module_path/images/farms/farm02.jpg" class="w40 floatLeft"/>
+				<div class="blockInformation w60 floatLeft">
+					<p class="alignRight"><a href="#" class="">加入收藏</p></a>
+					<p>清境农场址原为赛德克族的“罗多夫社”（Drodux，意为公鸡状的山头，为雾社事件抗日六社之一）放养牛只的牧场，台湾日治时期以日语译为“朗土府”（Rotofu），日人并征收设立“见晴农场”（Miharasi）或“雾社牧场”，但仍提供原拥有的部落认养在此放牧的牛只。</p>						<p>1967年，退辅会主委蒋经国到农场视察，认为此地“清新空气任君取，境地优雅是仙居”，退辅会便更名为“清境农场”，场本部地名则称为“幼狮”（Youth，英文“青年”之音译，为蒋经国所命名，意指期勉现代中国青年之英姿勃发如同狮子），海拔1748米，现今地名已统称为“清境”。</p>
+					<p class="alignRight"><a href="farm.php">详细信息 ></a></p>
+								<div class="alignRight products">
+					<img src="$module_path/images/products/product04.jpg"/>
+					<img src="$module_path/images/products/product05.jpg"/>
+					<img src="$module_path/images/products/product06.jpg"/>
+					<img src="$module_path/images/products/product07.jpg"/>
+				</div>
+				</div>
+			</div>
+			<div class="wideBlock noMargin">
+				<div class="blockTitle">
+					<h2>松兰山·三联台湾生态农庄</h2>
+					<br/>
+					<h3>地址：象山县丹东街道寨里村</h3>
+				</div>
+				<img src="$module_path/images/farms/farm03.jpg" class="w40 floatLeft"/>
+				<div class="blockInformation w60 floatLeft">
+					<p class="alignRight"><a href="#" class="">加入收藏</p></a>
+					<p>松兰山·三联台湾生态农庄，建设地点：象山县丹东街道寨里村，占地面积：280亩。
+    海峡两岸合作，在象山建立一个集高新农业技术、高标准设施应用和优良品种推广、精品农产品生产的聚集基地；休闲农业观光、有机餐饮体验、生态养生服务等全方位内容于一体的都市现代休闲农业园，打造农业合作理想平台，开辟都市农业休闲胜地，增加农产品展示营销窗口。产生辐射效应，促进“十二五”象山现代农业发展....</p>
+					<p class="alignRight"><a href="farm.php">详细信息 ></a></p>
+								<div class="alignRight products">
+					<img src="$module_path/images/products/product08.jpg"/>
+					<img src="$module_path/images/products/product09.jpg"/>
+					<img src="$module_path/images/products/product01.jpg"/>
+					<img src="$module_path/images/products/product10.jpg"/>
+				</div>
+				</div>
+			</div>
+		</section>
+EOS;
+    return theme("farmproduct_page",array('farmmain'=>$farmhtml,'headImg'=>$module_path.'/images/farms.jpg'));
+}
+
+function farmshow_product_page_callback() {
+    $module_path = drupal_get_path('module', 'farmshow');
+    $producthtml='<section class="w80">
+			<div class="bar">
+				<h1>瓜类水果</h1>
+				<select>
+			  <option value="volvo">瓜类水果</option>
+			  <option value="saab">糖果零食</option>
+			  <option value="mercedes">手工艺品</option>
+			  <option value="audi">海鲜干货</option>
+              <option value="audi">宝岛特产</option>
+			</select>
+			<div class="search floatRight"><a href="#"><img src="'.$module_path .'/images/search_bar.png" alt="search"></a><input type="text" name="search"></div>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/fruits/fruit0.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/fruits/fruit01.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/fruits/fruit02.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1 noMarginRight"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/fruits/fruit03.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+
+            <div class="bar">
+				<h1>糖果零食</h1>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/snacks/snacks01.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/snacks/snacks02.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/snacks/snacks03.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1 noMarginRight"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/snacks/snacks04.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+
+             <div class="bar">
+				<h1>手工艺品</h1>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/handcrafts/handcraft01.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/handcrafts/handcraft02.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/handcrafts/handcraft03.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1 noMarginRight"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/snacks/snacks04.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+
+             <div class="bar">
+				<h1>海鲜干货</h1>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/seafoods/seafood01.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/seafoods/seafood02.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/seafoods/seafood03.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1 noMarginRight"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/seafoods/seafood01.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+
+             <div class="bar">
+				<h1>宝岛特产</h1>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/specials/special01.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/specials/special02.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/specials/special03.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+			<div class="block1 noMarginRight"> <span class="fav">收藏</span> <img src="'.$module_path .'/images/products/specials/special04.jpg" />
+				<a href="product0.php" ><h3>产品名称</h3></a>
+				<p><span class="floatRight">20</span><span class="floatRight">￥</span></p>
+			</div>
+		</section>';
+    return theme("farmproduct_page",array('farmmain'=>$producthtml,'headImg'=>$module_path.'/images/farms.jpg'));
+}
+
+/**
+ * Implements hook_theme()
+ */
+function farmshow_theme() {
+    return array(
+        'farmproduct_page' => array(
+            'template' => 'farmproduct',//返回这个模板
+        ),
+    );
+}
+
+/**
+ * Processes variables for member-page.tpl.php.
+ *
+ * @param $variables
+ *   An associative array containing the following key:
+ *   - sidebarleft
+ *   - content
+ *
+ * @see farmproduct.tpl.php
+ */
+function template_preprocess_farmproduct_page(&$variables) {
+}
