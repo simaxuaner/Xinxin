@@ -1,5 +1,5 @@
 <main>
-    <section class="w100">
+    <section class="w80">
 		<div class="bar">
 			<h1>招生信息</h1>
 		</div>

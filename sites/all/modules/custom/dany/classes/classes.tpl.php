@@ -3,7 +3,7 @@
     -->
 	<main>
         <!-- 子菜单导航! 0417丢弃-->
-		<section class="w100">
+		<section class="w80">
 			<div class="bar">
 			  <h1>课程</h1> <select>
 			  <option value="volvo">种植培养</option>
@@ -22,7 +22,7 @@
             foreach($classList as $key => $value)
             {
             ?>           
-                <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
@@ -43,7 +43,7 @@
             foreach($classList as $key => $value)
             {
             ?>           
-                <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
@@ -69,7 +69,7 @@
             foreach($classList as $key => $value)
             {
             ?> 
-                <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
@@ -94,7 +94,7 @@
             foreach($classList as $key => $value)
             {
             ?>    
-                <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
@@ -119,14 +119,14 @@
             foreach($classList as $key => $value)
             {
             ?>
-                <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">喜爱</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
-                        <h3>The best class ever</h3>
+                        <h3>课程名称</h3>
                     </a>
 				    <p>
-                        <span class="farmName">asdf</span>
+                        <span class="farmName">讲师名</span>
                         <span class="floatRight">01</span>
                         <span class="floatRight">02</span>
                     </p>

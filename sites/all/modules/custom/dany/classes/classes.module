@@ -123,7 +123,7 @@ function template_preprocess_classes_page(&$variables) {
         'comments'    => 'comments1.$value'
         );
     }
-    drupal_add_css($module_path.'/css/styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     //drupal_add_js($module_path.'/js/scripts.js');
     $variables['classList']=$productList;
 }
@@ -142,21 +142,24 @@ function template_preprocess_teachers_page(&$variables) {
         'comments'    => 'comments1.$value'
         );
     }
-    //drupal_add_css($module_path.'/css/class_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     //drupal_add_js($module_path.'/js/scripts.js');
     $variables['teacherList']=$productList;
 }
 
 function template_preprocess_campus_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
+    drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     $variables['modulePath']=$module_path;
 }
 function template_preprocess_admission_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
+     drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     $variables['modulePath']=$module_path;
 }
 
 function template_preprocess_files_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
+    drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     $variables['modulePath']=$module_path;
 }

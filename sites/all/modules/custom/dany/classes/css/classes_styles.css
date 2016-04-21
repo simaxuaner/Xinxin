@@ -409,7 +409,7 @@ section > #slider img {
 	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 }
-.block {
+.block1 {
     width: 22%;
     background-color: #e6e6e6;
     position: relative;
@@ -470,13 +470,13 @@ section > #slider img {
 .noMarginRight {
     margin-right: 0 !important;
 }
-.block img {
+.block1 img {
     width: 100%;
 }
-.block span {
+.block1 span {
     display: inline-block;
 }
-.block .productName {
+.block1 .productName {
     font-size: 1.25em;
     margin: 0;
     display: block;

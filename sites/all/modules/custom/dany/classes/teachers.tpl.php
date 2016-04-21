@@ -1,6 +1,6 @@
     
 <main>
-    <section class="w100">
+    <section class="w80">
         <div class="bar">
         	<h1>农业名师</h1>
         	<div class="search floatRight">
@@ -14,7 +14,7 @@
         foreach($teacherList as $key => $value)
         {
         ?>           
-            <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+            <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                 <span class="fav">收藏</span> 
                 <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="teachers/teacher0.php" ><h3>"<?php print $value['teacherName']?>"教师名</h3></a>

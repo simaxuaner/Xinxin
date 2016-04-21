@@ -91,7 +91,7 @@ function news_theme() {
 }
 
 function template_preprocess_allNews_page(&$variables) {
-    $module_path = drupal_get_path('module','classes');
+    $module_path = drupal_get_path('module','news');
     $variables['imageLinkPathHead']=$module_path;
     
     //测试使用数据
@@ -118,7 +118,7 @@ function template_preprocess_allNews_page(&$variables) {
     foreach(range(0,4) as $value)
     {
         $magzineList[$value]=array(
-        'imgurl'      => 'images/news/66.jpg',
+        'imgurl'      => 'images/magazine/magazine.jpg',
         'date' => 'Jackie Chan'.$value,
         'title'    => 'farmName1'.$value,
         'content'   => $value,
@@ -127,9 +127,9 @@ function template_preprocess_allNews_page(&$variables) {
     foreach(range(0,4) as $value)
     {
         $noteList[$value]=array(
-        'imgurl'      => 'images/teachers/teacher0_thumb.jpg',
+        'imgurl'      => 'images/news/6.6/6.6_1.jpg',
         'date' => '22 MAR',
-        'title'    => '借鉴台湾精细农业经验 将建泉港休闲农业示范园',
+        'title'    => '台湾',
         'content'   => '<p>
 				海促会主席吕双辉介绍说，今年将以交流活动为主，以展会为辅。今年涂岭交流活动的主题确定为“台湾休闲农业的创新与创业”，邀请两岸休闲农业规划设计专家、专业技术员、休闲农业的成功经营者，从规划设计、创意、发展趋势等角度，现场解读休闲农业的“创新经营之道”。
 			</p>
@@ -145,8 +145,8 @@ function template_preprocess_allNews_page(&$variables) {
         );
     }
     
-    drupal_add_css($module_path.'/css/news_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    drupal_add_js($module_path.'/js/scripts.js');
     $variables['noteList']=$noteList;
     $variables['magzineList']=$magzineList;
+    drupal_add_css($module_path.'/css/news_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => -1));
+    //drupal_add_js($module_path.'/js/scripts.js');
 }

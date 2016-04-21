@@ -5,7 +5,7 @@
     imageLinkPathHead   :图片连接位置
 -->
 <main id="mainSection">
-	<section class="w100">
+	<section class="w80">
 		<div class="bar">
 			<h1><?php print $newsTitle?></h1>
             <select>
@@ -21,43 +21,36 @@
 			  <option value="mercedes">园区信息</option>
 			</select> 
 		</div>
-        <article class="newsItem onClick="expandParent(this)">
         <!--动态获取课程列表 -->
         <?php 
         foreach($noteList as $key => $value)
         {
         ?>
-            <div class="newsItem">
+            <article class="newsItem onClick="expandParent(this)">
                 <span class="dateBlock"><?php print $value['date'] ?></span>
-                <img class="floatRight w40" src="<?php print $imageLinkPathHead.'/'.$value['imgurl']?>"/>
-                <div class="floatRight w100">
+                <img src="<?php print $imageLinkPathHead.'/'.$value['imgurl']?>"/>
                 <h2><?php print $value['title'] ?></h2>
-                <p>
-                    <?php print $value['content'] ?>
-                </p>
-                </div>
-            </div>
+                <?php print $value['content'] ?>
+            </article>
         <?php
         }
         ?>
 	</section>
-	<section class="w100">
+	<section class="w80">
         <div class="bar">
-			<h1>Magazines</h1>
+			<h1>电子杂志</h1>
 		</div>
         <!--动态获取课程列表 -->
         <?php 
         foreach($magzineList as $key => $value)
         {
         ?>
-            <div class="block <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                <span class="fav">喜爱</span> 
+            <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <span class="fav">收藏</span> 
                 <img src="<?php print $imageLinkPathHead.'/'.$value['imgurl']?>"/>
-                <a href="#" ><h3>Magazine</h3></a>
+                <a href="#" ><h3>论坛杂志</h3></a>
                 <p>
-                    <span class="farmName">asdf</span>
-                    <span class="floatRight">01</span>
-                    <span class="floatRight">02</span>
+                    <span class="farmName">2016.4.10</span>
                 </p>
             </div>           
          <?php
