@@ -1,0 +1,83 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: wym
+ * Date: 2016/4/14
+ * Time: 16:18
+ */
+
+/**
+ * Implements hook_node_info()
+ * Create the lesson node.
+ */
+function lesson_node_info(){
+    return array(
+        'lesson'=>array(
+            'name' => t('lesson'),
+            'module' => 'lesson',
+            'base' => 'node_content',
+            'description' => 'the lesson node type for the company',
+            'has_title' => TRUE,
+            'has_body' => TRUE
+        )
+    );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function lesson_menu()
+{
+    $items['admin/lesson'] = array(
+        'title' => t('课程管理'),
+        'description' => '对站点中的课程进行管理,进行编辑、删除、上下架等操作',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('lesson_admin_content'),
+        'access arguments' => array('access content overview'),
+        'file' => 'lesson.pages.inc',
+    );
+
+    $items['admin/lesson/%'] = array(
+        'page callback' => 'lesson_user_page',
+        'page arguments' => array(2),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['admin/lesson/%/ajax'] = array(
+            'page callback' => 'onshelf_ajax_callback',
+            'delivery callback' => 'ajax_deliver',
+            'access callback' => TRUE,
+        )+ $items['admin/lesson/%'];
+
+    $items['admin/lesson/add'] = array(
+        'title' => '添加课程',
+        'title callback' => 'check_plain',
+        'page callback' => 'lesson_add',
+        'access callback' => 'node_access',
+        'access arguments' => array('create', 'lesson'),
+        'type' => MENU_LOCAL_ACTION,
+        'file' => 'lesson.pages.inc',
+    );
+
+    return $items;
+}
+
+/**
+ * Page callback: displaying a lesson page for the object
+ *
+ * @see shareto_menu()
+ */
+function lesson_user_page($action, $nid){
+    if (is_numeric($nid)) {
+        $node = node_load($nid);
+        if (!$node )
+            return MENU_NOT_FOUND;
+
+        if (!node_access('view', $node))
+            return MENU_ACCESS_DENIED;
+
+        drupal_goto("node/{$nid}");
+    }
+
+    return MENU_NOT_FOUND;
+}

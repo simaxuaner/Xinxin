@@ -1,0 +1,14 @@
+name = Teacher
+description = 名师管理模块.
+package = My
+version = VERSION
+core = 7.x
+
+; Information added by Drupal.org packaging script on 2016-04-16
+version = "7.43"
+project = "drupal"
+datestamp = "1456343506"
+
+dependencies[] = number
+dependencies[] = field
+dependencies[] = lesson
