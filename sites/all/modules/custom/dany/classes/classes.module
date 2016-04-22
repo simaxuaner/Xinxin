@@ -158,18 +158,7 @@ function template_preprocess_campus_page(&$variables) {
     $careerGuide="";
     $careerFinance="";
     
-    // $query = db_select('node', 'n')->extend('PagerDefault');
-    // $nids = $query
-    // ->fields('n', array('nid'))
-    // ->condition('type', 'article')
-    // ->condition('status', 1)
-    // ->condition('title',"创业园地")
-    // ->orderBy('created', 'DESC')
-    // ->limit(variable_get('default_nodes_main', 1))
-    // ->addTag('node_access')
-    // ->execute()
-    // ->fetchCol();
-    $nid = variable_get('creative_base', 44);
+    $nid = variable_get('pioneeringContext', 44);
     $node = node_load($nid);
     if ($node) {
         $pioneeringContext = $node->body[LANGUAGE_NONE][0]['value'];
@@ -177,68 +166,26 @@ function template_preprocess_campus_page(&$variables) {
         $imgfile = file_load($imgid);
         $imageurl = file_create_url($imgfile->uri);
     }
-    $query = db_select('node', 'n')->extend('PagerDefault');
-    $nids = $query
-    ->fields('n', array('nid'))
-    ->condition('type', 'article')
-    ->condition('status', 1)
-    ->condition('title',"基础设施")
-    ->orderBy('created', 'DESC')
-    ->limit(variable_get('default_nodes_main', 1))
-    ->addTag('node_access')
-    ->execute()
-    ->fetchCol();
-    if (!empty($nids)) {
-        $nodes = node_load_multiple($nids);
-        $baseFacilities=$nodes[$nids[0]]->body['und'][0]['value'];
+    $nid = variable_get('baseFacilities', 45);
+    $node = node_load($nid);
+    if ($node) {
+        $baseFacilities = $node->body[LANGUAGE_NONE][0]['value'];
     }
-    $query = db_select('node', 'n')->extend('PagerDefault');
-    $nids = $query
-    ->fields('n', array('nid'))
-    ->condition('type', 'article')
-    ->condition('status', 1)
-    ->condition('title',"培训指导")
-    ->orderBy('created', 'DESC')
-    ->limit(variable_get('default_nodes_main', 1))
-    ->addTag('node_access')
-    ->execute()
-    ->fetchCol();
-    if (!empty($nids)) {
-        $nodes = node_load_multiple($nids);
-        $trainGuide=$nodes[$nids[0]]->body['und'][0]['value'];
+    $nid = variable_get('trainGuide', 46);
+    $node = node_load($nid);
+    if ($node) {
+        $trainGuide = $node->body[LANGUAGE_NONE][0]['value'];
     }
-    $query = db_select('node', 'n')->extend('PagerDefault');
-    $nids = $query
-    ->fields('n', array('nid'))
-    ->condition('type', 'article')
-    ->condition('status', 1)
-    ->condition('title',"就业指南")
-    ->orderBy('created', 'DESC')
-    ->limit(variable_get('default_nodes_main', 1))
-    ->addTag('node_access')
-    ->execute()
-    ->fetchCol();
-    if (!empty($nids)) {
-        $nodes = node_load_multiple($nids);
-        $careerGuide=$nodes[$nids[0]]->body['und'][0]['value'];
+    $nid = variable_get('careerGuide', 47);
+    $node = node_load($nid);
+    if ($node) {
+        $careerGuide = $node->body[LANGUAGE_NONE][0]['value'];
     }
-    $query = db_select('node', 'n')->extend('PagerDefault');
-    $nids = $query
-    ->fields('n', array('nid'))
-    ->condition('type', 'article')
-    ->condition('status', 1)
-    ->condition('title',"创业金融")
-    ->orderBy('created', 'DESC')
-    ->limit(variable_get('default_nodes_main', 1))
-    ->addTag('node_access')
-    ->execute()
-    ->fetchCol();
-    if (!empty($nids)) {
-        $nodes = node_load_multiple($nids);
-        $careerFinance=$nodes[$nids[0]]->body['und'][0]['value'];
+    $nid = variable_get('baseFacilities', 48);
+    $node = node_load($nid);
+    if ($node) {
+        $careerFinance = $node->body[LANGUAGE_NONE][0]['value'];
     }
-    
-    
     
     $variables['modulePath']=$module_path;
     $variables['pioneeringContext']=$pioneeringContext;
@@ -250,31 +197,34 @@ function template_preprocess_campus_page(&$variables) {
 }
 function template_preprocess_admission_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
-    // drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     $variables['modulePath']=$module_path;
     
-    $build = array();
-    $query = db_select('node', 'n')->extend('PagerDefault');
-    $nids = $query
-    ->fields('n', array('nid'))
-    ->condition('type', 'article')
-    ->condition('status', 1)
-    ->condition('title',"招生信息")
-    ->orderBy('created', 'DESC')
-    ->limit(variable_get('default_nodes_main', 1))
-    ->addTag('node_access')
-    ->execute()
-    ->fetchCol();
-    if (!empty($nids)) {
-        $nodes = node_load_multiple($nids);
-        $admission=$nodes[$nids[0]]->body['und'][0]['value'];
-        //$build += node_view_multiple($nodes);
-        //$build['pager'] = array(
-        //'#theme' => 'pager',
-        //'#weight' => 5,
-        //);
+    // $build = array();
+    // $query = db_select('node', 'n')->extend('PagerDefault');
+    // $nids = $query
+    // ->fields('n', array('nid'))
+    // ->condition('type', 'article')
+    // ->condition('status', 1)
+    // ->condition('title',"招生信息")
+    // ->orderBy('created', 'DESC')
+    // ->limit(variable_get('default_nodes_main', 1))
+    // ->addTag('node_access')
+    // ->execute()
+    // ->fetchCol();
+    // if (!empty($nids)) {
+    //     $nodes = node_load_multiple($nids);
+    //     $admission=$nodes[$nids[0]]->body['und'][0]['value'];
+    //     //$build += node_view_multiple($nodes);
+    //     //$build['pager'] = array(
+    //     //'#theme' => 'pager',
+    //     //'#weight' => 5,
+    //     //);
+    // }
+    $nid = variable_get('baseFacilities', 43);
+    $node = node_load($nid);
+    if ($node) {
+        $admission = $node->body[LANGUAGE_NONE][0]['value'];
     }
-    
     $variables['admission']=$admission;
 }
 

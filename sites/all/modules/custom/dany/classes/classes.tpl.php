@@ -22,7 +22,7 @@
             foreach($classList as $key => $value)
             {
             ?>           
-                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <a herf="" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
 				    <a href="classes/class0.php" >
@@ -33,7 +33,7 @@
                         <span class="floatRight">01</span>
                         <span class="floatRight">02</span>
                     </p>
-			   </div>
+			   </a>
             <?php
             }
             ?>
@@ -69,18 +69,20 @@
             foreach($classList as $key => $value)
             {
             ?> 
-                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">收藏</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
-				    <a href="classes/class0.php" >
-                        <h3>课程名称</h3>
-                    </a>
-				    <p>
-                        <span class="farmName">讲师名</span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
-			   </div>
+                <a href="classes/class0.php" >
+                    <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                        <span class="fav">收藏</span> 
+                        <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
+                        
+                            <h3>课程名称</h3>
+                        
+                        <p>
+                            <span class="farmName">讲师名</span>
+                            <span class="floatRight">01</span>
+                            <span class="floatRight">02</span>
+                        </p>
+                </div>
+               </a>
             <?php
             }
             ?>	
@@ -93,19 +95,18 @@
             <?php 
             foreach($classList as $key => $value)
             {
-            ?>    
-                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">收藏</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
-				    <a href="classes/class0.php" >
-                        <h3>课程名称</h3>
-                    </a>
-				    <p>
-                        <span class="farmName">讲师名</span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
-			   </div>
+            ?>  <a href="classes/class0.php" >  
+                    <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                        <span class="fav">收藏</span> 
+                        <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
+                            <h3>课程名称</h3>
+                        <p>
+                            <span class="farmName">讲师名</span>
+                            <span class="floatRight">01</span>
+                            <span class="floatRight">02</span>
+                        </p>
+                </div>
+               </a>
             <?php
             }
             ?>
@@ -119,18 +120,18 @@
             foreach($classList as $key => $value)
             {
             ?>
-                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">喜爱</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
-				    <a href="classes/class0.php" >
+                <a href="classes/class0.php" >
+                    <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                        <span class="fav">喜爱</span> 
+                        <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
                         <h3>课程名称</h3>
-                    </a>
-				    <p>
-                        <span class="farmName">讲师名</span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
-			   </div>
+                        <p>
+                            <span class="farmName">讲师名</span>
+                            <span class="floatRight">01</span>
+                            <span class="floatRight">02</span>
+                        </p>
+                </div>
+               </a>
             <?php
             }
             ?>
