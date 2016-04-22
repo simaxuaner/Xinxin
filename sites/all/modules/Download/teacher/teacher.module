@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: wym
+ * Date: 2016/4/14
+ * Time: 16:18
+ */
+
+/**
+ * Implements hook_node_info()
+ * Create the teacher node.
+ */
+function teacher_node_info(){
+    return array(
+        'teacher'=>array(
+            'name' => t('teacher'),
+            'module' => 'teacher',
+            'base' => 'node_content',
+            'description' => 'the teacher node type for the company',
+            'has_title' => TRUE,
+            'has_body' => TRUE
+        )
+    );
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function teacher_menu()
+{
+    $items['admin/teacher'] = array(
+        'title' => t('名师管理'),
+        'description' => '对站点中的名师进行管理,进行增加、编辑、删除等操作',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('teacher_admin_content'),
+        'access arguments' => array('access content overview'),
+        'file' => 'teacher.pages.inc',
+    );
+
+    $items['admin/teacher/add'] = array(
+        'title' => '添加名师',
+        'title callback' => 'check_plain',
+        'page callback' => 'teacher_add',
+        'access callback' => 'node_access',
+        'access arguments' => array('create', 'teacher'),
+        'type' => MENU_LOCAL_ACTION,
+        'file' => 'teacher.pages.inc',
+    );
+
+    return $items;
+}
