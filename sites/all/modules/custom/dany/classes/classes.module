@@ -118,6 +118,7 @@ function template_preprocess_classes_page(&$variables) {
     {
         $productList[$value]=array(
         'imgurl'      => 'images/classes/class0'.($value+1).'.jpg',
+        'externlink'  => url("teachers/{$node->nid}"),
         'productName' => 'productName1'.$value,
         'farmName'    => 'farmName1'.$value,
         'customers'   => $value,
@@ -157,22 +158,24 @@ function template_preprocess_campus_page(&$variables) {
     $careerGuide="";
     $careerFinance="";
     
-    $query = db_select('node', 'n')->extend('PagerDefault');
-    $nids = $query
-    ->fields('n', array('nid'))
-    ->condition('type', 'article')
-    ->condition('status', 1)
-    ->condition('title',"创业园地")
-    ->orderBy('created', 'DESC')
-    ->limit(variable_get('default_nodes_main', 1))
-    ->addTag('node_access')
-    ->execute()
-    ->fetchCol();
-    if (!empty($nids)) {
-        $nodes = node_load_multiple($nids);
-        $imageurl=explode("//",$nodes[$nids[0]]->field_image[und][0][uri]);
-        $imageurl=$GLOBALS['base_url'].'/sites/default/files/'.$imageurl[1];
-        $pioneeringContext=$nodes[$nids[0]]->body['und'][0]['value'];
+    // $query = db_select('node', 'n')->extend('PagerDefault');
+    // $nids = $query
+    // ->fields('n', array('nid'))
+    // ->condition('type', 'article')
+    // ->condition('status', 1)
+    // ->condition('title',"创业园地")
+    // ->orderBy('created', 'DESC')
+    // ->limit(variable_get('default_nodes_main', 1))
+    // ->addTag('node_access')
+    // ->execute()
+    // ->fetchCol();
+    $nid = variable_get('creative_base', 44);
+    $node = node_load($nid);
+    if ($node) {
+        $pioneeringContext = $node->body[LANGUAGE_NONE][0]['value'];
+        $imgid = $node->field_image[LANGUAGE_NONE][0]['fid'];
+        $imgfile = file_load($imgid);
+        $imageurl = file_create_url($imgfile->uri);
     }
     $query = db_select('node', 'n')->extend('PagerDefault');
     $nids = $query
