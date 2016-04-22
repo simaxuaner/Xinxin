@@ -14,7 +14,7 @@ function news_menu(){
         'title' => t('品牌论坛'),
         'page callback' => 'news_allnews_page_callback',
         'access callback' => TRUE,
-        'weight'=>1,
+        'weight'=>20,
         'type' => MENU_SUGGESTED_ITEM,
         'menu_name' => 'main-menu',
     );
@@ -48,6 +48,7 @@ function news_menu(){
 
 function news_allnews_page_callback()
 {
+    drupal_add_js(drupal_get_path('module','news').'/js/newsaction.js');
     return theme("allNews_page", array());
 }
 
@@ -141,12 +142,22 @@ function template_preprocess_allNews_page(&$variables) {
 			</p>
 			<p>
 				目前，休闲农业示范园的相关工作正在筹备中。主席吕双辉说，休闲农业示范园将结合人文、生态、教育、医保、环保、文创等多元化经营模式，打造多功能的休闲观光园区，未来将在国内起到辐射和示范效应。
+			</p>
+            <p>
+				海促会主席吕双辉介绍说，今年将以交流活动为主，以展会为辅。今年涂岭交流活动的主题确定为“台湾休闲农业的创新与创业”，邀请两岸休闲农业规划设计专家、专业技术员、休闲农业的成功经营者，从规划设计、创意、发展趋势等角度，现场解读休闲农业的“创新经营之道”。
+			</p>
+			<p>
+				“今年涂岭交流活动主推休闲农业，将起到抛砖引玉的作用。”海促会副秘书长叶华镛说，以此次交流活动为契机，新辉大电子商务产业园将引进台湾生态农业，率先在泉港区打造休闲农业示范园。
+			</p>
+			<p>
+				当天，新辉大电子商务产业园区将与台湾台中市和平区农会产销联盟签订水果嫁接技术合作协议；与台湾新世膜科技股份有限公司签订有机水产养殖协议；与台湾中州科技大学签订农产品深加工及学术研究协议；与台湾讯玛国际股份有限公司签订植物工厂合作协议；与台湾高雄市燕巢合作农场签订休闲农场合作开发协议等，为休闲农业示范园奠定扎实的技术基础，将来实现整场技术输出，在全国各地复制式地推广。
+			</p>
+			<p>
+				目前，休闲农业示范园的相关工作正在筹备中。主席吕双辉说，休闲农业示范园将结合人文、生态、教育、医保、环保、文创等多元化经营模式，打造多功能的休闲观光园区，未来将在国内起到辐射和示范效应。
 			</p>',
         );
     }
     
     $variables['noteList']=$noteList;
     $variables['magzineList']=$magzineList;
-    drupal_add_css($module_path.'/css/news_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => -1));
-    //drupal_add_js($module_path.'/js/scripts.js');
 }

@@ -26,7 +26,7 @@
         foreach($noteList as $key => $value)
         {
         ?>
-            <article class="newsItem onClick="expandParent(this)">
+            <article class="newsItem">
                 <span class="dateBlock"><?php print $value['date'] ?></span>
                 <img src="<?php print $imageLinkPathHead.'/'.$value['imgurl']?>"/>
                 <h2><?php print $value['title'] ?></h2>

@@ -88,20 +88,20 @@ function forum_theme() {
  */
 function forum_menu() {
   $items['forum'] = array(
-    'title' => 'Forums',
+    'title' => '讨论区',
     'page callback' => 'forum_page',
     'access arguments' => array('access content'),
     'file' => 'forum.pages.inc',
   );
   $items['forum/%forum_forum'] = array(
-    'title' => 'Forums',
+    'title' => '讨论区',
     'page callback' => 'forum_page',
     'page arguments' => array(1),
     'access arguments' => array('access content'),
     'file' => 'forum.pages.inc',
   );
   $items['admin/structure/forum'] = array(
-    'title' => 'Forums',
+    'title' => '讨论区',
     'description' => 'Control forum hierarchy settings.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('forum_overview'),

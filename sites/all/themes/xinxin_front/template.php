@@ -38,6 +38,10 @@ function xinxin_front_preprocess_html(&$vars)
 
 }
 
+function menu_sort_weights($link1, $link2) {
+    return $link1['link']['weight'] < $link2['link']['weight'] ? 1 : 0;
+}
+
 /**
  * Override or insert variables into the page template.
  */
@@ -58,6 +62,7 @@ function xinxin_front_preprocess_page(&$vars)
             $links[] = $item;
         }
         $tree = menu_tree_data($links);
+        uasort($tree, "menu_sort_weights");
         $menu_links = '<ul>';
         foreach ($tree as $menu_item) {
 
