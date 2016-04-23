@@ -10,7 +10,7 @@
 			<video controls preload=""><source src="videos/video0.webm"> <source src="videos/video0.mov"></video>
 		</div>
      <a href="teacher0.php">
-		<div class="block w20 floatRight noMargin">
+		<div class="block1 w20 floatRight noMargin">
 			<span class="fav">喜爱</span> <img src="images/teachers/teacher01.jpg">
 			<h3>林老师</h3>
 			<p><span class="farmName">专业领域</span><span class="floatRight">01</span><span class="floatRight">02</span></p>

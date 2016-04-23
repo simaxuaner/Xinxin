@@ -1,23 +1,4 @@
 <main>
-	<nav class="w20" id="sideNav">
-		<ul>
-			<li>
-				<a href="classes.php">农业课堂</a>
-			</li>
-			<li class="activeNavItem">
-				<a href="teachers.php">农业名师</a>
-			</li>
-			<li>
-				<a href="campus.php">创业园地</a>
-			</li>
-			<li>
-				<a href="admission.php">招生信息</a>
-			</li>
-			<li>
-				<a href="files.php">资料下载</a>
-			</li>
-		</ul>
-	</nav>
 	<section class="w80">
 		<div class="bar">
 			<h1><a class="underline" href="teachers.php">农业名师</a> &gt;详细信息</h1>
@@ -40,35 +21,35 @@
 			<h2>相关课程</h2>
 		</div>
     <a href="class0.php">
-		<div class="block">
+		<div class="block1">
 			<span class="fav">收藏</span> <img alt="class" src="images/classes/class01.jpg">
 			<h3>课程名称</h3>
 			<p><span class="farmName">讲师名</span><span class="floatRight">01</span><span class="floatRight">02</span></p>
 		</div>
     </a>
     <a href="class0.php">
-		<div class="block">
+		<div class="block1">
 			<span class="fav">收藏</span> <img alt="class" src="images/classes/class02.jpg">
 			<h3>课程名称</h3>
 			<p><span class="farmName">讲师名</span><span class="floatRight">01</span><span class="floatRight">02</span></p>
 		</div>
     </a>
     <a href="class0.php">
-		<div class="block">
+		<div class="block1">
 			<span class="fav">收藏</span> <img alt="class" src="images/classes/class03.jpg">
 			<h3>课程名</h3>
 			<p><span class="farmName">讲师名</span><span class="floatRight">01</span><span class="floatRight">02</span></p>
 		</div>
     </a>
     <a href="class0.php">
-		<div class="block noMarginRight">
+		<div class="block1 noMarginRight">
 			<span class="fav">收藏</span> <img alt="class" src="images/classes/class04.jpg">
 			<h3>课程名</h3>
 			<p><span class="farmName">讲师名</span><span class="floatRight">01</span><span class="floatRight">02</span></p>
 		</div>
     </a>
     <a href="class0.php">
-		<div class="block">
+		<div class="block1">
 			<span class="fav">收藏</span> <img alt="class" src="images/classes/class05.jpg">
 			<h3>课程名称</h3>
 			<p><span class="farmName">讲师名</span><span class="floatRight">01</span><span class="floatRight">02</span></p>

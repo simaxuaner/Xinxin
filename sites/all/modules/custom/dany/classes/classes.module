@@ -51,6 +51,20 @@ function classes_menu(){
         'type' => MENU_DEFAULT_LOCAL_TASK,
         'menu_name' => 'main-menu',
     );
+    $items['classes/detailclass/%'] = array(
+        'title' => t('详细内容'),
+        'page callback' => 'classes_detailclass_page_callback',
+        'page arguments'=> array(2),
+        'access callback' => TRUE,
+        'menu_name' => 'user-menu',
+    );
+    $items['classes/detailteacher/%'] = array(
+        'title' => t('详细内容'),
+        'page callback' => 'classes_detailteacher_page_callback',
+        'page arguments'=> array(1),
+        'access callback' => TRUE,
+        'menu_name' => 'user-menu',
+    );
     return $items;
 }
 
@@ -82,6 +96,16 @@ function classes_files_page_callback(){
     return theme("files_page", array());
 }
 
+function classes_detailclass_page_callback($nid){
+    return theme("detailclass_page", array());
+}
+
+function classes_detailteacher_page_callback($nid){
+    if(!$nid)
+        return "您没有权限访问该页面，请登录";
+    return theme("detailteacher_page",array());
+}
+
 /**
  * Implements hook_theme()
  */
@@ -107,6 +131,14 @@ function classes_theme() {
             'variables'=> array(),
             'template' => 'files',
         ),
+        'detailclass_page' => array(
+            'variables'=> array(),
+            'template' => 'detailclass',
+        ),
+        'detailteacher_page' => array(
+            'variables'=> array(),
+            'template' => 'detailteacher',
+        ),
     );
 }
 
@@ -122,7 +154,8 @@ function template_preprocess_classes_page(&$variables) {
         'productName' => 'productName1'.$value,
         'farmName'    => 'farmName1'.$value,
         'customers'   => $value,
-        'comments'    => 'comments1.$value'
+        'comments'    => 'comments1.$value',
+        'detailurl'   => $GLOBALS['base_url'].'/?q=classes/detailteacher/'.$value,
         );
     }
     //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
@@ -141,7 +174,8 @@ function template_preprocess_teachers_page(&$variables) {
         'teacherName' => '',
         'farmName'    => 'farmName1'.$value,
         'customers'   => $value,
-        'comments'    => 'comments1.$value'
+        'comments'    => 'comments1.$value',
+        'nid'         => $value,
         );
     }
     //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
