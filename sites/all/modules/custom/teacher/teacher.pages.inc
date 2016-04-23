@@ -6,163 +6,51 @@
  */
 
 /**
- * Make mass update of nodes, changing all nodes in the $nodes array
- * to update them with the field values in $updates.
- *
- * IMPORTANT NOTE: This function is intended to work when called from a form
- * submission handler. Calling it outside of the form submission process may not
- * work correctly.
- *
- * @param array $nodes
- *   Array of teacher nids to update.
- * @param array $updates
- *   Array of key/value pairs with node field names and the value to update that
- *   field to.
+ * teacher_operations().
+ * 更新操作
  */
-function node_mass_update($nodes, $updates) {
-    // We use batch processing to prevent timeout when updating a large number
-    // of nodes.
-    if (count($nodes) > 10) {
-        $batch = array(
-            'operations' => array(
-                array('_node_mass_update_batch_process', array($nodes, $updates))
-            ),
-            'finished' => '_node_mass_update_batch_finished',
-            'title' => t('Processing'),
-            // We use a single multi-pass operation, so the default
-            // 'Remaining x of y operations' message will be confusing here.
-            'progress_message' => '',
-            'error_message' => t('The update has encountered an error.'),
-            // The operations do not live in the .module file, so we need to
-            // tell the batch engine which file to load before calling them.
-            'file' => drupal_get_path('module', 'node') . '/node.admin.inc',
-        );
-        batch_set($batch);
-    }
-    else {
-        foreach ($nodes as $nid) {
-            _node_mass_update_helper($nid, $updates);
-        }
-        drupal_set_message(t('The update has been performed.'));
-    }
+function teacher_operations() {
+    $operations = array(
+        'publish' => array(
+            'label' => t('Publish selected content'),
+            'callback' => 'teacher_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED)),
+        ),
+        'unpublish' => array(
+            'label' => t('Unpublish selected content'),
+            'callback' => 'teacher_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_NOT_PUBLISHED)),
+        ),
+        'promote' => array(
+            'label' => t('Promote selected content to front page'),
+            'callback' => 'teacher_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'promote' => NODE_PROMOTED)),
+        ),
+        'demote' => array(
+            'label' => t('Demote selected content from front page'),
+            'callback' => 'teacher_mass_update',
+            'callback arguments' => array('updates' => array('promote' => NODE_NOT_PROMOTED)),
+        ),
+        'sticky' => array(
+            'label' => t('Make selected content sticky'),
+            'callback' => 'teacher_mass_update',
+            'callback arguments' => array('updates' => array('status' => NODE_PUBLISHED, 'sticky' => NODE_STICKY)),
+        ),
+        'unsticky' => array(
+            'label' => t('Make selected content not sticky'),
+            'callback' => 'teacher_mass_update',
+            'callback arguments' => array('updates' => array('sticky' => NODE_NOT_STICKY)),
+        ),
+        'delete' => array(
+            'label' => t('Delete selected content'),
+            'callback' => NULL,
+        ),
+    );
+    return $operations;
 }
 
 /**
- * Updates individual nodes when fewer than 10 are queued.
- *
- * @param $nid
- *   ID of node to update.
- * @param $updates
- *   Associative array of updates.
- *
- * @return object
- *   An updated node object.
- *
- * @see node_mass_update()
- */
-function _node_mass_update_helper($nid, $updates) {
-    $node = node_load($nid, NULL, TRUE);
-    // For efficiency manually save the original node before applying any changes.
-    $node->original = clone $node;
-    foreach ($updates as $name => $value) {
-        $node->$name = $value;
-    }
-    node_save($node);
-    return $node;
-}
-
-/**
- * Implements callback_batch_operation().
- *
- * Executes a batch operation for node_mass_update().
- *
- * @param array $nodes
- *   An array of node IDs.
- * @param array $updates
- *   Associative array of updates.
- * @param array $context
- *   An array of contextual key/values.
- */
-function _node_mass_update_batch_process($nodes, $updates, &$context) {
-    if (!isset($context['sandbox']['progress'])) {
-        $context['sandbox']['progress'] = 0;
-        $context['sandbox']['max'] = count($nodes);
-        $context['sandbox']['nodes'] = $nodes;
-    }
-
-    // Process nodes by groups of 5.
-    $count = min(5, count($context['sandbox']['nodes']));
-    for ($i = 1; $i <= $count; $i++) {
-        // For each nid, load the node, reset the values, and save it.
-        $nid = array_shift($context['sandbox']['nodes']);
-        $node = _node_mass_update_helper($nid, $updates);
-
-        // Store result for post-processing in the finished callback.
-        $context['results'][] = l($node->title, 'node/' . $node->nid);
-
-        // Update our progress information.
-        $context['sandbox']['progress']++;
-    }
-
-    // Inform the batch engine that we are not finished,
-    // and provide an estimation of the completion level we reached.
-    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
-        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
-    }
-}
-
-/**
- * Implements callback_batch_finished().
- *
- * Reports the status of batch operation for node_mass_update().
- *
- * @param bool $success
- *   A boolean indicating whether the batch mass update operation successfully
- *   concluded.
- * @param int $results
- *   The number of nodes updated via the batch mode process.
- * @param array $operations
- *   An array of function calls (not used in this function).
- */
-function _node_mass_update_batch_finished($success, $results, $operations) {
-    if ($success) {
-        drupal_set_message(t('The update has been performed.'));
-    }
-    else {
-        drupal_set_message(t('An error occurred and processing did not complete.'), 'error');
-        $message = format_plural(count($results), '1 item successfully processed:', '@count items successfully processed:');
-        $message .= theme('item_list', array('items' => $results));
-        drupal_set_message($message);
-    }
-}
-
-/**
- * Page callback: Form constructor for the content administration form.
- *
- * @see teacher_admin_nodes()
- * @see teacher_admin_nodes_submit()
- * @see teacher_admin_nodes_validate()
- * @see teacher_filter_form()
- * @see teacher_filter_form_submit()
- * @see teacher_menu()
- * @see teacher_multiple_delete_confirm()
- * @see teacher_multiple_delete_confirm_submit()
- * @ingroup forms
- */
-function teacher_admin_content($form, $form_state) {
-
-    if (isset($form_state['values']['operation']) && $form_state['values']['operation'] == 'delete') {
-        return node_multiple_delete_confirm($form, $form_state, array_filter($form_state['values']['nodes']));
-    }
-    $form['filter'] = teacher_filter_form();
-    $form['#submit'][] = 'teacher_filter_form_submit';
-    $form['admin'] = teacher_admin_nodes();
-
-    return $form;
-}
-
-/**
- * List teacher administration filters that can be applied.
+ * List node administration filters that can be applied.
  *
  * @return
  *   An associative array of filters.
@@ -188,18 +76,61 @@ function teacher_filters() {
             'translate-1' => t('Outdated translation'),
         );
     }
+
+    //删除掉节点类型过滤选项
+    /*$filters['type'] = array(
+        'title' => t('type'),
+        'options' => array(
+                '[any]' => t('any'),
+            ) + node_type_get_names(),
+    );*/
+
+    //删除掉语言过滤选项
+    // Language filter if there is a list of languages
+    /*if ($languages = module_invoke('locale', 'language_list')) {
+        $languages = array(LANGUAGE_NONE => t('Language neutral')) + $languages;
+        $filters['language'] = array(
+            'title' => t('language'),
+            'options' => array(
+                    '[any]' => t('any'),
+                ) + $languages,
+        );
+    }*/
     return $filters;
 }
 
 /**
- * Returns the teacher administration filters form array to teacher_admin_content().
+ * Applies filters for node administration filters based on session.
+ *
+ * @param $query
+ *   A SelectQuery to which the filters should be applied.
+ */
+function node_build_filter_query(SelectQueryInterface $query) {
+    // Build query
+    $filter_data = isset($_SESSION['node_overview_filter']) ? $_SESSION['node_overview_filter'] : array();
+    foreach ($filter_data as $index => $filter) {
+        list($key, $value) = $filter;
+        switch ($key) {
+            case 'status':
+                // Note: no exploitable hole as $key/$value have already been checked when submitted
+                list($key, $value) = explode('-', $value, 2);
+            case 'type':
+            case 'language':
+                $query->condition('n.' . $key, $value);
+                break;
+        }
+    }
+}
+
+/**
+ * Returns the node administration filters form array to teacher_admin_content().
  *
  * @see teacher_admin_nodes()
  * @see teacher_admin_nodes_submit()
  * @see teacher_admin_nodes_validate()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see teacher_filter_form_submit()
+ * @see teacher_multiple_delete_confirm()
+ * @see teacher_multiple_delete_confirm_submit()
  *
  * @ingroup forms
  */
@@ -276,14 +207,207 @@ function teacher_filter_form() {
 }
 
 /**
- * Form builder: Builds the teacher administration overview.
+ * Form submission handler for teacher_filter_form().
+ *
+ * @see teacher_admin_content()
+ * @see teacher_admin_nodes()
+ * @see teacher_admin_nodes_submit()
+ * @see teacher_admin_nodes_validate()
+ * @see teacher_filter_form()
+ * @see teacher_multiple_delete_confirm()
+ * @see teacher_multiple_delete_confirm_submit()
+ */
+function teacher_filter_form_submit($form, &$form_state) {
+    $filters = teacher_filters();
+    switch ($form_state['values']['op']) {
+        case t('Filter'):
+        case t('Refine'):
+            // Apply every filter that has a choice selected other than 'any'.
+            foreach ($filters as $filter => $options) {
+                if (isset($form_state['values'][$filter]) && $form_state['values'][$filter] != '[any]') {
+                    // Flatten the options array to accommodate hierarchical/nested options.
+                    $flat_options = form_options_flatten($filters[$filter]['options']);
+                    // Only accept valid selections offered on the dropdown, block bad input.
+                    if (isset($flat_options[$form_state['values'][$filter]])) {
+                        $_SESSION['node_overview_filter'][] = array($filter, $form_state['values'][$filter]);
+                    }
+                }
+            }
+            break;
+        case t('Undo'):
+            array_pop($_SESSION['node_overview_filter']);
+            break;
+        case t('Reset'):
+            $_SESSION['node_overview_filter'] = array();
+            break;
+    }
+}
+
+/**
+ * Make mass update of nodes, changing all nodes in the $nodes array
+ * to update them with the field values in $updates.
+ *
+ * IMPORTANT NOTE: This function is intended to work when called from a form
+ * submission handler. Calling it outside of the form submission process may not
+ * work correctly.
+ *
+ * @param array $nodes
+ *   Array of teacher nids to update.
+ * @param array $updates
+ *   Array of key/value pairs with node field names and the value to update that
+ *   field to.
+ */
+function teacher_mass_update($nodes, $updates) {
+    // We use batch processing to prevent timeout when updating a large number
+    // of nodes.
+    if (count($nodes) > 10) {
+        $batch = array(
+            'operations' => array(
+                array('_teacher_mass_update_batch_process', array($nodes, $updates))
+            ),
+            'finished' => '_teacher_mass_update_batch_finished',
+            'title' => t('Processing'),
+            // We use a single multi-pass operation, so the default
+            // 'Remaining x of y operations' message will be confusing here.
+            'progress_message' => '',
+            'error_message' => t('The update has encountered an error.'),
+            // The operations do not live in the .module file, so we need to
+            // tell the batch engine which file to load before calling them.
+            'file' => drupal_get_path('module', 'node') . '/node.admin.inc',
+        );
+        batch_set($batch);
+    }
+    else {
+        foreach ($nodes as $nid) {
+            _teacher_mass_update_helper($nid, $updates);
+        }
+        drupal_set_message(t('The update has been performed.'));
+    }
+}
+
+/**
+ * Updates individual nodes when fewer than 10 are queued.
+ *
+ * @param $nid
+ *   ID of node to update.
+ * @param $updates
+ *   Associative array of updates.
+ *
+ * @return object
+ *   An updated node object.
+ *
+ * @see teacher_mass_update()
+ */
+function _teacher_mass_update_helper($nid, $updates) {
+    $node = node_load($nid, NULL, TRUE);
+    // For efficiency manually save the original node before applying any changes.
+    $node->original = clone $node;
+    foreach ($updates as $name => $value) {
+        $node->$name = $value;
+    }
+    node_save($node);
+    return $node;
+}
+
+/**
+ * Implements callback_batch_operation().
+ *
+ * Executes a batch operation for teacher_mass_update().
+ *
+ * @param array $nodes
+ *   An array of node IDs.
+ * @param array $updates
+ *   Associative array of updates.
+ * @param array $context
+ *   An array of contextual key/values.
+ */
+function _teacher_mass_update_batch_process($nodes, $updates, &$context) {
+    if (!isset($context['sandbox']['progress'])) {
+        $context['sandbox']['progress'] = 0;
+        $context['sandbox']['max'] = count($nodes);
+        $context['sandbox']['nodes'] = $nodes;
+    }
+
+    // Process nodes by groups of 5.
+    $count = min(5, count($context['sandbox']['nodes']));
+    for ($i = 1; $i <= $count; $i++) {
+        // For each nid, load the node, reset the values, and save it.
+        $nid = array_shift($context['sandbox']['nodes']);
+        $node = _teacher_mass_update_helper($nid, $updates);
+
+        // Store result for post-processing in the finished callback.
+        $context['results'][] = l($node->title, 'node/' . $node->nid);
+
+        // Update our progress information.
+        $context['sandbox']['progress']++;
+    }
+
+    // Inform the batch engine that we are not finished,
+    // and provide an estimation of the completion level we reached.
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    }
+}
+
+/**
+ * Implements callback_batch_finished().
+ *
+ * Reports the status of batch operation for teacher_mass_update().
+ *
+ * @param bool $success
+ *   A boolean indicating whether the batch mass update operation successfully
+ *   concluded.
+ * @param int $results
+ *   The number of nodes updated via the batch mode process.
+ * @param array $operations
+ *   An array of function calls (not used in this function).
+ */
+function _teacher_mass_update_batch_finished($success, $results, $operations) {
+    if ($success) {
+        drupal_set_message(t('The update has been performed.'));
+    }
+    else {
+        drupal_set_message(t('An error occurred and processing did not complete.'), 'error');
+        $message = format_plural(count($results), '1 item successfully processed:', '@count items successfully processed:');
+        $message .= theme('item_list', array('items' => $results));
+        drupal_set_message($message);
+    }
+}
+
+/**
+ * Page callback: Form constructor for the content administration form.
+ *
+ * @see teacher_admin_nodes()
+ * @see teacher_admin_nodes_submit()
+ * @see teacher_admin_nodes_validate()
+ * @see teacher_filter_form()
+ * @see teacher_filter_form_submit()
+ * @see teacher_menu()
+ * @see teacher_multiple_delete_confirm()
+ * @see teacher_multiple_delete_confirm_submit()
+ * @ingroup forms
+ */
+function teacher_admin_content($form, $form_state) {
+
+    if (isset($form_state['values']['operation']) && $form_state['values']['operation'] == 'delete') {
+        return teacher_multiple_delete_confirm($form, $form_state, array_filter($form_state['values']['nodes']));
+    }
+    $form['filter'] = teacher_filter_form();
+    $form['#submit'][] = 'teacher_filter_form_submit';
+    $form['admin'] = teacher_admin_nodes();
+
+    return $form;
+}
+
+/**
+ * Form builder: Builds the node administration overview.
  *
  * @see teacher_admin_nodes_submit()
  * @see teacher_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
+ * @see teacher_filter_form()
+ * @see teacher_filter_form_submit()
  * @see teacher_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see teacher_multiple_delete_confirm_submit()
  *
  * @ingroup forms
  */
@@ -299,9 +423,11 @@ function teacher_admin_nodes() {
     );
 
     $options = array();
-    foreach (module_invoke_all('node_operations') as $operation => $array) {
+    $operations = teacher_operations();
+    foreach($operations as $operation => $array){
         $options[$operation] = $array['label'];
     }
+
     $form['options']['operation'] = array(
         '#type' => 'select',
         '#title' => t('Operation'),
@@ -332,7 +458,7 @@ function teacher_admin_nodes() {
 
     $query = db_select('node', 'n')->extend('PagerDefault')->extend('TableSort');
     $query->addTag('node_admin_filter');
-    teacher_build_filter_query($query);
+    node_build_filter_query($query);
 
     if (!user_access('bypass node access')) {
         // If the user is able to view their own unpublished nodes, allow them
@@ -351,7 +477,7 @@ function teacher_admin_nodes() {
     }
     $nids = $query
         ->fields('n',array('nid'))
-        ->condition('type', 'teacher')   //筛选出农场类型的内容
+        ->condition('type', 'teacher')   //山选出产品类型的node
         ->limit(50)
         ->orderByHeader($header)
         ->addTag('node_access')
@@ -383,7 +509,6 @@ function teacher_admin_nodes() {
             'status' => $node->status ? t('published') : t('not published'),
             'changed' => format_date($node->changed, 'short'),
         );
-
         // Build a list of all the accessible operations for the current node.
         $operations = array();
         if (node_access('update', $node)) {
@@ -400,7 +525,6 @@ function teacher_admin_nodes() {
                 'query' => $destination,
             );
         }
-
         $options[$node->nid]['operations'] = array();
         if (count($operations) > 1) {
             // Render an unordered list of operations links.
@@ -451,92 +575,22 @@ function teacher_admin_nodes() {
 }
 
 /**
- * Form submission handler for node_filter_form().
+ * Validate teacher_admin_nodes form submissions.
  *
- * @see node_admin_content()
+ * Checks whether any nodes have been selected to perform the chosen 'Update
+ * option' on.
+ *
  * @see teacher_admin_nodes()
  * @see teacher_admin_nodes_submit()
- * @see teacher_admin_nodes_validate()
- * @see node_filter_form()
+ * @see teacher_filter_form()
+ * @see teacher_filter_form_submit()
  * @see teacher_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see teacher_multiple_delete_confirm_submit()
  */
-function teacher_filter_form_submit($form, &$form_state) {
-    $filters = teacher_filters();
-    switch ($form_state['values']['op']) {
-        case t('Filter'):
-        case t('Refine'):
-            // Apply every filter that has a choice selected other than 'any'.
-            foreach ($filters as $filter => $options) {
-                if (isset($form_state['values'][$filter]) && $form_state['values'][$filter] != '[any]') {
-                    // Flatten the options array to accommodate hierarchical/nested options.
-                    $flat_options = form_options_flatten($filters[$filter]['options']);
-                    // Only accept valid selections offered on the dropdown, block bad input.
-                    if (isset($flat_options[$form_state['values'][$filter]])) {
-                        $_SESSION['node_overview_filter'][] = array($filter, $form_state['values'][$filter]);
-                    }
-                }
-            }
-            break;
-        case t('Undo'):
-            array_pop($_SESSION['node_overview_filter']);
-            break;
-        case t('Reset'):
-            $_SESSION['node_overview_filter'] = array();
-            break;
-    }
-}
-
-/**
- * Multiple node deletion confirmation form for teacher_admin_content().
- *
- * @see teacher_admin_nodes()
- * @see teacher_admin_nodes_submit()
- * @see teacher_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm_submit()
- * @ingroup forms
- */
-function teacher_multiple_delete_confirm($form, &$form_state, $nodes) {
-    $form['nodes'] = array('#prefix' => '<ul>', '#suffix' => '</ul>', '#tree' => TRUE);
-    // array_filter returns only elements with TRUE values
-    foreach ($nodes as $nid => $value) {
-        $title = db_query('SELECT title FROM {node} WHERE nid = :nid', array(':nid' => $nid))->fetchField();
-        $form['nodes'][$nid] = array(
-            '#type' => 'hidden',
-            '#value' => $nid,
-            '#prefix' => '<li>',
-            '#suffix' => check_plain($title) . "</li>\n",
-        );
-    }
-    $form['operation'] = array('#type' => 'hidden', '#value' => 'delete');
-    $form['#submit'][] = 'node_multiple_delete_confirm_submit';
-    $confirm_question = format_plural(count($nodes),
-        'Are you sure you want to delete this item?',
-        'Are you sure you want to delete these items?');
-    return confirm_form($form,
-        $confirm_question,
-        'admin/content', t('This action cannot be undone.'),
-        t('Delete'), t('Cancel'));
-}
-
-/**
- * Applies filters for teacher administration filters based on session.
- *
- * @param $query
- *   A SelectQuery to which the filters should be applied.
- */
-function teacher_build_filter_query(SelectQueryInterface $query) {
-    // Build query
-    $filter_data = isset($_SESSION['node_overview_filter']) ? $_SESSION['node_overview_filter'] : array();
-    foreach ($filter_data as $index => $filter) {
-        list($key, $value) = $filter;
-        switch ($key) {
-            case 'status':
-                // Note: no exploitable hole as $key/$value have already been checked when submitted
-                list($key, $value) = explode('-', $value, 2);
-        }
+function teacher_admin_nodes_validate($form, &$form_state) {
+    // Error if there are no items to select.
+    if (!is_array($form_state['values']['nodes']) || !count(array_filter($form_state['values']['nodes']))) {
+        form_set_error('', t('No items selected.'));
     }
 }
 
@@ -547,13 +601,13 @@ function teacher_build_filter_query(SelectQueryInterface $query) {
  *
  * @see teacher_admin_nodes()
  * @see teacher_admin_nodes_validate()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see teacher_filter_form()
+ * @see teacher_filter_form_submit()
+ * @see teacher_multiple_delete_confirm()
+ * @see teacher_multiple_delete_confirm_submit()
  */
 function teacher_admin_nodes_submit($form, &$form_state) {
-    $operations = module_invoke_all('node_operations');
+    $operations = teacher_operations();
     $operation = $operations[$form_state['values']['operation']];
     // Filter out unchecked nodes
     $nodes = array_filter($form_state['values']['nodes']);
@@ -577,27 +631,65 @@ function teacher_admin_nodes_submit($form, &$form_state) {
 }
 
 /**
- * Validate teacher_admin_nodes form submissions.
- *
- * Checks whether any nodes have been selected to perform the chosen 'Update
- * option' on.
+ * Multiple node deletion confirmation form for teacher_admin_content().
  *
  * @see teacher_admin_nodes()
  * @see teacher_admin_nodes_submit()
- * @see node_filter_form()
- * @see node_filter_form_submit()
- * @see node_multiple_delete_confirm()
- * @see node_multiple_delete_confirm_submit()
+ * @see teacher_admin_nodes_validate()
+ * @see teacher_filter_form()
+ * @see teacher_filter_form_submit()
+ * @see teacher_multiple_delete_confirm_submit()
+ * @ingroup forms
  */
-function teacher_admin_nodes_validate($form, &$form_state) {
-    // Error if there are no items to select.
-    if (!is_array($form_state['values']['nodes']) || !count(array_filter($form_state['values']['nodes']))) {
-        form_set_error('', t('No items selected.'));
+function teacher_multiple_delete_confirm($form, &$form_state, $nodes) {
+    $form['nodes'] = array('#prefix' => '<ul>', '#suffix' => '</ul>', '#tree' => TRUE);
+    // array_filter returns only elements with TRUE values
+    foreach ($nodes as $nid => $value) {
+        $title = db_query('SELECT title FROM {node} WHERE nid = :nid', array(':nid' => $nid))->fetchField();
+        $form['nodes'][$nid] = array(
+            '#type' => 'hidden',
+            '#value' => $nid,
+            '#prefix' => '<li>',
+            '#suffix' => check_plain($title) . "</li>\n",
+        );
     }
+    $form['operation'] = array('#type' => 'hidden', '#value' => 'delete');
+    $form['#submit'][] = 'teacher_multiple_delete_confirm_submit';
+    $confirm_question = format_plural(count($nodes),
+        'Are you sure you want to delete this item?',
+        'Are you sure you want to delete these items?');
+    return confirm_form($form,
+        $confirm_question,
+        'admin/content', t('This action cannot be undone.'),
+        t('Delete'), t('Cancel'));
 }
 
 /**
- * Returns a teacher submission form.
+ * Form submission handler for teacher_multiple_delete_confirm().
+ *
+ * @see teacher_admin_nodes()
+ * @see teacher_admin_nodes_submit()
+ * @see teacher_admin_nodes_validate()
+ * @see teacher_filter_form()
+ * @see teacher_filter_form_submit()
+ * @see teacher_multiple_delete_confirm()
+ */
+function teacher_multiple_delete_confirm_submit($form, &$form_state) {
+    if ($form_state['values']['confirm']) {
+        node_delete_multiple(array_keys($form_state['values']['nodes']));
+        cache_clear_all();
+        $count = count($form_state['values']['nodes']);
+        watchdog('content', 'Deleted @count posts.', array('@count' => $count));
+        drupal_set_message(format_plural($count, 'Deleted 1 post.', 'Deleted @count posts.'));
+    }
+    $form_state['redirect'] = 'admin/content';
+}
+
+/**
+ * Returns a node submission form.
+ *
+ * @param $type
+ *   The node type for the submitted node.
  *
  * @return
  *   The themed form.
@@ -640,8 +732,8 @@ function teacher_form($form, &$form_state, $node) {
     }
 
     // Some special stuff when previewing a node.
-    if (isset($form_state['node_preview'])) {
-        $form['#prefix'] = $form_state['node_preview'];
+    if (isset($form_state['teacher_preview'])) {
+        $form['#prefix'] = $form_state['teacher_preview'];
         $node->in_preview = TRUE;
     }
     else {
@@ -809,13 +901,13 @@ function teacher_form($form, &$form_state, $node) {
     $form['actions'] = array('#type' => 'actions');
     $form['actions']['submit'] = array(
         '#type' => 'submit',
-        '#access' => variable_get('node_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_REQUIRED || (!form_get_errors() && isset($form_state['node_preview'])),
+        '#access' => variable_get('teacher_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_REQUIRED || (!form_get_errors() && isset($form_state['teacher_preview'])),
         '#value' => t('Save'),
         '#weight' => 5,
         '#submit' => array('teacher_form_submit'),
     );
     $form['actions']['preview'] = array(
-        '#access' => variable_get('node_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_DISABLED,
+        '#access' => variable_get('teacher_preview_' . $node->type, DRUPAL_OPTIONAL) != DRUPAL_DISABLED,
         '#type' => 'submit',
         '#value' => t('Preview'),
         '#weight' => 10,
@@ -882,6 +974,36 @@ function teacher_form_submit($form, &$form_state) {
 }
 
 /**
+ * Form submission handler for teacher_form().
+ *
+ * Handles the 'Preview' button on the node form.
+ *
+ * @see teacher_form()
+ */
+function teacher_form_build_preview($form, &$form_state) {
+    $node = teacher_form_submit_build_node($form, $form_state);
+    $form_state['teacher_preview'] = teacher_preview($node);
+    $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Form submission handler for teacher_form().
+ *
+ * Handles the 'Delete' button on the node form.
+ *
+ * @see teacher_form()
+ */
+function teacher_form_delete_submit($form, &$form_state) {
+    $destination = array();
+    if (isset($_GET['destination'])) {
+        $destination = drupal_get_destination();
+        unset($_GET['destination']);
+    }
+    $node = $form['#node'];
+    $form_state['redirect'] = array('node/' . $node->nid . '/delete', array('query' => $destination));
+}
+
+/**
  * Form validation handler for teacher_form().
  *
  * @see teacher_form()
@@ -894,36 +1016,6 @@ function teacher_form_validate($form, &$form_state) {
     $node = (object) $form_state['values'];
     node_validate($node, $form, $form_state);
     entity_form_field_validate('node', $form, $form_state);
-}
-
-/**
- * Form submission handler for teacher_form().
- *
- * Handles the 'Preview' button on the teacher form.
- *
- * @see teacher_form()
- */
-function teacher_form_build_preview($form, &$form_state) {
-    $node = teacher_form_submit_build_node($form, $form_state);
-    $form_state['node_preview'] = node_preview($node);
-    $form_state['rebuild'] = TRUE;
-}
-
-/**
- * Form submission handler for teacher_form().
- *
- * Handles the 'Delete' button on the teacher form.
- *
- * @see teacher_form()
- */
-function teacher_form_delete_submit($form, &$form_state) {
-    $destination = array();
-    if (isset($_GET['destination'])) {
-        $destination = drupal_get_destination();
-        unset($_GET['destination']);
-    }
-    $node = $form['#node'];
-    $form_state['redirect'] = array('node/' . $node->nid . '/delete', array('query' => $destination));
 }
 
 /**
@@ -957,4 +1049,54 @@ function teacher_form_submit_build_node($form, &$form_state) {
         $function($node, $form, $form_state);
     }
     return $node;
+}
+
+/**
+ * Generates a node preview.
+ *
+ * @param $node
+ *   The node to preview.
+ *
+ * @return
+ *   An HTML-formatted string of a node preview.
+ *
+ * @see teacher_form_build_preview()
+ */
+function teacher_preview($node) {
+    // Clone the node before previewing it to prevent the node itself from being
+    // modified.
+    $cloned_node = clone $node;
+    if (node_access('create', $cloned_node) || node_access('update', $cloned_node)) {
+        _field_invoke_multiple('load', 'node', array($cloned_node->nid => $cloned_node));
+        // Load the user's name when needed.
+        if (isset($cloned_node->name)) {
+            // The use of isset() is mandatory in the context of user IDs, because
+            // user ID 0 denotes the anonymous user.
+            if ($user = user_load_by_name($cloned_node->name)) {
+                $cloned_node->uid = $user->uid;
+                $cloned_node->picture = $user->picture;
+            }
+            else {
+                $cloned_node->uid = 0; // anonymous user
+            }
+        }
+        elseif ($cloned_node->uid) {
+            $user = user_load($cloned_node->uid);
+            $cloned_node->name = $user->name;
+            $cloned_node->picture = $user->picture;
+        }
+
+        $cloned_node->changed = REQUEST_TIME;
+        $nodes = array($cloned_node->nid => $cloned_node);
+
+        // Display a preview of the node.
+        if (!form_get_errors()) {
+            $cloned_node->in_preview = TRUE;
+            $output = theme('teacher_preview', array('node' => $cloned_node));
+            unset($cloned_node->in_preview);
+        }
+        drupal_set_title(t('Preview'), PASS_THROUGH);
+
+        return $output;
+    }
 }

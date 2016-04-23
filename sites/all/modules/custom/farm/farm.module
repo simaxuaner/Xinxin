@@ -103,7 +103,7 @@ function farm_menu()
 function farm_page_callback($fid){
     $farm = node_load($fid);
     //查找出农场图片
-    $farm_image_uri = $farm->field_farm_image['und'][0]['uri'];
+    $farm_image_uri = $farm->field_farm_image['und'][1]['uri'];
     $farm_image_locate = explode('//', $farm_image_uri);
     $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
     /*$build ="<main>

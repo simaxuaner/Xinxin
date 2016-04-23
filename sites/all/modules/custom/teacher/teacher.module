@@ -50,3 +50,23 @@ function teacher_menu()
 
     return $items;
 }
+
+/**
+ * Page callback: displaying a lesson page for the object
+ *
+            * @see shareto_menu()
+        */
+function teacher_user_page($action, $nid){
+    if (is_numeric($nid)) {
+        $node = node_load($nid);
+        if (!$node )
+            return MENU_NOT_FOUND;
+
+        if (!node_access('view', $node))
+            return MENU_ACCESS_DENIED;
+
+        drupal_goto("node/{$nid}");
+    }
+
+    return MENU_NOT_FOUND;
+}

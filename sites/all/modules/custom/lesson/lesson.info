@@ -1,5 +1,5 @@
 name = Lesson           
-description = 产品管理模块.
+description = 课程管理模块.
 package = My
 version = VERSION
 core = 7.x
