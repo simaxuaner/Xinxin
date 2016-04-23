@@ -30,7 +30,7 @@ function lesson_menu()
 {
     $items['admin/lesson'] = array(
         'title' => t('课程管理'),
-        'description' => '对站点中的课程进行管理,进行编辑、删除、上下架等操作',
+        'description' => '对站点中的课程进行管理,进行添加、编辑、删除等操作',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('lesson_admin_content'),
         'access arguments' => array('access content overview'),

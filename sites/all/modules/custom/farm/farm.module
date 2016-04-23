@@ -103,7 +103,7 @@ function farm_menu()
 function farm_page_callback($fid){
     $farm = node_load($fid);
     //查找出农场图片
-    $farm_image_uri = $farm->field_farm_image['und'][0]['uri'];
+    $farm_image_uri = $farm->field_farm_image['und'][1]['uri'];
     $farm_image_locate = explode('//', $farm_image_uri);
     $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
     /*$build ="<main>
@@ -140,15 +140,11 @@ function farm_page_callback($fid){
         ->condition('f.field_product_farm_value', $farm->nid)
         ->orderBy('entity_id', 'DESC')
         ->addTag('node_access')
-        ->limit(3)
+        ->limit(4)
         ->execute()
         ->fetchCol();
     $products = node_load_multiple($pids);
-    $count = 0;
     foreach($products as $key => $product) {
-        if($count==3){
-            break;
-        }
         //查询产品的类型
         $myfield_array = field_get_items('node', $product,'field_product_type');
         $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
@@ -167,7 +163,6 @@ function farm_page_callback($fid){
 				<a href='".$GLOBALS['base_url']."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
 				<p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>";
-        $count++;
     }
     $build .="</main>";
     return $build;

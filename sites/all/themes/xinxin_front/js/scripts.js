@@ -17,3 +17,13 @@
 	}
 	};
 })(jQuery);
+
+(function($){
+	Drupal.behaviors.mainSlider = {
+		attach: function(context) {
+			
+
+
+		}
+	}
+})(jQuery);

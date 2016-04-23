@@ -11,4 +11,3 @@ datestamp = "1456343506"
 
 dependencies[] = number
 dependencies[] = field
-dependencies[] = lesson
