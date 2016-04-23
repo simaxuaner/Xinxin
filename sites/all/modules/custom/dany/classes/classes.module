@@ -61,10 +61,10 @@ function classes_menu(){
     $items['classes/detailteacher/%'] = array(
         'title' => t('详细内容'),
         'page callback' => 'classes_detailteacher_page_callback',
-        'page arguments'=> array(1),
+        'page arguments'=> array(2),
         'access callback' => TRUE,
         'menu_name' => 'user-menu',
-    );
+    );    
     return $items;
 }
 
@@ -97,13 +97,42 @@ function classes_files_page_callback(){
 }
 
 function classes_detailclass_page_callback($nid){
-    return theme("detailclass_page", array());
+    $node=node_load($nid);
+    $class=array();
+    $vedioid = $node->field_lesson_video[LANGUAGE_NONE][0]['fid'];
+    $vediofile = file_load($vedioid);
+    $vediourl = file_create_url($vediofile->uri);
+    $class['dataurl']=$vediourl;
+    $class['className']=$node->title;
+    $class['teacherName']=$node->field_lesson_lecturer[LANGUAGE_NONE][0]['value'];
+    $class['owner']=$node->field_lesson_owner[LANGUAGE_NONE][0]['value'];
+    $class['classRoom']=$node->field_lesson_owner[LANGUAGE_NONE][0]['value'];
+    $class['classRoom']=$node->field_lesson_place[LANGUAGE_NONE][0]['value'];
+    $class['lessons']=$node->field_lesson_count_num[LANGUAGE_NONE][0]['value'];
+    $class['classType']=$node->field_lesson_type[LANGUAGE_NONE][0]['value'];
+    $class['info']=$node->field_lesson_info[LANGUAGE_NONE][0]['value'];
+    return theme("detailclass_page", array(
+        'detailClass' => $class,
+        'classList'   => array(),
+        'secondMenuNav' =>getSecondMenuNav('/danyClass/'),
+    ));
 }
 
 function classes_detailteacher_page_callback($nid){
-    if(!$nid)
-        return "您没有权限访问该页面，请登录";
-    return theme("detailteacher_page",array());
+    $node=node_load($nid);
+    $teacher['teacherName']=$node->title;
+    $teacher['career']=$node->field_career[LANGUAGE_NONE][0]['value'];
+    $teacher['info']=$node->field_teacher_info[LANGUAGE_NONE][0]['value'];
+    $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
+    $imgfile = file_load($imgid);
+    $imageurl = file_create_url($imgfile->uri);
+    $teacher['imgurl']=$imageurl;
+    $refClassList=array();//dataurl,name,teacherName
+    return theme("detailteacher_page",array(
+        'teacher'   => $teacher,
+        'refClassList'=> $refClassList,
+        'secondMenuNav' =>getSecondMenuNav('/danyTeacher/'),
+    ));
 }
 
 /**
@@ -170,6 +199,7 @@ function template_preprocess_classes_page(&$variables) {
     }
     $variables['classList']=$classList;
     $variables['imageLinkPathHead']=$module_path;
+    $variables['secondMenuNav']=getSecondMenuNav('/danyClass/');
 }
 
 function template_preprocess_teachers_page(&$variables) {
@@ -202,6 +232,7 @@ function template_preprocess_teachers_page(&$variables) {
     //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     //drupal_add_js($module_path.'/js/scripts.js');
     $variables['teacherList']=$teacherList;
+    $variables['secondMenuNav']=getSecondMenuNav('/danyTeacher/');
 }
 
 function template_preprocess_campus_page(&$variables) {
@@ -249,6 +280,7 @@ function template_preprocess_campus_page(&$variables) {
     $variables['careerGuide']=$careerGuide;
     $variables['careerFinance']=$careerFinance;
     $variables['imgurl']=$imageurl;
+    $variables['secondMenuNav']=getSecondMenuNav('/danyCampus/');
 }
 function template_preprocess_admission_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
@@ -281,10 +313,39 @@ function template_preprocess_admission_page(&$variables) {
         $admission = $node->body[LANGUAGE_NONE][0]['value'];
     }
     $variables['admission']=$admission;
+    $variables['secondMenuNav']=getSecondMenuNav('/danyAdimission/');
 }
 
 function template_preprocess_files_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
     //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     $variables['modulePath']=$module_path;
+    $variables['secondMenuNav']=getSecondMenuNav('/danyFiles/');
+}
+
+
+//util functin
+function getSecondMenuNav($type)
+{
+    $nav='<nav class="w20" id="sideNav">
+			<ul>
+				<li class="danyClass">
+					<a href="?q=classes/class">农业课堂</a>
+				</li>
+				<li class="danyTeacher">
+					<a href="?q=classes/teachers">农业名师</a>
+				</li>
+				<li class="danyCampus">
+					<a href="?q=classes/campus">创业园地</a>
+				</li>
+				<li class="danyAdmission">
+					<a href="?q=classes/admission">招生信息</a>
+				</li>
+				<li class="danyFiles">
+					<a href="?q=classes/files">资料下载</a>
+				</li>
+			</ul>
+	</nav>';
+    $html=preg_replace($type,"activeNavItem",$nav);
+    return $html;
 }

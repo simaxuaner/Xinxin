@@ -463,7 +463,6 @@ table {
 }
 .w80 {
 	width: 80%;
-	margin:auto;
 }
 .w100 {
 	width: 100%;
@@ -639,6 +638,7 @@ section select {
 }
 section {
 	margin-bottom: 32px;
+	margin-left: 20%;
 }
 section > #slider {
 	text-align: center;
@@ -751,13 +751,13 @@ section > #slider img {
 	background-color: #e3e3e3;
 }
 #section401{
-	margin-left:10%; 
+	margin-left:20%; 
 	float: left;
 }
 
 #section402{
 	margin-left: 0;
-	float:left;
+	float:right;
 }
 .button {
 	background-color: #4d93e3;

@@ -1,6 +1,7 @@
 <!--
 	modulePath 	:模块的地址前缀
 -->
+<?php print $secondMenuNav?>
 <section class="w80">
 	<div class="bar">
 		<h1>资料下载</h1>

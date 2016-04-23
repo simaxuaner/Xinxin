@@ -84,19 +84,27 @@ function news_newsxinhui_page_callback()
 function news_theme() {
     return array(
         'allNews_page'  => array(
-            'variables'=> array('newsTitle'=>'品牌论坛'),
+            'variables'=> array('newsTitle'=>'品牌论坛',
+                                'secondMenuNav'=>getNewsSecondMenuNav('/danyOrigin/'),
+                            ),
             'template' => 'allNews',
         ),
         'new66_page' => array(
-            'variables'=> array('newsTitle'=>'6.6涂岭论坛'),
+            'variables'=> array('newsTitle'=>'6.6涂岭论坛',
+                                'secondMenuNav'=>getNewsSecondMenuNav('/dany66/'),
+                            ),
             'template' => 'allNews',
         ),
         'news1212_page' => array(
-            'variables'=> array('newsTitle'=>'12.12电商论坛'),
+            'variables'=> array('newsTitle'=>'12.12电商论坛',
+                                'secondMenuNav'=>getNewsSecondMenuNav('/dany1212/'),
+                            ),
             'template' => 'allNews',
         ),
         'newsXinhui_page' => array(
-            'variables'=> array('newsTitle'=>'海促会资讯'),
+            'variables'=> array('newsTitle'=>'海促会资讯',
+                                'secondMenuNav'=>getNewsSecondMenuNav('/danyXinxin/'),     
+                           ),
             'template' => 'allNews',
         ),
     );
@@ -197,4 +205,19 @@ function changeDateform($date)
     }
     $day=$m_d[1];
     return $day." ". $month;
+}
+
+function getNewsSecondMenuNav($type)
+{
+    $nav='<nav id="sideNav" class="w20">
+			<ul>
+				<li class="danyOrigin"> <a href="news.php">品牌论坛</a> </li>
+				<li class="dany66"> <a href="news6_6.php">6.6涂岭论坛</a> </li>
+				<li class="dany1212"> <a href="news12_12.php">12.12电商论坛</a> </li>
+				<li class="danyXinxin"> <a href="newshaicuhui.php">海促会资讯</a> </li>
+				
+			</ul>
+		</nav>';
+    $html=preg_replace($type,"activeNavItem",$nav);
+    return $html;
 }

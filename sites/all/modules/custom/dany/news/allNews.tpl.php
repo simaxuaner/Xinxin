@@ -5,6 +5,7 @@
     imageLinkPathHead   :图片连接位置
 -->
 <main id="mainSection">
+    <?php print $secondMenuNav ?>
 	<section class="w80">
 		<div class="bar">
 			<h1><?php print $newsTitle?></h1>

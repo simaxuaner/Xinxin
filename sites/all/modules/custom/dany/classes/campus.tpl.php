@@ -8,32 +8,33 @@
     $careerFinance 		：创业金融
 -->
 <main>
-	<section class="w100">
+	<?php print $secondMenuNav?>
+	<section class="w80">
 		<div class="bar">
 			<h1>创业园地</h1>
 		</div>
 		<img class="w40 floatRight marginLeft marginBottom" src="<?php print $imgurl?>"/>
 		<?php print $pioneeringContext?>
 	</section>
-	<section class="w100">
+	<section class="w80">
 		<div class="bar">
 			<h2>基地设施</h2>
 		</div>
 		<?php print $baseFacilities?>
 	</section>		
-	<section class="w100">
+	<section class="w80">
 		<div class="bar">
 			<h2>培训指导</h2>
 		</div>
 		<?php print $trainGuide?>
 	</section>		
-	<section class="w100">
+	<section class="w80">
 		<div class="bar">
 			<h2>就业指南</h2>
 		</div>
 		<?php print $careerGuide?>
 	</section>		
-	<section class="w100">
+	<section class="w80">
 		<div class="bar">
 			<h2>创业金融</h2>
         </div>

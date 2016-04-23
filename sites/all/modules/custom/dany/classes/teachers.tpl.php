@@ -1,5 +1,7 @@
     
 <main>
+    <!-- 子菜单导航! 0423补充-->
+    <?php print $secondMenuNav?>
     <section class="w80">
         <div class="bar">
         	<h1>农业名师</h1>
