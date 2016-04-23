@@ -14,13 +14,13 @@
         foreach($teacherList as $key => $value)
         {
         ?>  
-            <a href="" >         
+            <a href="<?php print $value['detailurl']?>" >         
                 <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
-                        <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
-				        <h3>"<?php print $value['teacherName']?>"教师名</h3>
+                        <img src="<?php print $value['imgurl']?>" />
+				        <h3><?php print $value['teacherName']?></h3>
 				        <p>
-                            <span class="farmName">专业领域/职位</span>
+                            <span class="farmName"><?php print $value['career']?></span>
                             <span class="floatRight">01</span>
                             <span class="floatRight">02</span>
                         </p>

@@ -157,17 +157,16 @@ function template_preprocess_classes_page(&$variables) {
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
         foreach ($nodes as $key => $node) {
-            $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['field_lesson_pic_fid'];
+            $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
             $imgfile = file_load($imgid);
             $imageurl = file_create_url($imgfile->uri);
-            $classList[$key]=array(
-                'detailurl' => "".$key,
+            $classList[]=array(
+                'detailurl' => "?q=classes/detailclass/".$key,
                 'imgurl'    => $imageurl,
                 'title'     => $node->title,
-                'teachername'=>$node->field_teacher_name[LANGUAGE_NONE][0],
+                'teachername'=>$node->field_teacher_name[LANGUAGE_NONE][0]['value'],
                 );
         }
-        $admission=$nodes[$nids[0]]->body['und'][0]['value'];
     }
     $variables['classList']=$classList;
     $variables['imageLinkPathHead']=$module_path;
@@ -177,20 +176,32 @@ function template_preprocess_teachers_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
     $variables['imageLinkPathHead']=$module_path;
     //测试使用的数据，应该从数据库获取
-    foreach(range(0,3) as $value)
-    {
-        $productList[$value]=array(
-        'imgurl'      => 'images/teachers/teacher0'.($value+1).'.jpg',
-        'teacherName' => '',
-        'farmName'    => 'farmName1'.$value,
-        'customers'   => $value,
-        'comments'    => 'comments1.$value',
-        'nid'         => $value,
-        );
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $nids = $query
+    ->fields('n', array('nid'))
+    ->condition('type', 'teacher')
+    ->condition('status', 1)
+    ->orderBy('created', 'DESC')
+    ->addTag('node_access')
+    ->execute()
+    ->fetchCol();
+    if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+        foreach ($nodes as $key => $node) {
+            $imgid = $node->field_teacher_pic[LANGUAGE_NONE][0]['fid'];
+            $imgfile = file_load($imgid);
+            $imageurl = file_create_url($imgfile->uri);
+            $teacherList[]=array(
+                'detailurl' => "?q=classes/detailteacher/".$key,
+                'imgurl'    => $imageurl,
+                'teacherName'=> $node->title,
+                'career'    => $node->field_career[LANGUAGE_NONE][0]['value'],   
+                );
+        }
     }
     //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     //drupal_add_js($module_path.'/js/scripts.js');
-    $variables['teacherList']=$productList;
+    $variables['teacherList']=$teacherList;
 }
 
 function template_preprocess_campus_page(&$variables) {

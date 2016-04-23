@@ -196,5 +196,5 @@ function changeDateform($date)
         break;
     }
     $day=$m_d[1];
-    return $date.$month;
+    return $day." ". $month;
 }
