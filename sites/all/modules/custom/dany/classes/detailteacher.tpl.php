@@ -3,7 +3,7 @@
 	<section class="w80">
 		<div class="bar">
 			<h1><a class="underline" href="teachers.php">农业名师</a> &gt;详细信息</h1>
-		</div><img alt="Jackie Chan" class="alignCenter w100" src="images/teachers/teacher01_banner.jpg">
+		</div><img alt="<?php print $teacher['teacherName']?>" class="alignCenter w100" src="<?php print $teacher['imgurl']?>">
 	</section>
 	<section class="w80">
 		<div class="bar w100">
