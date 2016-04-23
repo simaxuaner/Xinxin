@@ -146,7 +146,7 @@ function farm_page_callback($fid){
     $products = node_load_multiple($pids);
     $count = 0;
     foreach($products as $key => $product) {
-        if($count==3){
+        if($count==4){
             break;
         }
         //查询产品的类型
