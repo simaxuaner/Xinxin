@@ -51,11 +51,10 @@ function xinxin_front_preprocess_page(&$vars)
         $vars['tabs'] = FALSE;
 
     if (isset($vars['main_menu'])) {
-        $sql = "
-    SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
-    FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
-    WHERE ml.menu_name = :menu
-    ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC";
+        $sql = "SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
+    			FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
+    			WHERE ml.menu_name = :menu
+    			ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC";
         $result = db_query($sql, array(':menu' => 'main-menu'), array('fetch' => PDO::FETCH_ASSOC));
         $links = array();
         foreach ($result as $item) {
