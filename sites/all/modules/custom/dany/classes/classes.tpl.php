@@ -3,6 +3,26 @@
     -->
 	<main>
         <!-- 子菜单导航! 0417丢弃-->
+        <!-- 子菜单导航! 0423补充-->
+        <nav class="w20" id="sideNav">
+			<ul>
+				<li class="activeNavItem">
+					<a href="classes.php">农业课堂</a>
+				</li>
+				<li>
+					<a href="teachers.php">农业名师</a>
+				</li>
+				<li>
+					<a href="campus.php">创业园地</a>
+				</li>
+				<li>
+					<a href="admission.php">招生信息</a>
+				</li>
+				<li>
+					<a href="files.php">资料下载</a>
+				</li>
+			</ul>
+		</nav>
 		<section class="w80">
 			<div class="bar">
 			  <h1>课程</h1> <select>
