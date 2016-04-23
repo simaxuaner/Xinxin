@@ -10,8 +10,11 @@
 	</header>
 
 	<main id="mainSection"> 
+		<content_before id="content_before">
+			<?php if ($page['content_before']): print render($page['content_before']); endif; ?>
+		</content_before>
 		 <sidebar_left id="sidebar_left">
-      		<?php print render($page['sidebar_left']); ?>
+      		<?php if ($page['sidebar_left']):  print render($page['sidebar_left']); endif; ?>
        	</sidebar_left>
 		<div id="container" class="clearfix container">
             <?php print render($page['content']); ?>
