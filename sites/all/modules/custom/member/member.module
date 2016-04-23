@@ -1,0 +1,229 @@
+<?php
+/**
+ * Created by apple
+ * User: yuyao
+ * Date: 2016/4/23
+ * Time: 17:32
+ */
+
+ /**
+ * Implements hook_menu().
+ */
+ function member_menu()
+ {
+ 	//member-front
+ 	$items['membercenter'] = array(
+ 		'title' => t('会员中心'),
+ 		//需要重新设置一下，因为只有登录用户才可以查看
+ 		'access callback' => TURE,
+ 		'type' => MENU_SUGGESTED_ITEM,
+ 		'menu_name'=>'main-menu',
+ 		//'file' => 'member.pages.inc',
+        'weight'=>40,
+ 	);
+
+ 	$items['membercenter/individual'] = array(
+        'title' => t('个人会员'),
+        'access callback' => TRUE,
+        //'access callback' => 'user_edit_access',
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'page callback' => 'memberIndividual_call_back',
+    );
+
+    $items['membercenter/company'] = array(
+        'title' => t('企业会员'),
+        'access callback' => TRUE,
+        //'access callback' => 'user_edit_access',
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'page callback' => 'memberCompany_call_back',
+    );
+
+    return $items;
+}
+
+function memberIndividual_call_back()
+{
+    global $user;
+    global $base_url;
+    $picObject=user_load($user->uid);
+    $pic = $picObject->picture[uri];
+
+    //0 for male and 1 for female
+    $sex = db_select('field_data_field_sex', 'f')
+        ->fields('f', array('field_sex_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+
+    $company = db_select('field_data_field_personal_company', 'f')
+        ->fields('f', array('field_personal_company_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+
+    $real_name = db_select('field_data_field_real_name','f')
+        ->fields('f', array('field_real_name_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+
+    if($sex[0])
+    {
+        if($sex[0]==0)
+            $sex_value='男';
+        else
+            $sex_value='女';
+    }
+
+
+    $build =<<<EOS
+    <main id='mainSection'>
+        <section class='w80'>
+            <div class='bar'>
+                <h1>我的信息</h1>
+                <a class='floatRight' href="$base_url/user/$user->uid/edit">修改信息 &gt;</a>
+            </div>
+            <div class='profilePicture floatLeft alignCenter w25'>
+                <img class='w100' src="file_create_url($pic)"> 
+            </div>
+            <div class='w75 paddingLeft paddingRight floatLeft'>
+                <table class='personalInfo w100'>
+                    <tr>
+                        <td>昵称</td>
+                        <td class='alignRight'>$user->name</td>
+                    </tr>
+                    <tr>
+                        <td>真实姓名</td>
+                        <td class="alignRight">$real_name[0]</td>
+                    </tr>
+                    <tr>
+                        <td>性别</td>
+                        <td class="alignRight">$sex_value</td>
+                    </tr>
+                    <tr>
+                        <td>所属公司</td>
+                        <td class="alignRight">$company[0]</td>
+                    </tr>
+                    <tr>
+                        <td>电子邮件</td>
+                        <td class='alignRight'>$user->mail</td>
+                    </tr>
+                    <tr>
+                        <td>密码</td>
+                        <td class='alignRight'><a class='floatRight' href="$base_url/user/password">重设密码 &gt;</a></td>
+                    </tr>
+                    <tr>
+                        <td>社交账号绑定</td>
+                        <td class='alignRight noPadding'><img src='images/icons/qq.png'><img src='images/icons/wechat.png'><img class='noMarginRight' src='images/icons/weibo.png'></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </main>
+EOS;
+    //图片路径待修改
+    return $build;
+}
+
+function memberCompany_call_back()
+{
+    global $user;
+    global $base_url;
+    $picObject=user_load($user->uid);
+    $pic = $picObject->picture[uri];
+
+    $tel = db_select('field_data_field_user_tel', 'f')
+        ->fields('f', array('field_user_tel_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+
+    $address = db_select('field_data_field_address','f')
+        ->fields('f', array('field_address_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+
+
+    $build =<<<EOS
+    <main id="mainSection">
+        <section class="w80">
+            <div class="bar">
+                <h1>企业会员</h1>
+                <a class='floatRight' href="$base_url/user/$user->uid/edit">修改信息 &gt;</a>
+            </div>
+            <div class="profilePicture floatLeft w100">
+                <img class='w100' src="file_create_url($pic)"> 
+            </div>
+            <div class="w100 floatLeft">
+                <table class="personalInfo w100">
+                    <tr>
+                        <td>公司名称</td>
+                        <td class="alignRight">$user->name</td>
+                    </tr>
+                    <tr>
+                        <td>地址</td>
+                        <td class="alignRight">$address[0]</td>
+                    </tr>
+                    <tr>
+                        <td>联系方式</td>
+                        <td class="alignRight">$tel[0]</td>
+                    </tr>
+                    <tr>
+                        <td>电子邮件</td>
+                        <td class="alignRight">$user->mail</td>
+                    </tr>
+                    <tr>
+                        <td>密码</td>
+                        <td class="alignRight"><a class='floatRight' href="$base_url/user/password">重设密码 &gt;</a></td>
+                    </tr>
+                </table>
+                <br>
+                <p>$user->signature</p>
+            </div>
+            </section>
+            <section class="w80">
+                <div class="bar">
+                    <h1>advertising</h1>
+                </div>
+                <form class="alignCenter">
+                <table>
+                    <tr>
+                        <td>
+                            <label class="alignLeft" for="image">Advertisement image</label>
+                        </td>
+                        <td>
+                            <input type="file" name="image">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="alignLeft" for="website">Link</label>
+                        </td>
+                        <td>
+                            <input type="text" name="link">
+                        </td>
+                    </tr>
+                </table>
+                <div class="button">
+                    <a href="#">申请</a>
+                </div>
+                </form>
+            </div>
+            </section>
+
+    </main>
+EOS;
+    return $build;
+    //申请链接待修改
+    //上传文件待修改
+}
+
+
+
+
+
+
+
+
+
