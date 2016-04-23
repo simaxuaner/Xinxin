@@ -11,16 +11,14 @@
 
 	<main id="mainSection"> 
 		<div id="container" class="clearfix container">
-			<div id="content-wrapper">
-				<?php if (isset($page['content_before'])): ?>
-					<div id="content-before">
-						<?php print render($page['content_before']); ?>
-					</div>
-				<?php endif; ?>
-	    		<div id="main-content">
-	       			<?php if ($page['content']): print render($page['content']); endif; ?>
-	       		</div>
-	     	</div>
+			<?php if (isset($page['content_before'])): ?>
+				<div id="content-before">
+					<?php print render($page['content_before']); ?>
+				</div>
+			<?php endif; ?>
+	    	<div id="main-content">
+	       		<?php if ($page['content']): print render($page['content']); endif; ?>
+	       	</div>
 	     </div>
 	</main>
 
