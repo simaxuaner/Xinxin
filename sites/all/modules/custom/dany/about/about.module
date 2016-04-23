@@ -9,67 +9,64 @@
 /**
  * Implements hook_menu().
  */
-function about_menu() {
-    $items['about'] = array(
-        'title' => '产业园基地',
-        'page callback' => 'about_introduction_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_SUGGESTED_ITEM,
-        'menu_name' => 'main-menu',
-        'weight'=>50,
-    );
-    $items['about/introduction'] = array(
-        'title' =>'企业介绍',
-        'access callback' => TRUE,
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-    );
-    $items['about/park'] = array(
-        'title' =>'园区风貌',
-        'page callback' => 'about_park_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
-    );
-    ;$items['about/school'] = array(
-        'title' =>'农业学校',
-        'page callback' => 'about_school_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
-    )
-    ;$items['about/investors'] = array(
-        'title' =>'园区招商',
-        'page callback' => 'about_investors_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
-    )
-    ;$items['about/partners'] = array(
-        'title' =>'入驻企业',
-        'page callback' => 'about_partners_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
-    );
-    return $items;
-}
 
+$class="企业介绍";
+function about_menu() {//全局变量无效、农业学校等只显示一所？
+	$items ['about'] = array (
+			'title' => '产业园基地',
+			'page callback' => 'about_introduction_page_callback',
+			'access callback' => TRUE,
+			'type' => MENU_SUGGESTED_ITEM,
+			'menu_name' => 'main-menu',
+			'weight' => 50 
+	);
+	$items ['about/introduction'] = array (
+			'title' => '企业介绍',
+			'access callback' => TRUE,
+			'type' => MENU_DEFAULT_LOCAL_TASK 
+	);
+	$items ['about/park'] = array (
+			'title' => '园区风貌',
+			'page callback' => 'about_park_page_callback',
+			'access callback' => TRUE,
+			'type' => MENU_LOCAL_TASK 
+	);
+	;
+	$items ['about/school'] = array (
+			'title' => '农业学校',
+			'page callback' => 'about_school_page_callback',
+			'access callback' => TRUE,
+			'type' => MENU_LOCAL_TASK 
+	);
+	$items ['about/investors'] = array (
+			'title' => '园区招商',
+			'page callback' => 'about_investors_page_callback',
+			'access callback' => TRUE,
+			'type' => MENU_LOCAL_TASK 
+	);
+	$items ['about/partners'] = array (
+			'title' => '入驻企业',
+			'page callback' => 'about_partners_page_callback',
+			'access callback' => TRUE,
+			'type' => MENU_LOCAL_TASK 
+	);
+	return $items;
+}
 function about_introduction_page_callback() {
-    global $user;
-    $module_path = drupal_get_path('module', 'about');
-    $query=db_select('node','n');
-    $nids=$query
-        ->fields('n',array('nid'))
-        ->condition('type',"article")
-        ->condition('n.title',"企业介绍")
-        ->condition('status','1')
-        ->range(0,1)
-        ->orderBy('created', 'ASC')
-        ->addTag('node_access')
-        ->execute()
-        ->fetchCol();
-    $nodes = node_load_multiple($nids);
-    $html='';
-    foreach($nodes as $node) {
-        $html.=$node->body['und'][0]['value'];
-    }
-    $pagehtml=<<<EOS
+	global $user;
+	global $class;
+	$class="企业介绍";
+	$module_path = drupal_get_path ( 'module', 'about' );
+	$query = db_select ( 'node', 'n' );
+	$nids = $query->fields ( 'n', array (
+			'nid' 
+	) )->condition ( 'type', "article" )->condition ( 'n.title', "企业介绍" )->condition ( 'status', '1' )->range ( 0, 1 )->orderBy ( 'created', 'ASC' )->addTag ( 'node_access' )->execute ()->fetchCol ();
+	$nodes = node_load_multiple ( $nids );
+	$html = '';
+	foreach ( $nodes as $node ) {
+		$html .= $node->body ['und'] [0] ['value'];
+	}
+	$pagehtml = <<<EOS
 <section class="w80">
         <div class="bar">
             <h1>企业介绍</h1>
@@ -84,117 +81,180 @@ function about_introduction_page_callback() {
         $html
 </section>
 EOS;
-    return theme("aboutpage_page",array("pagemain"=>$pagehtml));
+	return theme ( "aboutpage_page", array (
+			"pagemain" => $pagehtml 
+	) );
 }
-
 function about_park_page_callback() {
-    global $user;
-    $module_path = drupal_get_path('module', 'about');
-    $parkhtml='<section class="w80">
+	global $user;
+	global $class;
+	$class="园区风貌";
+	$module_path = drupal_get_path ( 'module', 'about' );
+	$query = db_select ( 'node', 'n' );
+	$nids = $query->fields ( 'n', array (
+			'nid'
+	) )->condition ( 'type', "article" )->condition ( 'n.title', "园区风貌" )->condition ( 'status', '1' )->range ( 0, 5 )->orderBy ( 'created', 'DEC' )->addTag ( 'node_access' )->execute ()->fetchCol ();
+	$nodes = node_load_multiple ( $nids );
+	$bodyhtml = '';
+	foreach ( $nodes as $node ) {
+		if(isset($node->field_image)){
+			foreach ($node->field_image['und'] as $img){
+				$bodyhtml.='<img class="showcaseImg" src="'.file_create_url($img['uri']).'"/>';
+			}
+		}
+		if(isset($node->body)){
+			$bodyhtml .= $node->body ['und'] [0] ['value'];
+		}
+	}
+	$parkhtml =<<<EOS
+	<section class="w80">
 			<div class="bar">
 				<h1>园区风貌</h1>
 			</div>
-			<img src="'.$module_path.'/images/park/park1.png" class="showcaseImg"/>
-			<img src="'.$module_path.'/images/park/park2.png" class="showcaseImg"/>
-			<img src="'.$module_path.'/images/park/park4.png" class="showcaseImg"/>
-			<img src="'.$module_path.'/images/park/park3.png" class="showcaseImg"/>
-		</section>';
-    return theme("aboutpage_page",array("pagemain"=>$parkhtml));
+			$bodyhtml
+		</section>
+EOS;
+	return theme ( "aboutpage_page", array (
+			"pagemain" => $parkhtml 
+	) );
 }
 function about_school_page_callback() {
-    global $user;
-    $module_path = drupal_get_path('module', 'about');
-    $schoolhtml=<<<EOS
+	global $user;
+	global $class;
+	$class="农业学校";
+	$module_path = drupal_get_path ( 'module', 'about' );
+	$query = db_select ( 'node', 'n' );
+	$nids = $query->fields ( 'n', array (
+			'nid'
+	) )->condition ( 'type', "article" )->condition ( 'n.title', "农业学校" )->condition ( 'status', '1' )->range ( 0, 1 )->orderBy ( 'created', 'DEC' )->addTag ( 'node_access' )->execute ()->fetchCol ();
+	$nodes = node_load_multiple ( $nids );
+	$bodyhtml = '';
+	foreach ( $nodes as $node ) {
+		if(isset($node->field_image)){
+			$bodyhtml.='<img class="w40 floatRight marginLeft marginBottom" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+		}
+		if(isset($node->body)){
+			$bodyhtml .= $node->body ['und'] [0] ['value'];
+		}
+	}
+	$schoolhtml = <<<EOS
  <section class="w80">
     <div class="bar">
         <h1>农业学校</h1>
     </div>
-    <img class="w40 floatRight marginLeft marginBottom" src="$module_path/images/campus/campus0.jpg"/>
-    <p>厦门大学（Xiamen University），简称厦大（XMU），由著名爱国华侨领袖陈嘉庚先生于1921年创办，是中国近代教育史上第一所华侨创办的大学，也是国家“211工程”和“985工程”重点建设的高水平大学。
-    </p>
-    <br/>
-    <p>建校以来，学校秉承“自强不息，止于至善”的校训，积累了丰富的办学经验，形成了鲜明的办学特色，成为一所学科门类齐全、师资力量雄厚、居国内一流、在国际上有广泛影响的综合性大学。建校迄今，已先后为国家培养了25多万名本科生和研究生，在厦大学习、工作过的两院院士达60多人。</p>
-    <br/>
-    <p>学校设有研究生院、6个学部以及27个学院（含76个系）和14个研究院，形成了包括人文科学、社会科学、自然科学、工程与技术科学、管理科学、艺术科学、医学科学等学科门类在内的完备学科体系。学校现有9个学科进入ESI全球前1%，拥有5个一级学科国家重点学科和9个二级学科国家重点学科（涵盖38个二级国家重点学科），46个福建省一级学科重点学科，9个国家基础科学人才培养基地。拥有31个博士后流动站，31个博士学位授权一级学科，50个硕士学位授权一级学科，8个交叉学科专业授权点；22个专业学位授权点。</p>
-    <br/>
-    <p>学校现有专任教师2541人，其中，教授、副教授1779人，占专任教师总数的70.0%（下同），拥有博士学位的2012人，占79.2%。学校共有两院院士22人（含双聘院士9人），中央“千人计划”入选者59人（含“青年千人计划”入选者25人），“973计划”和重大科学研究计划项目首席科学家8人，国家自然科学基金委员会委员1人，国务院学科评议组成员12人，国家级有突出贡献的专家14人，“长江学者”特聘教授17人、讲座教授17人，“万人计划”科技创新领军人才3人、哲学社会科学领军人才1人、青年拔尖人才6人，列入国家百千万人才工程人选19人，国家杰出青年科学基金获得者38人；全国高校教学名师奖获得者6人；国家基金委创新研究群体6个、教育部创新团队9个，高等学校学科创新引智基地（“111计划”）6个。</p>
+    <div>
+	    $bodyhtml
+    </div>
 </section>
 EOS;
-    return theme("aboutpage_page",array("pagemain"=>$schoolhtml));
+	return theme ( "aboutpage_page", array (
+			"pagemain" => $schoolhtml 
+	) );
 }
 function about_investors_page_callback() {
-    global $user;
-    $module_path = drupal_get_path('module', 'about');
-    $investorshtml='<section class="w80">
+	global $user;
+	global $class;
+	$class="园区招商";
+	$module_path = drupal_get_path ( 'module', 'about' );
+	$query = db_select ( 'node', 'n' );
+	$nids = $query->fields ( 'n', array (
+			'nid'
+	) )->condition ( 'type', "article" )->condition ( 'n.title', "园区招商" )->condition ( 'status', '1' )->range ( 0, 1 )->orderBy ( 'created', 'DEC' )->addTag ( 'node_access' )->execute ()->fetchCol ();
+	$nodes = node_load_multiple ( $nids );
+	$bodyhtml = '';
+	foreach ( $nodes as $node ) {
+		if(isset($node->field_image)){
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+		}
+		if(isset($node->body)){
+			$bodyhtml .= $node->body ['und'] [0] ['value'];
+		}
+	}
+	$investorshtml =<<<EOS
+	<section class="w80">
 			<div class="bar">
 				<h1>园区招商</h1>
 			</div>
-				<p>厦门大学（Xiamen University），简称厦大（XMU），由著名爱国华侨领袖陈嘉庚先生于1921年创办，是中国近代教育史上第一所华侨创办的大学，也是国家“211工程”和“985工程”重点建设的高水平大学。
-				</p>
-				<br/>
-				<p>建校以来，学校秉承“自强不息，止于至善”的校训，积累了丰富的办学经验，形成了鲜明的办学特色，成为一所学科门类齐全、师资力量雄厚、居国内一流、在国际上有广泛影响的综合性大学。建校迄今，已先后为国家培养了25多万名本科生和研究生，在厦大学习、工作过的两院院士达60多人。</p>
-				<br/>
-				<img class="w100" src="'.$module_path.'/images/investors/1.jpg" alt="1"/><br/><br/>
-				<p>学校设有研究生院、6个学部以及27个学院（含76个系）和14个研究院，形成了包括人文科学、社会科学、自然科学、工程与技术科学、管理科学、艺术科学、医学科学等学科门类在内的完备学科体系。学校现有9个学科进入ESI全球前1%，拥有5个一级学科国家重点学科和9个二级学科国家重点学科（涵盖38个二级国家重点学科），46个福建省一级学科重点学科，9个国家基础科学人才培养基地。拥有31个博士后流动站，31个博士学位授权一级学科，50个硕士学位授权一级学科，8个交叉学科专业授权点；22个专业学位授权点。</p>
-				<br/>
-				<img class="w100" src="'.$module_path.'/images/investors/2.jpg" alt="2"/><br/><br/>
-				<p>学校现有专任教师2541人，其中，教授、副教授1779人，占专任教师总数的70.0%（下同），拥有博士学位的2012人，占79.2%。学校共有两院院士22人（含双聘院士9人），中央“千人计划”入选者59人（含“青年千人计划”入选者25人），“973计划”和重大科学研究计划项目首席科学家8人，国家自然科学基金委员会委员1人，国务院学科评议组成员12人，国家级有突出贡献的专家14人，“长江学者”特聘教授17人、讲座教授17人，“万人计划”科技创新领军人才3人、哲学社会科学领军人才1人、青年拔尖人才6人，列入国家百千万人才工程人选19人，国家杰出青年科学基金获得者38人；全国高校教学名师奖获得者6人；国家基金委创新研究群体6个、教育部创新团队9个，高等学校学科创新引智基地（“111计划”）6个。</p><br/>
-				<img class="w100" src="'.$module_path.'/images/investors/3.jpg" alt="3"/>
-		</section>';
-    return theme("aboutpage_page",array("pagemain"=>$investorshtml));
+			$bodyhtml
+		</section>
+EOS;
+	return theme ( "aboutpage_page", array (
+			"pagemain" => $investorshtml 
+	) );
 }
 function about_partners_page_callback() {
-    global $user;
-    $module_path = drupal_get_path('module', 'about');
-    $partners='<section class="w80">
+	global $user;
+	global $class;
+	$class="入驻企业";
+	$module_path = drupal_get_path ( 'module', 'about' );
+	$query = db_select ( 'node', 'n' );
+	$nids = $query->fields ( 'n', array (
+			'nid'
+	) )->condition ( 'type', "article" )->condition ( 'n.title', "入驻企业" )->condition ( 'status', '1' )->range ( 0, 1 )->orderBy ( 'created', 'DEC' )->addTag ( 'node_access' )->execute ()->fetchCol ();
+	$nodes = node_load_multiple ( $nids );
+	$bodyhtml = '';
+	foreach ( $nodes as $node ) {
+		if(isset($node->field_image)){
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+		}
+		if(isset($node->body)){
+			$bodyhtml .= $node->body ['und'] [0] ['value'];
+		}
+	}
+	$partners =<<<EOS
+	<section class="w80">
 			<div class="bar">
 				<h1>入驻企业</h1>
 			</div>
-				<p>厦门大学（Xiamen University），简称厦大（XMU），由著名爱国华侨领袖陈嘉庚先生于1921年创办，是中国近代教育史上第一所华侨创办的大学，也是国家“211工程”和“985工程”重点建设的高水平大学。
-				</p>
-				<br/>
-				<p>建校以来，学校秉承“自强不息，止于至善”的校训，积累了丰富的办学经验，形成了鲜明的办学特色，成为一所学科门类齐全、师资力量雄厚、居国内一流、在国际上有广泛影响的综合性大学。建校迄今，已先后为国家培养了25多万名本科生和研究生，在厦大学习、工作过的两院院士达60多人。</p>
-				<br/>
-				<p>学校设有研究生院、6个学部以及27个学院（含76个系）和14个研究院，形成了包括人文科学、社会科学、自然科学、工程与技术科学、管理科学、艺术科学、医学科学等学科门类在内的完备学科体系。学校现有9个学科进入ESI全球前1%，拥有5个一级学科国家重点学科和9个二级学科国家重点学科（涵盖38个二级国家重点学科），46个福建省一级学科重点学科，9个国家基础科学人才培养基地。拥有31个博士后流动站，31个博士学位授权一级学科，50个硕士学位授权一级学科，8个交叉学科专业授权点；22个专业学位授权点。</p>
-				<br/>
-				<p>学校现有专任教师2541人，其中，教授、副教授1779人，占专任教师总数的70.0%（下同），拥有博士学位的2012人，占79.2%。学校共有两院院士22人（含双聘院士9人），中央“千人计划”入选者59人（含“青年千人计划”入选者25人），“973计划”和重大科学研究计划项目首席科学家8人，国家自然科学基金委员会委员1人，国务院学科评议组成员12人，国家级有突出贡献的专家14人，“长江学者”特聘教授17人、讲座教授17人，“万人计划”科技创新领军人才3人、哲学社会科学领军人才1人、青年拔尖人才6人，列入国家百千万人才工程人选19人，国家杰出青年科学基金获得者38人；全国高校教学名师奖获得者6人；国家基金委创新研究群体6个、教育部创新团队9个，高等学校学科创新引智基地（“111计划”）6个。</p>
-		</section>';
-    return theme("aboutpage_page",array("pagemain"=>$partners));
+			$bodyhtml		
+	</section>
+EOS;
+	return theme ( "aboutpage_page", array (
+			"pagemain" => $partners 
+	) );
 }
 
 /**
  * Implements hook_theme()
  */
 function about_theme() {
-	$menu_links="";
-// 	if (isset($vars['main_menu'])) {
-		print_r("12");
-		$sql = "SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
+	global $class;
+	$sql = "SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
     				FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
     				WHERE ml.menu_name = :menu
     				ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC";
-		$result = db_query($sql, array(':menu' => 'main-menu'), array('fetch' => PDO::FETCH_ASSOC));
-		$links = array();
-		foreach ($result as $item) {
-			$links[] = $item;
-		}
-		$tree = menu_tree_data($links);
-		$menu_links.='<nav id="sideNav" class="w20"><ul>';
-		foreach ($tree as $menu_item) {
-			if(!empty($menu_item['link']['title']) && $menu_item['link']['title']=='产业园基地') {
-				$sublink = $menu_item['below'];
-				foreach ($sublink as $sublinkitem) {
-					$menu_links .= '<li class="class="activeNavItem"><a href="?q=' . $sublinkitem['link']['link_path'] . '">' . $sublinkitem['link']['title'] . '</a></li>';
+	$result = db_query ( $sql, array (
+			':menu' => 'main-menu' 
+	), array (
+			'fetch' => PDO::FETCH_ASSOC 
+	) );
+	$links = array ();
+	foreach ( $result as $item ) {
+		$links [] = $item;
+	}
+	$tree = menu_tree_data ( $links );
+	$menu_links = '<nav id="sideNav" class="w20"><ul>';
+	foreach ( $tree as $menu_item ) {
+		if (! empty ( $menu_item ['link'] ['title'] ) && $menu_item ['link'] ['title'] == '产业园基地') {
+			$sublink = $menu_item ['below'];
+			foreach ( $sublink as $sublinkitem ) {
+				if($sublinkitem ['link'] ['title']==$class){
+					$menu_links .='<li class="activeNavItem">';
 				}
+				else {
+					$menu_links .='<li>';
+				}
+				$menu_links .= '<a href="?q=' . $sublinkitem ['link'] ['link_path'] . '">' . $sublinkitem ['link'] ['title'] . '</a></li>';
 			}
 		}
-		$menu_links.='</ul></nav>';
-// 		print_r("123");
-// 	}
-    return array(
-        'aboutpage_page' => array(
-            'template' => 'aboutpage',
-            'variables'=>array('sidebarleft'=>$menu_links),
-        ),
-    );
+	}
+	$menu_links .= '</ul></nav>';
+	return array (
+			'aboutpage_page' => array (
+					'template' => 'aboutpage',
+					'variables' => array (
+							'sidebarleft' => $menu_links 
+					) 
+			) 
+	);
 }
