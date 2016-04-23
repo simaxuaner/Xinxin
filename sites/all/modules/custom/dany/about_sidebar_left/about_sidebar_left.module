@@ -43,7 +43,8 @@ function about_sidebar_left_block_view($delta = '')
     $module_path = drupal_get_path('module', 'about_sidebar_left');
     if ($delta == 'about_sidebar_left') {
         $block = array();
-        if (isset($GLOBALS['main_menu'])) {
+//         if (isset($GLOBALS['main_menu'])) {
+//         	print_r("12");
         	$sql = "SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
     				FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
     				WHERE ml.menu_name = :menu
@@ -62,8 +63,9 @@ function about_sidebar_left_block_view($delta = '')
         				$menu_links .= '<li><a href="?q=' . $sublinkitem['link']['link_path'] . '">' . $sublinkitem['link']['title'] . '</a></li>';
         			}
         		}
-        	}
-        	$menu_links.='</ul>';
+//         	}
+        	$menu_links.='</ul></nav>';
+//         	print_r($menu_links);
         	$block['content'] = $menu_links;
         }
         return $block;

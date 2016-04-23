@@ -255,6 +255,12 @@ footer .social img {
 {
 	padding: 16px 0;
 }
+#sideNav {
+    float: left;
+    font-size: 1.2em;
+    min-width: 104px;
+    width: 20%;
+}
 header
 {
 	background-color: #eeeeee;
