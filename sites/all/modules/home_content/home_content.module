@@ -65,44 +65,48 @@ function home_content_block_view($delta = '')
     $module_path = drupal_get_path('module', 'home_content');
     if ($delta == 'home_content') {
         $block = array();
-        $html = '<div id="slider" class="w100">
-            <img id="sliderImg0" src="'.$module_path.'/images/slider/0.jpg" alt="slider"/>
-            <img id="sliderImg1" class="hidden" src="'.$module_path.'/images/slider/1.jpg" alt="slider"/>
-            <img id="sliderImg2" class="hidden" src="'.$module_path.'/images/slider/2.jpg" alt="slider"/>
-            <img id="sliderImg3" class="hidden" src="'.$module_path.'/images/slider/3.jpg" alt="slider"/>
-            <img id="sliderImg4" class="hidden" src="'.$module_path.'/images/slider/4.jpg" alt="slider"/>
-        </div>';
+        $html = <<<EOS
+        '<div id="slider" class="w100">
+            <img id="sliderImg0" src="$module_path/images/slider/0.jpg" alt="slider"/>
+            <img id="sliderImg1" class="hidden" src="$module_path/images/slider/1.jpg" alt="slider"/>
+            <img id="sliderImg2" class="hidden" src="$module_path/images/slider/2.jpg" alt="slider"/>
+            <img id="sliderImg3" class="hidden" src="$module_path/images/slider/3.jpg" alt="slider"/>
+            <img id="sliderImg4" class="hidden" src="$module_path/images/slider/4.jpg" alt="slider"/>
+        </div> 
+EOS;
         //    $block['subject'] = t('home content');
         $block['content'] = $html;
         return $block;
     } else if ($delta == 'home_highlighted') {
         $block = array();
-        $html = '<nav class="homenav">
+        $html =<<<EOS
+        '<nav class="homenav">
 		<a href="news.php">
 			<div class="bigbutton">
-				<img src="' . $module_path . '/images/news.png" alt="news"/>
+				<img src="$module_path/images/news.png" alt="news"/>
 				<h2>活动报道</h2>
 			</div>
 		</a>
 		<a href="farms.php">
 			<div class="bigbutton">
-				<img src="' . $module_path . '/images/farms.png" alt="farms"/>
+				<img src="$module_path /images/farms.png" alt="farms"/>
 				<h2>农场信息</h2>
 			</div>
 		</a>
 		<a href="products.php">
 			<div class="bigbutton">
-				<img src="' . $module_path . '/images/products.png" alt="products"/>
+				<img src=" $module_path /images/products.png" alt="products"/>
 				<h2>农产品信息</h2>
 			</div>
 		</a>
 		<a href="classes.php">
 			<div class="bigbutton">
-				<img src="' . $module_path . '/images/training.png" alt="training"/>
+				<img src=" $module_path /images/training.png" alt="training"/>
 				<h2>培训方案</h2>
 			</div>
 		</a>
-	</nav>';
+	</nav>
+EOS;
         $block['content'] = $html;
         return $block;
     }
