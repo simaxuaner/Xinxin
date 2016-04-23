@@ -73,6 +73,13 @@ function product_menu()
         'access arguments' => array('access content'),
     );
 
+    $items['product/term/%'] = array(
+        'title' => t('product'),
+        'page callback' => 'product_term_page_callback',
+        'page arguments' => array(2),
+        'access arguments' => array('access content'),
+    );
+
     return $items;
 }
 
@@ -208,13 +215,14 @@ function product_page_callback($pid){
     $myfarm_array = field_get_items('node', $product,'field_product_farm');
     $myfarm = isset($myfarm_array[0]) ? $myfarm_array[0] :'';
 
-    $build = "<main id='mainSection'>
-		<nav id='sideNav' class='w20'>
+    /*添加在<main>下面
+     * <nav id='sideNav' class='w20'>
 			<ul>
 			    <li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
 				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
 			</ul>
-		</nav>
+		</nav>*/
+    $build = "<main id='mainSection'>
 		<section class='w80'>
 			<div class='bar'>
 			<h1><a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> > ".$product->title."</h1>
@@ -268,10 +276,15 @@ function product_page_callback($pid){
     $build .="<div class='w100 floatLeft'>".$product->body['und'][0]['value']."
 			</div>
 	</section>";
+    $build .="<section class='w80'>
+			<div class='bar w100'>
+				<h2 style='margin-left:20px;'>相关产品</h2>
+			</div>";
     //查询产品的类型
     $mytype_array = field_get_items('node', $product,'field_product_type');
     $mytype = isset($mytype_array[0]) ? $mytype_array[0] :'';
     $tid = $mytype['tid'];
+    $type = taxonomy_term_load($tid);
     $nids = taxonomy_select_nodes($tid, TRUE, variable_get('default_nodes_main', 10));
     $nodes = node_load_multiple($nids);
     $count=0;
@@ -291,10 +304,45 @@ function product_page_callback($pid){
         $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
 
         $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				<a href='product0.php' ><h3>".$node->title."</h3></a>
-				<p><span class='farmName'>产品类型：".$mytype['title']."</span><span class='floatRight'>".$node->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+				<a href='".$GLOBALS['base_url']."/product/".$node->nid."' ><h3 class='product_title'>".$node->title."</h3></a>
+				<p class='product_price'><span class='farmName'>产品类型：".$type->name."</span><span class='floatRight'>".$node->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>";
         $count++;
+    }
+    $build .="</section>";
+    return $build;
+}
+
+/**
+ * @param $tid  类别的id
+ * @return 分类中产品的数据
+ */
+function product_term_page_callback($tid){
+    $term = taxonomy_term_load($tid);
+    $build = "<main>
+            <section class='w80'>
+            <div class='bar'>
+            <a href='".$GLOBALS['base_url'] ."/farmshow/product'><h1>农业产品</h1></a><h1> >".$term->name."</h1>
+            <div class='search floatRight'>
+					<a href='#'><img alt='search' src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
+				</div>
+            </div>";
+
+    $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
+    $products = node_load_multiple($nids);
+    foreach($products as $key=>$product){
+        //获取产品图片
+        $p_image_uri = $product->field_product_photo['und'][0]['uri'];
+        $p_image_locate = explode('//', $p_image_uri);
+        $p_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $p_image_locate[1];
+
+        $build .="<a href='".$GLOBALS['base_url'] ."/product/".$product->nid."'>
+			<div class='block1'>
+				<span class='fav'>收藏</span> <img src='".$p_image_filepath."'>
+				<h3 class='product_title'>".$product->title."</h3>
+				<p class='product_price'><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+			</div>
+            </a>";
     }
 
     return $build;
@@ -329,20 +377,15 @@ function template_preprocess_product_page(&$variables){
         return array();
     }
     $tree = taxonomy_get_tree($vocabulary->vid);
-    //选择框和搜索框
-    $build_select = "<select>";
-    foreach($tree as $term){
-        $build_select .="<option value=".$term->tid.">".$term->name."</option>";
-    }
-    $build_select .= "</select>
-                    <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a>
-                    <input type='text' name='search'></div>";
 
+    $build .="<div class='bar'>
+            <h1>农业产品</h1>
+            <div class='search floatRight'>
+					<a href='#'><img alt='search' src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
+				</div>
+            </div>";
     foreach($tree as $key=>$term){
-        $build .="<div class='bar'><h1>".$term->name."</h1>";
-        if($key==0){
-            $build .= $build_select;
-        }
+        $build .="<div class='bar'><h2>".$term->name."</h2> <a href='".$GLOBALS['base_url']."/product/term/".$term->tid."'><span class='floatRight'>更多 ></span></a>";
         $build .="</div>";
         $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
         $products = node_load_multiple($nids);
@@ -363,12 +406,12 @@ function template_preprocess_product_page(&$variables){
                 $build .="<div class='block1'>";
             }
             $build .="<span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				        <a href='".$GLOBALS['base_url'] ."/product/".$product->nid."' ><h3>".$product->title."</h3></a>
-				        <p><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+				        <a href='".$GLOBALS['base_url'] ."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
+				        <p class='product_price'><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
 			        </div>";
             $count++;
         }
     }
-    $variables['product_content'] = $build;
+    $variables['content'] = $build;
 
 }

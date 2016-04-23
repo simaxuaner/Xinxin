@@ -87,6 +87,11 @@ function farm_menu()
         'page arguments' => array(1),
         'access arguments' => array('access content'),
     );
+    $items['farms'] = array(
+        'title' => t('farms'),
+        'page callback' => 'farms_page_callback',
+        'access arguments' => array('access content'),
+    );
 
     return $items;
 }
@@ -101,16 +106,16 @@ function farm_page_callback($fid){
     $farm_image_uri = $farm->field_farm_image['und'][0]['uri'];
     $farm_image_locate = explode('//', $farm_image_uri);
     $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
-    $build ="<main>
+    /*$build ="<main>
 		    <nav id='sideNav' class='w20'>
 			<ul>
-				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄信息</a> </li>
-				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品信息</a> </li>
+				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
+				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
 			</ul>
-		</nav>";
-    $build .="<section class='w80'>
+		</nav>";*/
+    $build ="<main><section class='w80'>
 			<div class='bar'>
-				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄信息</a> >".$farm->title."</h1></div>
+				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> >".$farm->title."</h1></div>
 			<img src=".$farm_image_filepath." alt='Jackie Chan' class='alignCenter w100'/>
 		</section>";
     $build .="<section class='w80'>
@@ -159,8 +164,8 @@ function farm_page_callback($fid){
         $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
 
         $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				<a href='product0.php' ><h3>".$product->title."</h3></a>
-				<p><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+				<a href='".$GLOBALS['base_url']."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
+				<p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>";
         $count++;
     }
@@ -176,11 +181,22 @@ function farmshow_leisurefarm_page_callback(){
 }
 
 /**
+ * @return 所有农庄页面
+ */
+function farms_page_callback(){
+    return theme('farms_page',array());
+}
+
+/**
  * @return array
  */
 function farm_theme(){
     return array(
         'farm_page'=>array(
+            'variables'=> array('title'=>'推荐农庄'),
+            'template' => 'farm',
+        ),
+        'farms_page'=>array(
             'variables'=> array('title'=>'农庄'),
             'template' => 'farm',
         ),
@@ -188,6 +204,7 @@ function farm_theme(){
 }
 
 /**
+ * 推荐农庄总览页面
  * @param $variables
  */
 function template_preprocess_farm_page(&$variables){
@@ -243,7 +260,7 @@ function template_preprocess_farm_page(&$variables){
             $product_images[$key] = $product_image_filepath;
             $count++;
         }
-
+        $build .= "<a href='".$GLOBALS['base_url'] ."/farm/".$value->nid."'>";
         $build .= "<div class='wideBlock'>";
 
         $build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
@@ -259,13 +276,56 @@ function template_preprocess_farm_page(&$variables){
         foreach($product_images as $value){
             $build .= "<img src=".$value.">";
         }
-        $build .="</div></div></div>";
+        $build .="</div></div></div></a>";
     }
-    $variables['farm_term'] = $build;
+    $variables['content'] = $build;
 
     $build_search = "<div class='bar'><h1>农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
-                    <div class='button floatRight'><a href='farms1.php'>+</a></div>
+                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/farms'>+</a></div>
                     </div>";
     $variables['search'] = $build_search;
+}
+
+/**
+ * 所有农庄展示页面
+ * @return 页面数据
+ */
+function template_preprocess_farms_page(&$variables){
+    $build_search = "<div class='bar'><h1>农庄</h1>
+                    <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
+                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/farmshow/farm'>+</a></div>
+                    </div>";
+    $build = "";
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $nids = $query
+        ->fields('n', array('nid', 'created'))
+        ->condition('type', 'farm')
+        ->condition('status', 1)
+        ->orderBy('created', 'DESC')
+        ->limit(variable_get('default_nodes_main', 10))
+        ->addTag('node_access')
+        ->execute()
+        ->fetchCol();
+
+    if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+    }
+    foreach($nodes as $key=>$value){
+        //查找出农场图片
+        $farm_image_uri = $value->field_farm_image['und'][0]['uri'];
+        $farm_image_locate = explode('//', $farm_image_uri);
+        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
+
+        $build .="<a href='".$GLOBALS['base_url'] ."/farm/".$value->nid."'>
+			<div class='block1'>
+				<span class='fav'>收藏</span> <img src='".$farm_image_filepath."'/>
+				<h3>".$value->title."</h3>
+				<p><span class='farmName'>地点：".$value->field_farm_location['und'][0]['value']."</span><span class='floatRight'>&gt;</span><span class='floatRight'>详细信息</span></p>
+			</div>
+            </a>";
+
+    }
+    $variables['search'] = $build_search;
+    $variables['content'] = $build;
 }

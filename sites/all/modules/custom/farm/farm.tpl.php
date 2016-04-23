@@ -7,16 +7,16 @@
  */
 ?>
 <main>
-    <nav id="sideNav" class="w20">
+    <!--<nav id="sideNav" class="w20">
         <ul>
-            <li class="activeNavItem"> <a href="<?php print $farm_page?>">农庄</a> </li>
-            <li> <a href="<?php print $product_page?>">农产品</a> </li>
+            <li class="activeNavItem"> <a href="<?php /*print $farm_page*/?>">农庄</a> </li>
+            <li> <a href="<?php /*print $product_page*/?>">农产品</a> </li>
 
         </ul>
-    </nav>
+    </nav>-->
     <section class="w80">
         <?php print $search?>
-        <?php print $farm_term?>
+        <?php print $content?>
     </section>
 
 </main>
