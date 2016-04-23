@@ -145,10 +145,6 @@ function classes_theme() {
 function template_preprocess_classes_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
     $classList=array();
-    //detailurl
-    //imageurl
-    //title
-    //teachername
     $query = db_select('node', 'n')->extend('PagerDefault');
     $nids = $query
     ->fields('n', array('nid'))
@@ -161,15 +157,20 @@ function template_preprocess_classes_page(&$variables) {
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
         foreach ($nodes as $key => $node) {
+            $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['field_lesson_pic_fid'];
+            $imgfile = file_load($imgid);
+            $imageurl = file_create_url($imgfile->uri);
             $classList[$key]=array(
                 'detailurl' => "".$key,
-                'imgurl'=>'asjdf',
+                'imgurl'    => $imageurl,
+                'title'     => $node->title,
+                'teachername'=>$node->field_teacher_name[LANGUAGE_NONE][0],
                 );
         }
         $admission=$nodes[$nids[0]]->body['und'][0]['value'];
-        print_r($nodes);
     }
     $variables['classList']=$classList;
+    $variables['imageLinkPathHead']=$module_path;
 }
 
 function template_preprocess_teachers_page(&$variables) {

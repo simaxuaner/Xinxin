@@ -25,34 +25,13 @@
                 <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
                     <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
-                        <h3>课程名称</h3>
+                        <h3><?php print $value['title']?></h3>
 				    <p>
-                        <span class="farmName">讲师名</span>
+                        <span class="farmName"><?php print $value['teachername']?></span>
                         <span class="floatRight">01</span>
                         <span class="floatRight">02</span>
                     </p>
 			    </a>
-            <?php
-            }
-            ?>
-            <!--动态获取课程列表 -->
-            <!--重复填充，观察效果-->
-            <?php 
-            foreach($classList as $key => $value)
-            {
-            ?>
-                 <a href="classes/class0.php" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" >           
-                    <span class="fav">收藏</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
-				   
-                        <h3>课程名称</h3>
-                    
-				    <p>
-                        <span class="farmName">讲师名</span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
-                  </a>
             <?php
             }
             ?>
