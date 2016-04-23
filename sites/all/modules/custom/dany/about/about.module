@@ -166,10 +166,35 @@ function about_partners_page_callback() {
  * Implements hook_theme()
  */
 function about_theme() {
+	$menu_links="";
+// 	if (isset($vars['main_menu'])) {
+		print_r("12");
+		$sql = "SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
+    				FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
+    				WHERE ml.menu_name = :menu
+    				ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC";
+		$result = db_query($sql, array(':menu' => 'main-menu'), array('fetch' => PDO::FETCH_ASSOC));
+		$links = array();
+		foreach ($result as $item) {
+			$links[] = $item;
+		}
+		$tree = menu_tree_data($links);
+		$menu_links.='<nav id="sideNav" class="w20"><ul>';
+		foreach ($tree as $menu_item) {
+			if(!empty($menu_item['link']['title']) && $menu_item['link']['title']=='产业园基地') {
+				$sublink = $menu_item['below'];
+				foreach ($sublink as $sublinkitem) {
+					$menu_links .= '<li class="class="activeNavItem"><a href="?q=' . $sublinkitem['link']['link_path'] . '">' . $sublinkitem['link']['title'] . '</a></li>';
+				}
+			}
+		}
+		$menu_links.='</ul></nav>';
+// 		print_r("123");
+// 	}
     return array(
         'aboutpage_page' => array(
             'template' => 'aboutpage',
-            'variables'=>array(),
+            'variables'=>array('sidebarleft'=>$menu_links),
         ),
     );
 }

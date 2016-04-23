@@ -10,15 +10,18 @@
 	</header>
 
 	<main id="mainSection"> 
-		<content_before id="content_before">
-			<?php if ($page['content_before']): print render($page['content_before']); endif; ?>
-		</content_before>
-		 <sidebar_left id="sidebar_left">
-      		<?php if ($page['sidebar_left']):  print render($page['sidebar_left']); endif; ?>
-       	</sidebar_left>
 		<div id="container" class="clearfix container">
-            <?php print render($page['content']); ?>
-     	</div>
+			<div id="content-wrapper">
+				<?php if (isset($page['content_before'])): ?>
+					<div id="content-before">
+						<?php print render($page['content_before']); ?>
+					</div>
+				<?php endif; ?>
+	    		<div id="main-content">
+	       			<?php if ($page['content']): print render($page['content']); endif; ?>
+	       		</div>
+	     	</div>
+	     </div>
 	</main>
 
 	<highlighted id="highlighted">

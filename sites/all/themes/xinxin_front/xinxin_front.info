@@ -13,7 +13,6 @@ scripts[] = scripts.js
 
 regions[header] = Header
 regions[highlighted] = Highlighted
-regions[sidebar_left] =Sidebar Left
 regions[content_before] = Content Before
 regions[content] = Content
 regions[footer] = Footer
