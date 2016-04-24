@@ -20,7 +20,6 @@
         'weight'=>0,
  		'page callback' => 'member_call_back',
  	);
-
     return $items;
 }
 
@@ -45,31 +44,15 @@ function memberIndividual_call_back()
     global $base_url;
     $account = user_load($user->uid);
     $pic = $account->picture;
-    //$picObject=user_load($user->uid);
-    //$pic = $picObject->picture[uri];
 
     //0 for male and 1 for female
-    $sex = db_select('field_data_field_sex', 'f')
-        ->fields('f', array('field_sex_value'))
-        ->condition('f.entity_id', $user->uid)
-        ->execute()
-        ->fetchCol();
+    $sex = $user->sex[LANGUAGE_NONE][0]['value'];
+    $company = $user->personal_company[LANGUAGE_NONE][0]['value'];
+    $real_name = $user->real_name[LANGUAGE_NONE][0]['value'];
 
-    $company = db_select('field_data_field_personal_company', 'f')
-        ->fields('f', array('field_personal_company_value'))
-        ->condition('f.entity_id', $user->uid)
-        ->execute()
-        ->fetchCol();
-
-    $real_name = db_select('field_data_field_real_name','f')
-        ->fields('f', array('field_real_name_value'))
-        ->condition('f.entity_id', $user->uid)
-        ->execute()
-        ->fetchCol();
-
-    if($sex[0])
+    if($sex)
     {
-        if($sex[0]==0)
+        if($sex==0)
             $sex_value='男';
         else
             $sex_value='女';
@@ -78,6 +61,19 @@ function memberIndividual_call_back()
 
     $build =<<<EOS
     <main id='mainSection'>
+        <nav class="w20" id="sideNav">
+            <ul>
+                <li class="activeNavItem">
+                    <a href="">我的信息</a>
+                </li>
+                <li>
+                    <a href="">我的足迹</a>
+                </li>               
+                <li>
+                    <a href="">我的商圈</a>
+                </li>
+            </ul>
+        </nav>
         <section class='w80'>
             <div class='bar'>
                 <h1>我的信息</h1>
@@ -94,7 +90,7 @@ function memberIndividual_call_back()
                     </tr>
                     <tr>
                         <td>真实姓名</td>
-                        <td class="alignRight">$real_name[0]</td>
+                        <td class="alignRight">$real_name</td>
                     </tr>
                     <tr>
                         <td>性别</td>
@@ -102,7 +98,7 @@ function memberIndividual_call_back()
                     </tr>
                     <tr>
                         <td>所属公司</td>
-                        <td class="alignRight">$company[0]</td>
+                        <td class="alignRight">$company</td>
                     </tr>
                     <tr>
                         <td>电子邮件</td>
@@ -120,26 +116,27 @@ function memberCompany_call_back()
 {
     global $user;
     global $base_url;
-    $account = user_load($user->uid);
-    $pic = $account->picture;
-    //$picObject=user_load($user->uid);
-    //$pic = $picObject->picture[uri];
+    $pic = $user->picture;
 
-    $tel = db_select('field_data_field_user_tel', 'f')
-        ->fields('f', array('field_user_tel_value'))
-        ->condition('f.entity_id', $user->uid)
-        ->execute()
-        ->fetchCol();
-
-    $address = db_select('field_data_field_address','f')
-        ->fields('f', array('field_address_value'))
-        ->condition('f.entity_id', $user->uid)
-        ->execute()
-        ->fetchCol();
+    $tel = $user->user_tel[LANGUAGE_NONE][0]['value'];
+    $address = $user->address[LANGUAGE_NONE][0]['value'];
 
 
     $build =<<<EOS
     <main id="mainSection">
+        <nav class="w20" id="sideNav">
+            <ul>
+                <li class="activeNavItem">
+                    <a href="">我的信息</a>
+                </li>
+                <li>
+                    <a href="">我的足迹</a>
+                </li>               
+                <li>
+                    <a href="">我的商圈</a>
+                </li>
+            </ul>
+        </nav>
         <section class="w80">
             <div class="bar">
                 <h1>企业会员</h1>
@@ -156,11 +153,11 @@ function memberCompany_call_back()
                     </tr>
                     <tr>
                         <td>地址</td>
-                        <td class="alignRight">$address[0]</td>
+                        <td class="alignRight">$address</td>
                     </tr>
                     <tr>
                         <td>联系方式</td>
-                        <td class="alignRight">$tel[0]</td>
+                        <td class="alignRight">$tel</td>
                     </tr>
                     <tr>
                         <td>电子邮件</td>
@@ -168,7 +165,6 @@ function memberCompany_call_back()
                     </tr>
                 </table>
                 <br>
-                <p>$user->signature</p>
             </div>
             </section>
             <section class="w80">
