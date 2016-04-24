@@ -24,7 +24,7 @@
 
  	$items['membercenter/individual'] = array(
         'title' => '个人会员',
-        'access callback' => 'member_menu_accessable',
+        'access callback' => 'isIndividual_menu_display',
         //'access callback' => 'user_edit_access',
         'type' => MENU_DEFAULT_LOCAL_TASK,
         'page callback' => 'memberIndividual_call_back',
@@ -32,7 +32,7 @@
 
     $items['membercenter/company'] = array(
         'title' => '企业会员',
-        'access callback' => 'member_menu_accessable',
+        'access callback' => 'isCompany_menu_display',
         //'access callback' => 'user_edit_access',
         'type' => MENU_DEFAULT_LOCAL_TASK,
         'page callback' => 'memberCompany_call_back',
@@ -53,20 +53,37 @@ function member_menu_accessable()
         return FALSE;
     }
 }
-/*
+
 function isCompany_menu_display()
 {
     global $user;
     if(user_is_logged_in())
     {
         $account=user_load($user->uid);
+        //print_r($account);
+        if($account->roles[7] == '企业会员' || $account->roles[3] == 'administrator')
+            return TRUE;
     }
+    return FALSE;
 }
 
 function isIndividual_menu_display()
 {
+    global $user;
 
-}*/
+    if(user_is_logged_in())
+    {
+        $account=user_load($user->uid);
+        //print_r($account);
+        if($account->roles[6] == '个人会员' || $account->roles[3] == 'administrator')
+        {
+            //print_r($account->rid);
+            return TRUE;
+        }
+        //print_r($account->rid);
+    }
+    return FALSE;
+}
 
 function memberIndividual_call_back()
 {
