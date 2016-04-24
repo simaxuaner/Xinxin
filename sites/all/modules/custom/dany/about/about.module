@@ -62,7 +62,7 @@ function about_introduction_page_callback() {
 	$nodes = node_load_multiple ( $nids );
 	$html = '';
 	foreach ( $nodes as $node ) {
-		$html .= $node->body ['und'] [0] ['value'];
+		$html .= $node->body [LANGUAGE_NONE] [0] ['value'];
 	}
 	$pagehtml = <<<EOS
 <section class="w80">
@@ -96,12 +96,12 @@ function about_park_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			foreach ($node->field_image['und'] as $img){
+			foreach ($node->field_image[LANGUAGE_NONE] as $img){
 				$bodyhtml.='<img class="showcaseImg" src="'.file_create_url($img['uri']).'"/>';
 			}
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$parkhtml =<<<EOS
@@ -129,10 +129,10 @@ function about_school_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w40 floatRight marginLeft marginBottom" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+			$bodyhtml.='<img class="w40 floatRight marginLeft marginBottom" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$schoolhtml = <<<EOS
@@ -162,10 +162,10 @@ function about_investors_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$investorshtml =<<<EOS
@@ -193,10 +193,10 @@ function about_partners_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$partners =<<<EOS
@@ -251,7 +251,7 @@ function get_sidebar_menu_list($class){
 				else {
 					$menu_links .='<li>';
 				}
-				$menu_links .= '<a href="?q=' . $sublinkitem ['link'] ['link_path'] . '">' . $sublinkitem ['link'] ['title'] . '</a></li>';
+				$menu_links .= '<a href="' . url($sublinkitem ['link'] ['link_path']) . '">' . $sublinkitem ['link'] ['title'] . '</a></li>';
 			}
 		}
 	}

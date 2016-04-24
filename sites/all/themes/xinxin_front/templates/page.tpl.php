@@ -42,10 +42,10 @@
 	<footer>
 		<div class="w100 contact alignCenter">
 			<p class="w30 alignLeft">
-				地址： 广东深圳新辉大宝安区
+				地址： 泉州市泉港区新辉大电子商务园区（泉州市泉港区驿峰西路1号）
 			</p>		
 			<p class="w30 alignRight">
-				联系方式： 88888888
+				联系方式： 0595-87068669
 			</p>
 		</div>
 		<div class="copyright">
