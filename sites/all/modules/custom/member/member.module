@@ -110,7 +110,7 @@ function memberIndividual_call_back()
         <section class='w80'>
             <div class='bar'>
                 <h1>我的信息</h1>
-                <a class='floatRight' href="$base_url/user/$user->uid/edit">修改信息 &gt;</a>
+                <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
             </div>
             <div class='profilePicture floatLeft alignCenter w25'>
                 <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
@@ -184,7 +184,7 @@ function memberCompany_call_back()
         <section class="w80">
             <div class="bar">
                 <h1>企业会员</h1>
-                <a class='floatRight' href="$base_url/user/$user->uid/edit">修改信息 &gt;</a>
+                <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
             </div>
             <div class="profilePicture floatLeft w100">
                 <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
