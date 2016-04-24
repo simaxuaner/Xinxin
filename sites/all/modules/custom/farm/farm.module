@@ -106,13 +106,13 @@ function farm_page_callback($fid){
     $farm_image_uri = $farm->field_farm_image[LANGUAGE_NONE][1]['uri'];
     $farm_image_locate = explode('//', $farm_image_uri);
     $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
-    /*$build ="<main>
+    $build ="<main>
 		    <nav id='sideNav' class='w20'>
 			<ul>
 				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
 				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
 			</ul>
-		</nav>";*/
+		</nav>";
     $build ="<main><section class='w80'>
 			<div class='bar'>
 				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> >".$farm->title."</h1></div>
@@ -124,7 +124,7 @@ function farm_page_callback($fid){
 				<div class='floatRight alignRight'> <a href='#' class='favLink'>加入收藏</a></div>
 			</div>
 			<div class='w100'>
-				<p>".$farm->body['und'][0]['value']."</p>
+				<p>".$farm->body[LANGUAGE_NONE][0]['value']."</p>
 				<h2>联系方式</h2>
                 <h3>".$farm->field_farm_telephone[LANGUAGE_NONE][0]['value']."</h3>
 			</div>
@@ -161,7 +161,7 @@ function farm_page_callback($fid){
 
         $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
 				<a href='".$GLOBALS['base_url']."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
-				<p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+				<p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>";
     }
     $build .="</main>";
@@ -224,7 +224,7 @@ function template_preprocess_farm_page(&$variables){
 
     foreach($nodes as $key=>$value){
         //查找出农场图片
-        $farm_image_uri = $value->field_farm_image['und'][0]['uri'];
+        $farm_image_uri = $value->field_farm_image[LANGUAGE_NONE][0]['uri'];
         $farm_image_locate = explode('//', $farm_image_uri);
         $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
 
@@ -259,13 +259,13 @@ function template_preprocess_farm_page(&$variables){
         $build .= "<div class='wideBlock'>";
 
         $build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
-                <h3>地址：".$value->field_farm_location['und'][0]['value']."</h3></div>";
+                <h3>地址：".$value->field_farm_location[LANGUAGE_NONE][0]['value']."</h3></div>";
 
         $build .="<img src='".$farm_image_filepath."' class='w40 floatLeft'/>";
 
         $build .="<div class='blockInformation w60 floatLeft'>
                 <p class='alignRight'><a href='#' class=''>加入收藏</p></a>";
-        $build .="<p>".$value->body['und'][0]['value']."</p>";
+        $build .="<p>".$value->body[LANGUAGE_NONE][0]['value']."</p>";
         $build .="<p class='alignRight'><a href='".$GLOBALS['base_url'] ."/farm/".$value->nid."'>详细信息 ></a></p>" ;
         $build .="<div class='alignRight products'>";
         foreach($product_images as $value){
@@ -308,7 +308,7 @@ function template_preprocess_farms_page(&$variables){
     }
     foreach($nodes as $key=>$value){
         //查找出农场图片
-        $farm_image_uri = $value->field_farm_image['und'][0]['uri'];
+        $farm_image_uri = $value->field_farm_image[LANGUAGE_NONE][0]['uri'];
         $farm_image_locate = explode('//', $farm_image_uri);
         $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
 
@@ -316,7 +316,7 @@ function template_preprocess_farms_page(&$variables){
 			<div class='block1'>
 				<span class='fav'>收藏</span> <img src='".$farm_image_filepath."'/>
 				<h3>".$value->title."</h3>
-				<p><span class='farmName'>地点：".$value->field_farm_location['und'][0]['value']."</span><span class='floatRight'>&gt;</span><span class='floatRight'>详细信息</span></p>
+				<p><span class='farmName'>地点：".$value->field_farm_location[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>&gt;</span><span class='floatRight'>详细信息</span></p>
 			</div>
             </a>";
 
