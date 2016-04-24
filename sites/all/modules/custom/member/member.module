@@ -252,6 +252,7 @@ function advertistment_form_submit($form, $form_state){
     }
 
     global $user;
+
     $delta = db_insert('block_custom')
         ->fields(array(
             'body' => "<p><img alt=\"\" height=\"496\" src=\"/Xinxin/sites/default/files/pictures/admange/header0.jpg\" width=\"1920\" /></p>",
@@ -280,8 +281,33 @@ function advertistment_form_submit($form, $form_state){
         }
     }
     $query->execute();
-}
 
+    $val=db_select('block_custom', 'b')
+        ->fields('b')
+        ->condition('info', $user->name.'申请的广告')
+        ->execute();
+    foreach ($val as $key=>$block) {
+      $bid = $block->bid;
+    }
+
+    //存入数据库，广告位申请内容类型
+    $nodeuri = array(
+        'title' =>$user->name."申请的广告",
+        'type'=> 'advertising_application',
+        'field_ad_appl_uid'=>array(
+            LANGUAGE_NONE=>array(
+                0=>$user->uid
+            )
+        ),
+        'field_ad_block_id'=>array(
+            LANGUAGE_NONE=>array(
+                0=>$bid
+            )
+        ),
+    );
+    node_save((object)$nodeuri);
+
+}
 
 
 
