@@ -129,12 +129,6 @@ function memberCompany_call_back()
                 <li class="activeNavItem">
                     <a href="">我的信息</a>
                 </li>
-                <li>
-                    <a href="">我的足迹</a>
-                </li>               
-                <li>
-                    <a href="">我的商圈</a>
-                </li>
             </ul>
         </nav>
         <section class="w80">
