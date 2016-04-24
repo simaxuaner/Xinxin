@@ -13,26 +13,26 @@
  {
  	//member-front
  	$items['membercenter'] = array(
- 		'title' => t('会员中心'),
+ 		'title' => '会员中心',
  		//需要重新设置一下，因为只有登录用户才可以查看
  		'access callback' => TRUE,
  		'type' => MENU_SUGGESTED_ITEM,
  		'menu_name'=>'main-menu',
  		//'file' => 'member.pages.inc',
-        'weight'=>40,
+        'weight'=>0,
  	);
 
  	$items['membercenter/individual'] = array(
-        'title' => t('个人会员'),
-        'access callback' => TRUE,
+        'title' => '个人会员',
+        'access callback' => 'member_menu_accessable',
         //'access callback' => 'user_edit_access',
         'type' => MENU_DEFAULT_LOCAL_TASK,
         'page callback' => 'memberIndividual_call_back',
     );
 
     $items['membercenter/company'] = array(
-        'title' => t('企业会员'),
-        'access callback' => TRUE,
+        'title' => '企业会员',
+        'access callback' => 'member_menu_accessable',
         //'access callback' => 'user_edit_access',
         'type' => MENU_DEFAULT_LOCAL_TASK,
         'page callback' => 'memberCompany_call_back',
@@ -41,10 +41,39 @@
     return $items;
 }
 
+//设置访问权限
+function member_menu_accessable()
+{
+    if(user_is_logged_in())
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+/*
+function isCompany_menu_display()
+{
+    global $user;
+    if(user_is_logged_in())
+    {
+        $account=user_load($user->uid);
+    }
+}
+
+function isIndividual_menu_display()
+{
+
+}*/
+
 function memberIndividual_call_back()
 {
     global $user;
     global $base_url;
+    $account = user_load($user->uid);
+    $pic = $account->picture;
     //$picObject=user_load($user->uid);
     //$pic = $picObject->picture[uri];
 
@@ -84,7 +113,7 @@ function memberIndividual_call_back()
                 <a class='floatRight' href="$base_url/user/$user->uid/edit">修改信息 &gt;</a>
             </div>
             <div class='profilePicture floatLeft alignCenter w25'>
-                <img class='w100' src=""> 
+                <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
             </div>
             <div class='w75 paddingLeft paddingRight floatLeft'>
                 <table class='personalInfo w100'>
@@ -114,15 +143,17 @@ function memberIndividual_call_back()
                     </tr>
                     <tr>
                         <td>社交账号绑定</td>
-                        <td class='alignRight noPadding'><img src='images/icons/qq.png'><img src='images/icons/wechat.png'><img class='noMarginRight' src='images/icons/weibo.png'></td>
+                        <td class='alignRight noPadding'>
+                            <img src='sites/all/themes/xinxin_front/images/icons/qq.png'>
+                            <img src='sites/all/themes/xinxin_front/images/icons/wechat.png'>
+                            <img class='noMarginRight' src='sites/all/themes/xinxin_front/images/icons/weibo.png'>
+                        </td>
                     </tr>
                 </table>
             </div>
         </section>
     </main>
 EOS;
-    //图片路径待修改
-    //图片load有问题
     return $build;
 }
 
@@ -130,6 +161,8 @@ function memberCompany_call_back()
 {
     global $user;
     global $base_url;
+    $account = user_load($user->uid);
+    $pic = $account->picture;
     //$picObject=user_load($user->uid);
     //$pic = $picObject->picture[uri];
 
@@ -154,7 +187,7 @@ function memberCompany_call_back()
                 <a class='floatRight' href="$base_url/user/$user->uid/edit">修改信息 &gt;</a>
             </div>
             <div class="profilePicture floatLeft w100">
-                <img class='w100' src=""> 
+                <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
             </div>
             <div class="w100 floatLeft">
                 <table class="personalInfo w100">
