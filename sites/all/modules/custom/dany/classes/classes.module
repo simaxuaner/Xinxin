@@ -21,28 +21,25 @@ function classes_menu(){
     $items['classes/class'] = array(
         'title' => t('农业课堂'),
         'access callback' => TRUE,
-        'type' => MENU_LOCAL_TASK,
+        'type' => MENU_DEFAULT_LOCAL_TASK,
     );
     $items['classes/teachers'] = array(
         'title' => t('农业名师'),
         'page callback' => 'classes_teacher_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-        'menu_name' => 'main-menu',
+        'type' => MENU_LOCAL_TASK,
     );
     $items['classes/campus'] = array(
         'title' => t('创业园地'),
         'page callback' => 'classes_campus_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-        'menu_name' => 'main-menu',
+        'type' => MENU_LOCAL_TASK,
     );
     $items['classes/admission'] = array(
         'title' => t('招生信息'),
         'page callback' => 'classes_admission_page_callback',
         'access callback' => TRUE,
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-        'menu_name' => 'main-menu',
+        'type' => MENU_LOCAL_TASK,
     );
     $items['classes/files'] = array(
         'title' => t('资料下载'),

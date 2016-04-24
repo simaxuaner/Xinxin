@@ -10,14 +10,14 @@
  * Implements hook_menu().
  */
 
-function about_menu() {//全局变量无效、农业学校等只显示一所？
+function about_menu() {
 	$items ['about'] = array (
 			'title' => '产业园基地',
 			'page callback' => 'about_introduction_page_callback',
 			'access callback' => TRUE,
 			'type' => MENU_SUGGESTED_ITEM,
 			'menu_name' => 'main-menu',
-			'weight' => 50 
+			'weight' => 45 
 	);
 	$items ['about/introduction'] = array (
 			'title' => '企业介绍',

@@ -12,8 +12,7 @@ function workbench_menu() {
   $items = array();
 
   $items['admin/config/workbench'] = array(
-    'title' => 'Workbench',
-    'description' => 'Workbench',
+    'title' => '工作台',
     'page callback' => 'system_admin_menu_block_page',
     'access arguments' => array('administer workbench'),
     'position' => 'right',
@@ -21,15 +20,14 @@ function workbench_menu() {
     'file path' => drupal_get_path('module', 'system'),
   );
   $items['admin/workbench'] = array(
-    'title' => 'My Workbench',
-    'description' => 'My Workbench area',
+    'title' => '我的工作台',
     'page callback' => 'workbench_content',
     'access arguments' => array('access workbench'),
     'weight' => -20,
     'file' => 'workbench.pages.inc',
   );
   $items['admin/workbench/content'] = array(
-    'title' => 'My content',
+    'title' => '我编辑的内容',
     'page callback' => 'workbench_content',
     'access arguments' => array('access workbench'),
     'weight' => -20,
@@ -37,7 +35,7 @@ function workbench_menu() {
     'file' => 'workbench.pages.inc',
   );
   $items['admin/workbench/create'] = array(
-    'title' => 'Create content',
+    'title' => '创建内容',
     'page callback' => 'workbench_create',
     'access arguments' => array('access workbench'),
     'weight' => -15,

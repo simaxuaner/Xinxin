@@ -14,59 +14,30 @@
  	//member-front
  	$items['membercenter'] = array(
  		'title' => '会员中心',
- 		//需要重新设置一下，因为只有登录用户才可以查看
  		'access callback' => TRUE,
  		'type' => MENU_SUGGESTED_ITEM,
  		'menu_name'=>'main-menu',
- 		//'file' => 'member.pages.inc',
         'weight'=>0,
+ 		'page callback' => 'member_call_back',
  	);
-
- 	$items['membercenter/individual'] = array(
-        'title' => '个人会员',
-        'access callback' => 'member_menu_accessable',
-        //'access callback' => 'user_edit_access',
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-        'page callback' => 'memberIndividual_call_back',
-    );
-
-    $items['membercenter/company'] = array(
-        'title' => '企业会员',
-        'access callback' => 'member_menu_accessable',
-        //'access callback' => 'user_edit_access',
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-        'page callback' => 'memberCompany_call_back',
-    );
 
     return $items;
 }
 
-//设置访问权限
-function member_menu_accessable()
-{
-    if(user_is_logged_in())
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+function member_call_back() {
+	if(user_is_logged_in()) {
+		global $user;
+		if (in_array('企业会员', $user->roles)) {
+			return memberCompany_call_back();
+		}
+		else {
+			return memberIndividual_call_back();
+		}
+	}
+	else {
+		drupal_goto('user/login',  array('query'=>drupal_get_destination()));
+	}
 }
-/*
-function isCompany_menu_display()
-{
-    global $user;
-    if(user_is_logged_in())
-    {
-        $account=user_load($user->uid);
-    }
-}
-
-function isIndividual_menu_display()
-{
-
-}*/
 
 function memberIndividual_call_back()
 {
@@ -137,18 +108,6 @@ function memberIndividual_call_back()
                         <td>电子邮件</td>
                         <td class='alignRight'>$user->mail</td>
                     </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td class='alignRight'><a class='floatRight' href="$base_url/user/password">重设密码 &gt;</a></td>
-                    </tr>
-                    <tr>
-                        <td>社交账号绑定</td>
-                        <td class='alignRight noPadding'>
-                            <img src='sites/all/themes/xinxin_front/images/icons/qq.png'>
-                            <img src='sites/all/themes/xinxin_front/images/icons/wechat.png'>
-                            <img class='noMarginRight' src='sites/all/themes/xinxin_front/images/icons/weibo.png'>
-                        </td>
-                    </tr>
                 </table>
             </div>
         </section>
@@ -207,10 +166,6 @@ function memberCompany_call_back()
                         <td>电子邮件</td>
                         <td class="alignRight">$user->mail</td>
                     </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td class="alignRight"><a class='floatRight' href="$base_url/user/password">重设密码 &gt;</a></td>
-                    </tr>
                 </table>
                 <br>
                 <p>$user->signature</p>
@@ -218,13 +173,13 @@ function memberCompany_call_back()
             </section>
             <section class="w80">
                 <div class="bar">
-                    <h1>advertising</h1>
+                    <h1>广告申请</h1>
                 </div>
                 <form class="alignCenter">
                 <table>
                     <tr>
                         <td>
-                            <label class="alignLeft" for="image">Advertisement image</label>
+                            <label class="alignLeft" for="image">广告图片</label>
                         </td>
                         <td>
                             <input type="file" name="image">
@@ -232,7 +187,7 @@ function memberCompany_call_back()
                     </tr>
                     <tr>
                         <td>
-                            <label class="alignLeft" for="website">Link</label>
+                            <label class="alignLeft" for="website">广告链接</label>
                         </td>
                         <td>
                             <input type="text" name="link">

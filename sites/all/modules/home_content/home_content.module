@@ -7,7 +7,7 @@
 
 function home_content_enable()
 {
-    variable_set('site_frontpage', 'homepage');//TODO 不起作用
+    variable_set('site_frontpage', 'homepage');
 }
 
 function home_content_menu()
@@ -103,6 +103,12 @@ EOS;
 			<div class="bigbutton">
 				<img src=" $module_path /images/training.png" alt="training"/>
 				<h2>培训方案</h2>
+			</div>
+		</a>
+		<a href="#">
+			<div class="bigbutton">
+				<img alt="bbs" src="$module_path/images/training.png">
+				<h2>讨论区</h2>
 			</div>
 		</a>
 	</nav>

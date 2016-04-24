@@ -31,7 +31,7 @@ function xinxin_front_preprocess_html(&$vars)
 
     // Add default styles.
     drupal_add_css($xinxin_front . '/css/styles.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-//    drupal_add_css($xinxin_front . '/css/bootstrap.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+//    drupal_add_css($xinxin_front . '/css/menu.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/member.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
     drupal_add_js($xinxin_front . '/js/scripts.js');
@@ -62,15 +62,8 @@ function xinxin_front_preprocess_page(&$vars)
         }
         $tree = menu_tree_data($links);
         uasort($tree, "menu_sort_weights");
-        $menu_links = '<ul>';
+        $menu_links = '';
         foreach ($tree as $menu_item) {
-
-//            $class = array();
-//            $class[] = 'xinxin-nav';
-//            global $language_url;
-//            if (isset($menu_item['href']) && ($menu_item['href'] == $_GET['q'] || ($menu_item['href'] == '<front>' && drupal_is_front_page())) && (empty($menu_item['language']) || $menu_item['language']->language == $language_url->language)) {
-//                $class[] = 'xinxin-active'; /*. drupal_attributes(array('class' => $class)) .*/
-//            }
             if(!empty($menu_item['link']['title'])) {
                 $menu_links .= '<li><a href="' . url($menu_item['link']['link_path']) . '">' . $menu_item['link']['title'] . '</a>';
                 $sublink = $menu_item['below'];
@@ -81,7 +74,7 @@ function xinxin_front_preprocess_page(&$vars)
                 $menu_links .= '</ul></li>';
             }
         }
-        $vars['primary_nav'] = $menu_links . '</ul>';
+        $vars['primary_nav'] = $menu_links;
     } else {
         $vars['primary_nav'] = FALSE;
     }
@@ -103,23 +96,6 @@ function xinxin_front_preprocess_page(&$vars)
             $vars['search_form']['actions']['submit']['#value'] = '';
         }
         $vars['page']['header'] = FALSE;
-    }
-
-    if ($vars['logged_in']) {
-        $user = user_load($vars['user']->uid);
-        $alt = t("@user's picture", array('@user' => format_username($user)));
-        $style = variable_get('user_picture_style', 'thumbnail');
-        $filepath = '';
-        if ($user->picture) {
-            $filepath = $user->picture->uri;
-        } else {
-            $filepath = variable_get('user_picture_default', 'sites/all/themes/xinxin_front/images/users/user0.jpg');
-        }
-        if (module_exists('image') && file_valid_uri($filepath)) {
-            $vars['user_avatar'] = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
-        } else {
-            $vars['user_avatar'] = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
-        }
     }
 }
 

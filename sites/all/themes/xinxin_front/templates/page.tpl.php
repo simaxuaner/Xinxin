@@ -5,7 +5,19 @@
 				src="sites/all/themes/xinxin_front/images/icons/logo colored.png"></a>
 		</div>
 		<nav class="mainmenu">
-            <?php if ($primary_nav): print $primary_nav; endif; ?>
+			<ul class="mainmenu-link-left">
+				<?php if ($primary_nav): print $primary_nav; endif; ?>
+				<div class="loginMenu floatRight">
+					<?php if (user_is_logged_in()): ?>
+						<a href="<?php print url("user/logout"); ?>">退出</a>
+					<?php else : ?>
+						<a href="<?php print url("user/login"); ?>">登录</a>
+						|
+						<a href="<?php print url("user/register"); ?>">注册</a>
+					<?php endif; ?>
+				</div>
+				<?php print render($search_form); ?>
+			</ul>
         </nav>
 	</header>
 
@@ -28,30 +40,16 @@
 
 
 	<footer>
-		<div class="links">
-			<p>
-				<a href="#">6.6涂岭论坛</a>
+		<div class="w100 contact alignCenter">
+			<p class="w30 alignLeft">
+				地址： 广东深圳新辉大宝安区
+			</p>		
+			<p class="w30 alignRight">
+				联系方式： 88888888
 			</p>
-
-			<p>
-				<a href="#">12.12论坛</a>
-			</p>
-
-			<p>
-				<a href="#">在线商城</a>
-			</p>
-		</div>
-		<div class="social">
-			<a href="#"><img
-				src="sites/all/themes/xinxin_front/images/icons/qq.png" alt="qq" /></a>
-			<a href="#"><img
-				src="sites/all/themes/xinxin_front/images/icons/wechat.png"
-				alt="wechat" /></a> <a href="#"><img
-				src="sites/all/themes/xinxin_front/images/icons/weibo.png"
-				alt="weibo" /></a>
 		</div>
 		<div class="copyright">
-			<p>Copyright 2016</p>
+			<span>Copyright 2016</span>
 		</div>
-	</footer>
+    </footer>
 </div>
