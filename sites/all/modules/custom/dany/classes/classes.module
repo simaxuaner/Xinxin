@@ -310,7 +310,7 @@ function template_preprocess_admission_page(&$variables) {
         $admission = $node->body[LANGUAGE_NONE][0]['value'];
     }
     $variables['admission']=$admission;
-    $variables['secondMenuNav']=getSecondMenuNav('/danyAdimission/');
+    $variables['secondMenuNav']=getSecondMenuNav('/danyAdmission/');
 }
 
 function template_preprocess_files_page(&$variables) {

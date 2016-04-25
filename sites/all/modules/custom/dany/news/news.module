@@ -48,9 +48,9 @@ function news_menu(){
 
 function news_allnews_page_callback()
 {
-    $noteList=getNoteList('品牌论坛');
+    //$noteList=getNoteList('品牌论坛');
     return theme("allNews_page", array(
-        'noteList'  => $noteList,
+        //'noteList'  => $noteList,
     ));
 }
 
@@ -92,8 +92,9 @@ function news_theme() {
         'allNews_page'  => array(
             'variables'=> array('newsTitle'=>'品牌论坛',
                                 'secondMenuNav'=>getNewsSecondMenuNav('/danyOrigin/'),
+                                'info' => getNewsInfo(),
                             ),
-            'template' => 'allNews',
+            'template' => 'newsHead',
         ),
         'news66_page' => array(
             'variables'=> array('newsTitle'=>'6.6涂岭论坛',
@@ -222,12 +223,33 @@ function getNewsSecondMenuNav($type)
     $nav='<nav id="sideNav" class="w20">
 			<ul>
 				<li class="danyOrigin"> <a href="?q=news/allnews">品牌论坛</a> </li>
-				<li class="dany66"> <a href="?q=news/news66">6.6涂岭论坛</a> </li>
 				<li class="dany1212"> <a href="?q=news/news1212">12.12电商论坛</a> </li>
+                <li class="dany66"> <a href="?q=news/news66">6.6涂岭论坛</a> </li>
 				<li class="danyXinxin"> <a href="?q=news/newsxinhui">海促会资讯</a> </li>
 				
 			</ul>
 		</nav>';
     $html=preg_replace($type,"activeNavItem",$nav);
     return $html;
+}
+
+function getNewsInfo()
+{
+    $info=array();
+    $nid = variable_get('news66Info', 80);
+    $node = node_load($nid);
+    if ($node) {
+        $info['news66'] = $node->body[LANGUAGE_NONE][0]['value'];
+    }
+    $nid = variable_get('news1212Info', 81);
+    $node = node_load($nid);
+    if ($node) {
+        $info['news1212'] = $node->body[LANGUAGE_NONE][0]['value'];
+    }
+    $nid = variable_get('newsXinxinInfo', 82);
+    $node = node_load($nid);
+    if ($node) {
+        $info['newsXinxin'] = $node->body[LANGUAGE_NONE][0]['value'];
+    }
+    return $info;
 }
