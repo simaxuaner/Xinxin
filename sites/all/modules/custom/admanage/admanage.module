@@ -17,24 +17,39 @@ function admanage_menu() {
 function admanage_page()
 {
 
+  //查找出申请广告位的人及广告
+  $query = db_select('node', 'n')->extend('PagerDefault')->extend('TableSort');
+  $nids = $query
+      ->fields('n',array('nid'))
+      ->condition('type', 'advertising_application')   //选出广告位申请记录类型中的广告id,和申请人id
+      ->limit(50)
+      ->addTag('node_access')
+      ->execute()
+      ->fetchCol();
+  $nodes = node_load_multiple($nids);
+  //查找出所有广告信息
   $val=db_select('block_custom', 'b')
-    ->fields('b')
-    ->condition('info', '%' . db_like('广告') . '%', 'LIKE')
-    ->execute();
+      ->fields('b')
+      ->condition('info', '%' . db_like('广告') . '%', 'LIKE')
+      ->execute();
 
   $index=0;
-
   foreach ($val as $key=>$block) {
-
     $rows[$index]['id']=$block->bid;
-    $rows[$index]['pos']=$block->info;//l($node->title, 'node/' . $node->nid);
+    $rows[$index]['pos']=$block->info;
     $rows[$index]['image']="<div class='admanage-img'>".$block->body."</div>";
+    $rows[$index]['user']="无";
     $rows[$index]['link']=l('配置','admin/structure/block/manage/block/'.$block->bid.'/config');
-
+    foreach($nodes as $nkey=>$node){
+      if($node->field_ad_block_id['und'][0]['value']==$block->bid){
+        $user = user_load($node->field_ad_appl_uid['und'][0]['value']);
+        $rows[$index]['user']=$user->name;
+      }
+    }
     $index++;
   }
 
-  $header=array(t('id'),t('广告位'),t('预览'),t('编辑'));
+  $header=array(t('id'),t('广告位'),t('预览'),t('申请人'),t('编辑'));
   $table = theme('table', array('header' => $header,'rows' => $rows ,'attributes' => array('class' => array('private-table'))));
   drupal_add_css(drupal_get_path('module', 'admanage') . '/admanage.css');
 

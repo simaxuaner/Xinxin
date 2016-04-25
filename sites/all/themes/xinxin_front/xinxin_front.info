@@ -9,7 +9,7 @@ stylesheets[all][] = member.css
 stylesheets[all][] = bootstrap.css
 stylesheets[all][] = xinxin.css
 
-scripts[] = scripts.js
+scripts[] = js/scripts.js
 
 regions[header] = Header
 regions[highlighted] = Highlighted

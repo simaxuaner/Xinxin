@@ -1,0 +1,314 @@
+<?php
+/**
+ * Created by apple
+ * User: yuyao
+ * Date: 2016/4/23
+ * Time: 17:32
+ */
+
+ /**
+ * Implements hook_menu().
+ */
+ function member_menu()
+ {
+ 	//member-front
+ 	$items['membercenter'] = array(
+ 		'title' => '会员中心',
+ 		'access callback' => TRUE,
+ 		'type' => MENU_SUGGESTED_ITEM,
+ 		'menu_name'=>'main-menu',
+        'weight'=>0,
+ 		'page callback' => 'member_call_back',
+ 	);
+    return $items;
+}
+
+function member_call_back() {
+	if(user_is_logged_in()) {
+		global $user;
+		if (in_array('企业会员', $user->roles)) {
+			return memberCompany_call_back();
+		}
+		else {
+			return memberIndividual_call_back();
+		}
+	}
+	else {
+		drupal_goto('user/login',  array('query'=>drupal_get_destination()));
+	}
+}
+
+function memberIndividual_call_back()
+{
+    global $user;
+    global $base_url;
+    $account = user_load($user->uid);
+    $pic = $account->picture;
+
+    //0 for male and 1 for female
+    $sex = $user->sex[LANGUAGE_NONE][0]['value'];
+    $company = $user->personal_company[LANGUAGE_NONE][0]['value'];
+    $real_name = $user->real_name[LANGUAGE_NONE][0]['value'];
+
+    if($sex)
+    {
+        if($sex==0)
+            $sex_value='男';
+        else
+            $sex_value='女';
+    }
+
+
+    $build =<<<EOS
+    <main id='mainSection'>
+        <nav class="w20" id="sideNav">
+            <ul>
+                <li class="activeNavItem">
+                    <a href="">我的信息</a>
+                </li>
+                <li>
+                    <a href="">我的足迹</a>
+                </li>               
+                <li>
+                    <a href="">我的商圈</a>
+                </li>
+            </ul>
+        </nav>
+        <section class='w80'>
+            <div class='bar'>
+                <h1>我的信息</h1>
+                <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
+            </div>
+            <div class='profilePicture floatLeft alignCenter w25'>
+                <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
+            </div>
+            <div class='w75 paddingLeft paddingRight floatLeft'>
+                <table class='personalInfo w100'>
+                    <tr>
+                        <td>昵称</td>
+                        <td class='alignRight'>$user->name</td>
+                    </tr>
+                    <tr>
+                        <td>真实姓名</td>
+                        <td class="alignRight">$real_name</td>
+                    </tr>
+                    <tr>
+                        <td>性别</td>
+                        <td class="alignRight">$sex_value</td>
+                    </tr>
+                    <tr>
+                        <td>所属公司</td>
+                        <td class="alignRight">$company</td>
+                    </tr>
+                    <tr>
+                        <td>电子邮件</td>
+                        <td class='alignRight'>$user->mail</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </main>
+EOS;
+    return $build;
+}
+
+function memberCompany_call_back()
+{
+    global $user;
+    global $base_url;
+    $pic = $user->picture;
+
+    $tel = $user->user_tel[LANGUAGE_NONE][0]['value'];
+    $address = $user->address[LANGUAGE_NONE][0]['value'];
+    $adform_array = drupal_get_form('advertistment_form');
+    $adform = drupal_render($adform_array);
+    $build =<<<EOS
+    <main id="mainSection">
+        <nav class="w20" id="sideNav">
+            <ul>
+                <li class="activeNavItem">
+                    <a href="">我的信息</a>
+                </li>
+            </ul>
+        </nav>
+        <section class="w80">
+            <div class="bar">
+                <h1>企业会员</h1>
+                <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
+            </div>
+            <div class="profilePicture floatLeft w100">
+                <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
+            </div>
+            <div class="w100 floatLeft">
+                <table class="personalInfo w100">
+                    <tr>
+                        <td>公司名称</td>
+                        <td class="alignRight">$user->name</td>
+                    </tr>
+                    <tr>
+                        <td>地址</td>
+                        <td class="alignRight">$address</td>
+                    </tr>
+                    <tr>
+                        <td>联系方式</td>
+                        <td class="alignRight">$tel</td>
+                    </tr>
+                    <tr>
+                        <td>电子邮件</td>
+                        <td class="alignRight">$user->mail</td>
+                    </tr>
+                </table>
+                <br>
+            </div>
+            </section>
+            <section class="w80">
+                <div class="bar">
+                    <h1>广告申请</h1>
+                </div>
+                $adform
+            </div>
+            </section>
+
+    </main>
+EOS;
+    return $build;
+    //申请链接待修改
+    //上传文件待修改
+}
+
+
+function advertistment_form($form, &$form_state){
+
+    $form['#attributes']['enctype'] = 'multipart/form-data';
+
+    $form['adimage'] = array(
+        '#type' => 'file',
+        '#title' => t('广告图片'),
+        '#size' => 48,
+    );
+
+    $form['adlink'] = array(
+        '#type' => 'textfield',
+        '#title' => t('广告链接'),
+        '#size' => 48,
+    );
+
+    $form['adposition'] = array(
+        '#type' => 'textfield',
+        '#title' => t('广告位置'),
+        '#description' => t('请填写你要放置广告的页面的链接，如：Xinxin/farmshow'),
+        '#size' => 48,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('申请'),
+    );
+    return $form;
+
+    /*<form class="alignCenter" >
+                <table>
+                    <tr>
+                        <td>
+                            <label class="alignLeft" for="image">广告图片</label>
+                        </td>
+                        <td>
+                            <input type="file" name="image">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="alignLeft" for="website">广告链接</label>
+                        </td>
+                        <td>
+                            <input type="text" name="link">
+                        </td>
+                    </tr>
+                </table>
+                <div class="button">
+                    <a href="#">申请</a>
+                </div>
+                </form>*/
+}
+
+/**
+ * 广告位申请待完善
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function advertistment_form_submit($form, $form_state){
+    if(form_get_errors())
+        return $form;
+
+    $validators = array();
+    $dest = drupal_realpath('public://pictures/admange');
+    $file = file_save_upload('adimage', $validators, $dest,$replace = FILE_EXISTS_RENAME);
+    if ($file != 0) {
+        $file->filepath; // 文件相对路径
+    }
+    else {
+        form_set_error('advertistment_form', t("上传图片失败"));
+    }
+
+    global $user;
+
+    $delta = db_insert('block_custom')
+        ->fields(array(
+            'body' => "<p><img alt=\"\" height=\"496\" src=\"/Xinxin/sites/default/files/pictures/admange/header0.jpg\" width=\"1920\" /></p>",
+            'info' => $user->name."申请的广告",
+            'format' => "full_html",
+        ))
+        ->execute();
+    // Store block delta to allow other modules to work with new block.
+    $form_state['values']['delta'] = $delta;
+
+    $query = db_insert('block')->fields(array('visibility', 'pages', 'custom', 'title', 'module', 'theme', 'status', 'weight', 'delta', 'cache'));
+    foreach (list_themes() as $key => $theme) {
+        if ($theme->status) {
+            $query->values(array(
+                'visibility' => 1,
+                'pages' => '',
+                'custom' => 0,
+                'title' => '',
+                'module' => 'block',
+                'theme' => $theme->name,
+                'status' => 0,
+                'weight' => 0,
+                'delta' => $delta,
+                'cache' => DRUPAL_NO_CACHE,
+            ));
+        }
+    }
+    $query->execute();
+
+    $val=db_select('block_custom', 'b')
+        ->fields('b')
+        ->condition('info', $user->name.'申请的广告')
+        ->execute();
+    foreach ($val as $key=>$block) {
+      $bid = $block->bid;
+    }
+
+    //存入数据库，广告位申请内容类型
+    $nodeuri = array(
+        'title' =>$user->name."申请的广告",
+        'type'=> 'advertising_application',
+        'field_ad_appl_uid'=>array(
+            LANGUAGE_NONE=>array(
+                0=>$user->uid
+            )
+        ),
+        'field_ad_block_id'=>array(
+            LANGUAGE_NONE=>array(
+                0=>$bid
+            )
+        ),
+    );
+    node_save((object)$nodeuri);
+
+}
+
+
+
+

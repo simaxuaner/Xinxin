@@ -1,0 +1,12 @@
+name = Member
+description = 会员显示模块.
+package = My
+version = VERSION
+core = 7.x
+
+; Information added by Drupal.org packaging script on 2016-04-23
+version = "7.43"
+project = "drupal"
+datestamp = "1456343506"
+
+dependencies[] = user

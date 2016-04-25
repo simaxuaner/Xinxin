@@ -173,14 +173,14 @@ function node_on_shelf_form_ajax_submit($form, $form_state){
     $product_shelf_id = $form['shelf_term']['#value'];
     $shelf = taxonomy_term_load($product_shelf_id);
     $shelf_uri = (array)$shelf;
-    $count = $shelf_uri['field_shelf_product_count']['und'][0]['value'];
+    $count = $shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]['value'];
     if($count==0){
         form_set_error('message', t('此货架栏位已满！'));
     }
     else{
         $count --;
-        $shelf_uri['field_shelf_product_count']['und'][0]['value'] = $count;
-        $node_uri['field_product_shelf']['und'][0]['tid'] = $product_shelf_id;
+        $shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]['value'] = $count;
+        $node_uri['field_product_shelf'][LANGUAGE_NONE][0]['tid'] = $product_shelf_id;
         //将更新的node保存到数据库
         $node = node_submit((object)$node_uri);
         node_save((object)$node_uri);
@@ -196,7 +196,6 @@ function node_on_shelf_form_ajax_submit($form, $form_state){
             form_set_error('message', t('产品未上架成功'));
         }
     }
-
     return $form;
 }
 
@@ -207,7 +206,7 @@ function node_on_shelf_form_ajax_submit($form, $form_state){
 function product_page_callback($pid){
     $product = node_load($pid);
     //查找出农产品图片
-    $product_image_uri = $product->field_product_photo['und'][0]['uri'];
+    $product_image_uri = $product->field_product_photo[LANGUAGE_NONE][0]['uri'];
     $product_image_locate = explode('//', $product_image_uri);
     $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $product_image_locate[1];
 
@@ -215,14 +214,13 @@ function product_page_callback($pid){
     $myfarm_array = field_get_items('node', $product,'field_product_farm');
     $myfarm = isset($myfarm_array[0]) ? $myfarm_array[0] :'';
 
-    /*添加在<main>下面
-     * <nav id='sideNav' class='w20'>
+    $build = "<main id='mainSection'>
+               <nav id='sideNav' class='w20'>
 			<ul>
 			    <li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
 				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
 			</ul>
-		</nav>*/
-    $build = "<main id='mainSection'>
+		</nav>
 		<section class='w80'>
 			<div class='bar'>
 			<h1><a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> > ".$product->title."</h1>
@@ -241,39 +239,39 @@ function product_page_callback($pid){
     $build .="<table class='w100'>
 	  <tr>
 		<td>产品标准号</td>
-		<td> ".$product->field_product_num['und'][0]['value']."</td>
+		<td> ".$product->field_product_num[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	  <tr>
 		<td>价格</td>
-		<td>".$product->field_product_price['und'][0]['value']."</td>
+		<td>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	  <tr>
 		<td>配送服务</td>
-		<td>".$product->field_product_server['und'][0]['value']."</td>
+		<td>".$product->field_product_server[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	   <tr>
 		<td>储藏方式</td>
-		<td>".$product->field_product_storage_mode['und'][0]['value']."</td>
+		<td>".$product->field_product_storage_mode[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	   <tr>
 		<td>净含量</td>
-		<td>".$product->field_product_net_weight['und'][0]['value']."</td>
+		<td>".$product->field_product_net_weight[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	   <tr>
 		<td>联系方式</td>
-		<td>".$product->field_product_telephone['und'][0]['value']."</td>
+		<td>".$product->field_product_telephone[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	   <tr>
 		<td>热卖时间</td>
-		<td>".$product->field_product_sale_time['und'][0]['value']."</td>
+		<td>".$product->field_product_sale_time[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	   <tr>
 		<td>产地</td>
-		<td>".$product->field_product_area['und'][0]['value']."</td>
+		<td>".$product->field_product_area[LANGUAGE_NONE][0]['value']."</td>
 	  </tr>
 	</table>
 	</div>";
-    $build .="<div class='w100 floatLeft'>".$product->body['und'][0]['value']."
+    $build .="<div class='w100 floatLeft'>".$product->body[LANGUAGE_NONE][0]['value']."
 			</div>
 	</section>";
     $build .="<section class='w80'>
@@ -305,7 +303,7 @@ function product_page_callback($pid){
 
         $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
 				<a href='".$GLOBALS['base_url']."/product/".$node->nid."' ><h3 class='product_title'>".$node->title."</h3></a>
-				<p class='product_price'><span class='farmName'>产品类型：".$type->name."</span><span class='floatRight'>".$node->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+				<p class='product_price'><span class='farmName'>产品类型：".$type->name."</span><span class='floatRight'>".$node->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>";
         $count++;
     }
@@ -332,7 +330,7 @@ function product_term_page_callback($tid){
     $products = node_load_multiple($nids);
     foreach($products as $key=>$product){
         //获取产品图片
-        $p_image_uri = $product->field_product_photo['und'][0]['uri'];
+        $p_image_uri = $product->field_product_photo[LANGUAGE_NONE][0]['uri'];
         $p_image_locate = explode('//', $p_image_uri);
         $p_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $p_image_locate[1];
 
@@ -340,7 +338,7 @@ function product_term_page_callback($tid){
 			<div class='block1'>
 				<span class='fav'>收藏</span> <img src='".$p_image_filepath."'>
 				<h3 class='product_title'>".$product->title."</h3>
-				<p class='product_price'><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+				<p class='product_price'><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>
             </a>";
     }
@@ -396,7 +394,7 @@ function template_preprocess_product_page(&$variables){
                 break;
             }
             //获取产品图片
-            $product_image_uri = $product->field_product_photo['und'][0]['uri'];
+            $product_image_uri = $product->field_product_photo[LANGUAGE_NONE][0]['uri'];
             $product_image_locate = explode('//', $product_image_uri);
             $product_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $product_image_locate[1];
             if($pkey==3){
@@ -407,7 +405,7 @@ function template_preprocess_product_page(&$variables){
             }
             $build .="<span class='fav'>收藏</span> <img src=".$product_image_filepath." />
 				        <a href='".$GLOBALS['base_url'] ."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
-				        <p class='product_price'><span class='floatRight'>".$product->field_product_price['und'][0]['value']."</span><span class='floatRight'>￥</span></p>
+				        <p class='product_price'><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
 			        </div>";
             $count++;
         }

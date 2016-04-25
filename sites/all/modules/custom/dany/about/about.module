@@ -10,15 +10,14 @@
  * Implements hook_menu().
  */
 
-$class="企业介绍";
-function about_menu() {//全局变量无效、农业学校等只显示一所？
+function about_menu() {
 	$items ['about'] = array (
 			'title' => '产业园基地',
 			'page callback' => 'about_introduction_page_callback',
 			'access callback' => TRUE,
 			'type' => MENU_SUGGESTED_ITEM,
 			'menu_name' => 'main-menu',
-			'weight' => 50 
+			'weight' => 45 
 	);
 	$items ['about/introduction'] = array (
 			'title' => '企业介绍',
@@ -54,7 +53,6 @@ function about_menu() {//全局变量无效、农业学校等只显示一所？
 }
 function about_introduction_page_callback() {
 	global $user;
-	global $class;
 	$class="企业介绍";
 	$module_path = drupal_get_path ( 'module', 'about' );
 	$query = db_select ( 'node', 'n' );
@@ -64,7 +62,7 @@ function about_introduction_page_callback() {
 	$nodes = node_load_multiple ( $nids );
 	$html = '';
 	foreach ( $nodes as $node ) {
-		$html .= $node->body ['und'] [0] ['value'];
+		$html .= $node->body [LANGUAGE_NONE] [0] ['value'];
 	}
 	$pagehtml = <<<EOS
 <section class="w80">
@@ -82,12 +80,12 @@ function about_introduction_page_callback() {
 </section>
 EOS;
 	return theme ( "aboutpage_page", array (
-			"pagemain" => $pagehtml 
+			"pagemain" => $pagehtml,
+			"sidebarleft"=>get_sidebar_menu_list($class), 
 	) );
 }
 function about_park_page_callback() {
 	global $user;
-	global $class;
 	$class="园区风貌";
 	$module_path = drupal_get_path ( 'module', 'about' );
 	$query = db_select ( 'node', 'n' );
@@ -98,12 +96,12 @@ function about_park_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			foreach ($node->field_image['und'] as $img){
+			foreach ($node->field_image[LANGUAGE_NONE] as $img){
 				$bodyhtml.='<img class="showcaseImg" src="'.file_create_url($img['uri']).'"/>';
 			}
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$parkhtml =<<<EOS
@@ -115,12 +113,12 @@ function about_park_page_callback() {
 		</section>
 EOS;
 	return theme ( "aboutpage_page", array (
-			"pagemain" => $parkhtml 
+			"pagemain" => $parkhtml ,
+			"sidebarleft"=>get_sidebar_menu_list($class),
 	) );
 }
 function about_school_page_callback() {
 	global $user;
-	global $class;
 	$class="农业学校";
 	$module_path = drupal_get_path ( 'module', 'about' );
 	$query = db_select ( 'node', 'n' );
@@ -131,10 +129,10 @@ function about_school_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w40 floatRight marginLeft marginBottom" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+			$bodyhtml.='<img class="w40 floatRight marginLeft marginBottom" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$schoolhtml = <<<EOS
@@ -148,12 +146,12 @@ function about_school_page_callback() {
 </section>
 EOS;
 	return theme ( "aboutpage_page", array (
-			"pagemain" => $schoolhtml 
+			"pagemain" => $schoolhtml ,
+			"sidebarleft"=>get_sidebar_menu_list($class),
 	) );
 }
 function about_investors_page_callback() {
 	global $user;
-	global $class;
 	$class="园区招商";
 	$module_path = drupal_get_path ( 'module', 'about' );
 	$query = db_select ( 'node', 'n' );
@@ -164,10 +162,10 @@ function about_investors_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$investorshtml =<<<EOS
@@ -179,12 +177,12 @@ function about_investors_page_callback() {
 		</section>
 EOS;
 	return theme ( "aboutpage_page", array (
-			"pagemain" => $investorshtml 
+			"pagemain" => $investorshtml ,
+			"sidebarleft"=>get_sidebar_menu_list($class),
 	) );
 }
 function about_partners_page_callback() {
 	global $user;
-	global $class;
 	$class="入驻企业";
 	$module_path = drupal_get_path ( 'module', 'about' );
 	$query = db_select ( 'node', 'n' );
@@ -195,10 +193,10 @@ function about_partners_page_callback() {
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
 		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image ['und'] [0] ['uri']).'"/>';
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body ['und'] [0] ['value'];
+			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
 		}
 	}
 	$partners =<<<EOS
@@ -210,7 +208,8 @@ function about_partners_page_callback() {
 	</section>
 EOS;
 	return theme ( "aboutpage_page", array (
-			"pagemain" => $partners 
+			"pagemain" => $partners ,
+			"sidebarleft"=>get_sidebar_menu_list($class),
 	) );
 }
 
@@ -218,15 +217,23 @@ EOS;
  * Implements hook_theme()
  */
 function about_theme() {
-	global $class;
+	return array (
+			'aboutpage_page' => array (
+					'template' => 'aboutpage',
+					'variables' => array (
+					) 
+			) 
+	);
+}
+function get_sidebar_menu_list($class){
 	$sql = "SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
     				FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
     				WHERE ml.menu_name = :menu
     				ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC";
 	$result = db_query ( $sql, array (
-			':menu' => 'main-menu' 
+			':menu' => 'main-menu'
 	), array (
-			'fetch' => PDO::FETCH_ASSOC 
+			'fetch' => PDO::FETCH_ASSOC
 	) );
 	$links = array ();
 	foreach ( $result as $item ) {
@@ -244,17 +251,10 @@ function about_theme() {
 				else {
 					$menu_links .='<li>';
 				}
-				$menu_links .= '<a href="?q=' . $sublinkitem ['link'] ['link_path'] . '">' . $sublinkitem ['link'] ['title'] . '</a></li>';
+				$menu_links .= '<a href="' . url($sublinkitem ['link'] ['link_path']) . '">' . $sublinkitem ['link'] ['title'] . '</a></li>';
 			}
 		}
 	}
 	$menu_links .= '</ul></nav>';
-	return array (
-			'aboutpage_page' => array (
-					'template' => 'aboutpage',
-					'variables' => array (
-							'sidebarleft' => $menu_links 
-					) 
-			) 
-	);
+	return $menu_links;
 }
