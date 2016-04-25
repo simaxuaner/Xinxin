@@ -22,7 +22,7 @@
 			  <option value="mercedes">园区信息</option>
 			</select> 
 		</div>
-        <!--动态获取课程列表 -->
+        <!--动态获取资讯列表 -->
         <?php 
         foreach($noteList as $key => $value)
         {

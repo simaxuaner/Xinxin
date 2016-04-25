@@ -143,6 +143,7 @@ function getNoteList($type)
 
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
+        print_r($nodes);
         foreach ($nodes as $key => $node) {
             if($node->field_news_type[LANGUAGE_NONE][0]['value']==$type)
             {
@@ -211,10 +212,10 @@ function getNewsSecondMenuNav($type)
 {
     $nav='<nav id="sideNav" class="w20">
 			<ul>
-				<li class="danyOrigin"> <a href="news.php">品牌论坛</a> </li>
-				<li class="dany66"> <a href="news6_6.php">6.6涂岭论坛</a> </li>
-				<li class="dany1212"> <a href="news12_12.php">12.12电商论坛</a> </li>
-				<li class="danyXinxin"> <a href="newshaicuhui.php">海促会资讯</a> </li>
+				<li class="danyOrigin"> <a href="?=news/allnews">品牌论坛</a> </li>
+				<li class="dany66"> <a href="?=news/news66">6.6涂岭论坛</a> </li>
+				<li class="dany1212"> <a href="?q=news/news1212">12.12电商论坛</a> </li>
+				<li class="danyXinxin"> <a href="?q=news/newsxinhui">海促会资讯</a> </li>
 				
 			</ul>
 		</nav>';
