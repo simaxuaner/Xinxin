@@ -67,6 +67,7 @@ function xinxin_front_preprocess_page(&$vars)
             if(!empty($menu_item['link']['title'])) {
                 $menu_links .= '<li><a href="' . url($menu_item['link']['link_path']) . '">' . $menu_item['link']['title'] . '</a>';
                 $sublink = $menu_item['below'];
+                uasort($sublink, "menu_sort_weights");
                 $menu_links .= '<ul>';
                 foreach ($sublink as $sublinkitem) {
                     $menu_links .= '<li><a href="' . url($sublinkitem['link']['link_path']) . '">' . $sublinkitem['link']['title'] . '</a></li>';
