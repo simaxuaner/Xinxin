@@ -318,6 +318,12 @@ function product_page_callback($pid){
 function product_term_page_callback($tid){
     $term = taxonomy_term_load($tid);
     $build = "<main>
+            <nav id='sideNav' class='w20'>
+			<ul>
+			    <li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
+				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
+			</ul>
+		    </nav>
             <section class='w80'>
             <div class='bar'>
             <a href='".$GLOBALS['base_url'] ."/farmshow/product'><h1>农业产品</h1></a><h1> >".$term->name."</h1>

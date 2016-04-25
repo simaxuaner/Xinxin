@@ -113,7 +113,7 @@ function farm_page_callback($fid){
 				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
 			</ul>
 		</nav>";
-    $build ="<main><section class='w80'>
+    $build .="<section class='w80'>
 			<div class='bar'>
 				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> >".$farm->title."</h1></div>
 			<img src=".$farm_image_filepath." alt='Jackie Chan' class='alignCenter w100'/>
