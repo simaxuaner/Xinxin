@@ -70,7 +70,7 @@ function memberIndividual_call_back()
                     <a href="">我的足迹</a>
                 </li>               
                 <li>
-                    <a href="">我的商圈</a>
+                    <a href="">我的朋友圈</a>
                 </li>
             </ul>
         </nav>
