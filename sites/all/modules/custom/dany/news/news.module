@@ -95,7 +95,7 @@ function news_theme() {
                             ),
             'template' => 'allNews',
         ),
-        'new66_page' => array(
+        'news66_page' => array(
             'variables'=> array('newsTitle'=>'6.6涂岭论坛',
                                 'secondMenuNav'=>getNewsSecondMenuNav('/dany66/'),
                             ),
