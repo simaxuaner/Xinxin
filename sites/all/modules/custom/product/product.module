@@ -372,8 +372,8 @@ function product_theme(){
 }
 
 function template_preprocess_product_page(&$variables){
-    $variables['farm_page']=$GLOBALS['base_url'] .'/farmshow/farm';
-    $variables['product_page']=$GLOBALS['base_url'] .'/farmshow/product';
+    $variables['farm_page']=url('farmshow/farm');
+    $variables['product_page']=url('farmshow/product');
 
     $build = "";
     $vocabulary = taxonomy_vocabulary_load(variable_get('shelf_vocabulary',0));
