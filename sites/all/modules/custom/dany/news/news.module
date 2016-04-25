@@ -57,24 +57,30 @@ function news_allnews_page_callback()
 function news_news66_page_callback()
 {
     $noteList=getNoteList('66涂岭论坛');
-    return theme("allNews_page", array(
+    $magzineList=getMagzineList('66');
+    return theme("news66_page", array(
         'noteList'  => $noteList,
+        'magzineList' => $magzineList,
     ));
 }
 
 function news_news1212_page_callback()
 {
     $noteList=getNoteList('1212电商论坛');
-    return theme("allNews_page", array(
+    $magzineList=getMagzineList('1212');
+    return theme("news1212_page", array(
         'noteList'  => $noteList,
+        'magzineList' => $magzineList,
     ));
 }
 
 function news_newsxinhui_page_callback()
 {
     $noteList=getNoteList('海促会资讯');
-    return theme("allNews_page", array(
+    $magzineList=getMagzineList('xinxin');
+    return theme("newsXinhui_page", array(
         'noteList'  => $noteList,
+        'magzineList' => $magzineList,
     ));
 }
 
@@ -113,17 +119,6 @@ function news_theme() {
 function template_preprocess_allNews_page(&$variables) {
     $module_path = drupal_get_path('module','news');
     $variables['imageLinkPathHead']=$module_path;
-    
-    foreach(range(0,4) as $value)
-    {
-        $magzineList[$value]=array(
-        'imgurl'      => 'images/magazine/magazine.jpg',
-        'date' => 'Jackie Chan'.$value,
-        'title'    => 'farmName1'.$value,
-        'content'   => $value,
-        );
-    }
-    $variables['magzineList']=$magzineList;
 }
 
 
@@ -143,7 +138,6 @@ function getNoteList($type)
 
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
-        print_r($nodes);
         foreach ($nodes as $key => $node) {
             if($node->field_news_type[LANGUAGE_NONE][0]['value']==$type)
             {
@@ -160,6 +154,21 @@ function getNoteList($type)
         }
     }
     return $noteList;
+}
+
+function getMagzineList($type)
+{
+    $magzineList=array();
+    foreach(range(0,4) as $value)
+    {
+        $magzineList[$value]=array(
+        'imgurl'      => 'images/magazine/magazine.jpg',
+        'date' => 'Jackie Chan'.$value,
+        'title'    => 'farmName1'.$value,
+        'content'   => $value,
+        );
+    }
+    return $magzineList;
 }
 
 function changeDateform($date)
@@ -212,8 +221,8 @@ function getNewsSecondMenuNav($type)
 {
     $nav='<nav id="sideNav" class="w20">
 			<ul>
-				<li class="danyOrigin"> <a href="?=news/allnews">品牌论坛</a> </li>
-				<li class="dany66"> <a href="?=news/news66">6.6涂岭论坛</a> </li>
+				<li class="danyOrigin"> <a href="?q=news/allnews">品牌论坛</a> </li>
+				<li class="dany66"> <a href="?q=news/news66">6.6涂岭论坛</a> </li>
 				<li class="dany1212"> <a href="?q=news/news1212">12.12电商论坛</a> </li>
 				<li class="danyXinxin"> <a href="?q=news/newsxinhui">海促会资讯</a> </li>
 				
