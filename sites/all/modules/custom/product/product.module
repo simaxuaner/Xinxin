@@ -394,25 +394,26 @@ function template_preprocess_product_page(&$variables){
         $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
         $products = node_load_multiple($nids);
         $count = 0;
-        foreach($products as $pkey=>$product){
-            if($count==4)
-            {
+        foreach($products as $pkey=>$product) {
+            if ($count == 4) {
                 break;
             }
             //获取产品图片
             $product_image_uri = $product->field_product_photo[LANGUAGE_NONE][0]['uri'];
             $product_image_locate = explode('//', $product_image_uri);
-            $product_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $product_image_locate[1];
-            if($pkey==3){
-                $build .="<div class='block1 noMarginRight'>";
+            $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
+            if ($pkey == 3) {
+                $build .= "<div id='node-" . $product->nid  . "' class='block1 noMarginRight'>";
+            } else {
+                $build .= "<div id='node-" . $product->nid  . "' class='block1'>";
             }
-            else{
-                $build .="<div class='block1'>";
+            if (user_is_logged_in()) {
+                $collection_link = collection_get_collection_link($product);
+                $build .= $collection_link;
             }
-            $build .="<span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				        <a href='".$GLOBALS['base_url'] ."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
-				        <p class='product_price'><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
-			        </div>";
+            $build .= "<img src=".$product_image_filepath." /><a href='".$GLOBALS['base_url'] ."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>" .
+				        "<p class='product_price'><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>" .
+			        "</div>";
             $count++;
         }
     }

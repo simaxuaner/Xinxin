@@ -1,0 +1,90 @@
+<?php 
+
+/**
+ * @file
+ * Install and uninstall functions for the like module.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function collection_install() {
+	variable_set('collection_maintain_statistics', TRUE);
+}
+
+/**
+* Implementation of hook_uninstall()
+*/
+function collection_uninstall(){
+	db_delete('variable')
+	->condition('name', db_like("collection_") . '%', 'LIKE')
+	->execute();
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function collection_schema(){
+	$schema['collection'] = array(
+    	'fields' => array(
+      		'uid' => array(
+        		'type' => 'int',
+				'size' => 'big',
+				'unsigned' => TRUE,
+        		'not null' => TRUE,
+				'default' => 0,
+			),
+      		'nid' => array(
+      			'type' => 'int',
+				'size' => 'big',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0,
+			),
+	      	'timestamp' => array(
+	      		'type' => 'int',
+				'unsigned' => TRUE,
+     		    'not null' => TRUE,
+     		    'default' => 0,
+			),      	
+		),
+		'primary key' => array('uid', 'nid'),
+		'foreign keys' => array(
+			'uid' => array(
+        		'table' => 'users',
+        		'columns' => array('uid' => 'uid'),
+			),
+			'nid' => array(
+        		'table' => 'node',
+        		'columns' => array('nid' => 'nid'),
+			),
+		),
+	);
+	
+	$schema['collection_statistics'] = array(
+    	'fields' => array(
+      		'nid' => array(
+      			'type' => 'int',
+				'size' => 'big',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0,
+			),
+	      	'count' => array(
+	      		'type' => 'int', 
+	      		'unsigned' => TRUE, 
+	      		'not null' => TRUE,
+	      		'default' => 0,
+			),      	
+		),
+		'primary key' => array('nid'),
+		'foreign keys' => array(
+			'nid' => array(
+        		'table' => 'node',
+        		'columns' => array('nid' => 'nid'),
+			),
+		),
+	);
+	
+	return $schema;
+}
