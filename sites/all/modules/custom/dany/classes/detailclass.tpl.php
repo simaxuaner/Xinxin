@@ -1,5 +1,6 @@
 <!--
-    
+    $detailClass:array 	:课程信息
+	$teacher:array 		:老师信息
 -->
 <main>
 	<?php print $secondMenuNav?>
@@ -11,11 +12,11 @@
 			<video controls preload=""><source src="<?php print $detailClass['dataurl']?>"></video>
 		</div>
 		<!--等待填充-->
-		<a href="teacher0.php">
+		<a href="<?php print $teacher['dataurl'] ?>">
 			<div class="block1 w20 floatRight noMargin">
-				<span class="fav">喜爱</span> <img src="images/teachers/teacher01.jpg">
-				<h3>林老师</h3>
-				<p><span class="farmName">专业领域</span><span class="floatRight">01</span><span class="floatRight">02</span></p>
+				<span class="fav">喜爱</span> <img src="<?php print $teacher['imgurl']?>">
+				<h3><?php print $teacher['name']?></h3>
+				<p><span class="farmName"><?php print $teacher['career']?></span><span class="floatRight">01</span><span class="floatRight">02</span></p>
 			</div>
 		</a>
 	</section>

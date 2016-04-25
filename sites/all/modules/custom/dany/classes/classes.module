@@ -113,10 +113,35 @@ function classes_detailclass_page_callback($nid){
     $class['lessons']=$node->field_lesson_count_num[LANGUAGE_NONE][0]['value'];
     $class['classType']=$node->field_lesson_type[LANGUAGE_NONE][0]['value'];
     $class['info']=$node->field_lesson_info[LANGUAGE_NONE][0]['value'];
+    
+    print_r($class['teacherName']);
+    $teacher=array();
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $nids = $query
+    ->fields('n', array('nid'))
+    ->condition('type', 'teacher')
+    ->condition('status', 1)
+    ->condition('title',$class['teacherName'])//使用老师的姓名去查找相关的信息，只显示一条记录
+    ->limit(1)
+    ->orderBy('created', 'DESC')
+    ->addTag('node_access')
+    ->execute()
+    ->fetchCol();
+    print_r($nids);
+    if (!empty($nids)) {
+        $node = node_load($nids[0]);
+        $imgid = $node->field_teacher_pic[LANGUAGE_NONE][0]['fid'];
+        $imgfile = file_load($imgid);
+        $teacher['imgurl'] = file_create_url($imgfile->uri);
+        $teacher['career'] = $node->field_career[LANGUAGE_NONE][0]['value'];
+        $teacher['dataurl']=url('classes/detailteacher/'.$nids[0]);
+        $teacher['name'] = $class['teacherName'];
+    }
     return theme("detailclass_page", array(
         'detailClass' => $class,
         'classList'   => array(),
         'secondMenuNav' =>getSecondMenuNav('/danyClass/'),
+        'teacher'=>$teacher,
     ));
 }
 
@@ -125,11 +150,41 @@ function classes_detailteacher_page_callback($nid){
     $teacher['teacherName']=$node->title;
     $teacher['career']=$node->field_career[LANGUAGE_NONE][0]['value'];
     $teacher['info']=$node->field_teacher_info[LANGUAGE_NONE][0]['value'];
-    $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
+    $imgid = $node->field_teacher_pic[LANGUAGE_NONE][0]['fid'];
     $imgfile = file_load($imgid);
     $imageurl = file_create_url($imgfile->uri);
     $teacher['imgurl']=$imageurl;
-    $refClassList=array();//dataurl,name,teacherName
+    
+    $refClassList=array();//dataurl,imgurl,name,teacherName
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $nids = $query
+    ->fields('n', array('nid'))
+    ->condition('type', 'lesson')
+    ->condition('status', 1)
+    ->orderBy('created', 'DESC')
+    ->addTag('node_access')
+    ->execute()
+    ->fetchCol();
+    print_r($teacher['teacherName']);
+    print_r($nids);
+    if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+        foreach ($nodes as $key => $node) {
+            if($class['teacherName']=$node->field_lesson_lecturer[LANGUAGE_NONE][0]['value'] == $teacher['teacherName'])
+            {
+                $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
+                $imgfile = file_load($imgid);
+                $imageurl = file_create_url($imgfile->uri);
+                
+                $refClassList[$key]=array(
+                    'dataurl' => url('classes/detailclass/'.$key),
+                    'imgurl'  => $imageurl,
+                    'name'    => $node->title,
+                    'teacherName'    => $teacher['teacherName'],
+                );
+            }
+        }
+    }
     return theme("detailteacher_page",array(
         'teacher'   => $teacher,
         'refClassList'=> $refClassList,

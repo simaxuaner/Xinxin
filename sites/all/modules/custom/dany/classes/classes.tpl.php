@@ -26,7 +26,7 @@
             ?>           
                 <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
+                    <img src="<?php print $value['imgurl']?>" />
                         <h3><?php print $value['title']?></h3>
 				    <p>
                         <span class="farmName"><?php print $value['teachername']?></span>
@@ -51,7 +51,7 @@
             ?>           
                 <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
+                    <img src="<?php print $value['imgurl']?>" />
                         <h3><?php print $value['title']?></h3>
 				    <p>
                         <span class="farmName"><?php print $value['teachername']?></span>
@@ -75,7 +75,7 @@
             ?>           
                 <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
+                    <img src="<?php print $value['imgurl']?>" />
                         <h3><?php print $value['title']?></h3>
 				    <p>
                         <span class="farmName"><?php print $value['teachername']?></span>
@@ -99,7 +99,7 @@
             ?>           
                 <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
                     <span class="fav">收藏</span> 
-                    <img src="<?php print $imageLinkPathHead."/".$value['imgurl']?>" />
+                    <img src="<?php print $value['imgurl']?>" />
                         <h3><?php print $value['title']?></h3>
 				    <p>
                         <span class="farmName"><?php print $value['teachername']?></span>
