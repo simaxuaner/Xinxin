@@ -70,7 +70,7 @@ function memberIndividual_call_back()
                     <a href="">我的足迹</a>
                 </li>               
                 <li>
-                    <a href="">我的商圈</a>
+                    <a href="">我的朋友圈</a>
                 </li>
             </ul>
         </nav>
@@ -118,8 +118,8 @@ function memberCompany_call_back()
     global $base_url;
     $pic = $user->picture;
 
-    $tel = $user->user_tel[LANGUAGE_NONE][0]['value'];
-    $address = $user->address[LANGUAGE_NONE][0]['value'];
+    /*$tel = $user->field_user_tel[LANGUAGE_NONE][0]['value'];
+    $address = $user->field_address[LANGUAGE_NONE][0]['value'];*/
     $adform_array = drupal_get_form('advertistment_form');
     $adform = drupal_render($adform_array);
     $build =<<<EOS
@@ -147,11 +147,11 @@ function memberCompany_call_back()
                     </tr>
                     <tr>
                         <td>地址</td>
-                        <td class="alignRight">$address</td>
+                        <td class="alignRight">泉州市</td>
                     </tr>
                     <tr>
                         <td>联系方式</td>
-                        <td class="alignRight">$tel</td>
+                        <td class="alignRight">15759324521</td>
                     </tr>
                     <tr>
                         <td>电子邮件</td>
@@ -251,12 +251,13 @@ function advertistment_form_submit($form, $form_state){
         form_set_error('advertistment_form', t("上传图片失败"));
     }
 
-    global $user;
+   /* global $user;
 
+    $time = date('y-m-d h:i:s',time());
     $delta = db_insert('block_custom')
         ->fields(array(
             'body' => "<p><img alt=\"\" height=\"496\" src=\"/Xinxin/sites/default/files/pictures/admange/header0.jpg\" width=\"1920\" /></p>",
-            'info' => $user->name."申请的广告",
+            'info' => $user->name.$time."申请的广告",
             'format' => "full_html",
         ))
         ->execute();
@@ -305,7 +306,7 @@ function advertistment_form_submit($form, $form_state){
             )
         ),
     );
-    node_save((object)$nodeuri);
+    node_save((object)$nodeuri);*/
 
 }
 
