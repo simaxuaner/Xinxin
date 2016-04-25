@@ -112,7 +112,7 @@ EOS;
 		</a>
 		<a href="$forumurl">
 			<div class="bigbutton">
-				<img alt="bbs" src="$module_path/images/training.png">
+				<img alt="bbs" src="$module_path/images/forum.png">
 				<h2>讨论区</h2>
 			</div>
 		</a>
