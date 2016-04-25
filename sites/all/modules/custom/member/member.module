@@ -42,13 +42,17 @@ function memberIndividual_call_back()
 {
     global $user;
     global $base_url;
-    $account = user_load($user->uid);
-    $pic = $account->picture;
+    $imgthumbnailurl = path_to_theme() . '/images/users/user0.jpg';
+    if( isset($user->picture) && is_object($user->picture) ) {
+        $imgfile = $user->picture;
+        $file_path = file_unmanaged_copy($imgfile->uri);
+        $imgthumbnailurl = image_style_url('thumbnail', $file_path) ? $file_path : $imgthumbnailurl;
+    }
 
     //0 for male and 1 for female
-    $sex = $user->sex[LANGUAGE_NONE][0]['value'];
-    $company = $user->personal_company[LANGUAGE_NONE][0]['value'];
-    $real_name = $user->real_name[LANGUAGE_NONE][0]['value'];
+    $sex = ( isset($user->sex) && isset($user->sex[LANGUAGE_NONE]) ) ? $user->sex[LANGUAGE_NONE][0]['value'] : '';
+    $company = ( isset($user->personal_company) && isset($user->personal_company[LANGUAGE_NONE]) ) ? $user->personal_company[LANGUAGE_NONE][0]['value'] : '';
+    $real_name = ( isset($user->real_name) && isset($user->real_name[LANGUAGE_NONE]) ) ? $user->real_name[LANGUAGE_NONE][0]['value'] : '';
 
     if($sex)
     {
@@ -80,7 +84,7 @@ function memberIndividual_call_back()
                 <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
             </div>
             <div class='profilePicture floatLeft alignCenter w25'>
-                <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
+                <img class='w100' src="$imgthumbnailurl">
             </div>
             <div class='w75 paddingLeft paddingRight floatLeft'>
                 <table class='personalInfo w100'>
@@ -116,7 +120,12 @@ function memberCompany_call_back()
 {
     global $user;
     global $base_url;
-    $pic = $user->picture;
+    $imgthumbnailurl = path_to_theme() . '/images/users/company0.jpg';
+    if( isset($user->picture) && is_object($user->picture) ) {
+        $imgfile = $user->picture;
+        $file_path = file_unmanaged_copy($imgfile->uri);
+        $imgthumbnailurl = image_style_url('thumbnail', $file_path) ? $file_path : $imgthumbnailurl;
+    }
 
     /*$tel = $user->field_user_tel[LANGUAGE_NONE][0]['value'];
     $address = $user->field_address[LANGUAGE_NONE][0]['value'];*/
@@ -137,7 +146,7 @@ function memberCompany_call_back()
                 <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
             </div>
             <div class="profilePicture floatLeft w100">
-                <img class='w100' src="sites/default/files/styles/thumbnail/public/pictures/$pic->filename"> 
+                <img class='w100' src="$imgthumbnailurl">
             </div>
             <div class="w100 floatLeft">
                 <table class="personalInfo w100">
@@ -242,21 +251,26 @@ function advertistment_form_submit($form, $form_state){
         return $form;
 
     $validators = array();
-    $dest = drupal_realpath('public://pictures/admange');
+    $dest = "public://pictures/admange";
     $file = file_save_upload('adimage', $validators, $dest,$replace = FILE_EXISTS_RENAME);
-    if ($file != 0) {
-        $file->filepath; // 文件相对路径
+    if ($file) {
+        //$admageurl = image_style_url('thumbnail', $file->uri) ? $file->uri : '';
+        $base_locate = $GLOBALS['base_url'];
+        $base_url = explode('/', $base_locate);
+        $admage_locate = explode('//', $file->uri);
+        $admage_filepath = '/'.$base_url[3].'/'.variable_get('file_' . file_default_scheme() . '_path', conf_path() . '/files').'/'. $admage_locate[1];
     }
     else {
+        watchdog('file', 'The file upload failed. %upload', array('%upload' => 'adimage'));
         form_set_error('advertistment_form', t("上传图片失败"));
     }
 
-   /* global $user;
+    global $user;
 
     $time = date('y-m-d h:i:s',time());
     $delta = db_insert('block_custom')
         ->fields(array(
-            'body' => "<p><img alt=\"\" height=\"496\" src=\"/Xinxin/sites/default/files/pictures/admange/header0.jpg\" width=\"1920\" /></p>",
+            'body' => "<p><img alt='' src='".$admage_filepath."' width='1920' /></p>",
             'info' => $user->name.$time."申请的广告",
             'format' => "full_html",
         ))
@@ -285,29 +299,32 @@ function advertistment_form_submit($form, $form_state){
 
     $val=db_select('block_custom', 'b')
         ->fields('b')
-        ->condition('info', $user->name.'申请的广告')
+        ->condition('info', $user->name.$time.'申请的广告')
         ->execute();
-    foreach ($val as $key=>$block) {
-      $bid = $block->bid;
-    }
 
     //存入数据库，广告位申请内容类型
     $nodeuri = array(
-        'title' =>$user->name."申请的广告",
+        'title' =>$user->name.$time."申请的广告",
         'type'=> 'advertising_application',
+        'uid'=>$user->uid,
         'field_ad_appl_uid'=>array(
-            LANGUAGE_NONE=>array(
-                0=>$user->uid
+            'und'=>array(
+                0=>array(
+                    'value'=>$user->uid
+                )
             )
         ),
         'field_ad_block_id'=>array(
-            LANGUAGE_NONE=>array(
-                0=>$bid
+            'und'=>array(
+                0=>array(
+                    'value'=>$delta
+                )
             )
         ),
     );
-    node_save((object)$nodeuri);*/
+    node_save((object)$nodeuri);
 
+    return $form;
 }
 
 

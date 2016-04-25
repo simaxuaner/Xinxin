@@ -27,7 +27,7 @@ function xinxin_front_preprocess_html(&$vars)
 {
 
     // Get adminimal folder path.
-    $xinxin_front = drupal_get_path('theme', 'xinxin_front');
+    $xinxin_front = path_to_theme();
 
     // Add default styles.
     drupal_add_css($xinxin_front . '/css/styles.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));

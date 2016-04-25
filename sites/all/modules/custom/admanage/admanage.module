@@ -41,8 +41,8 @@ function admanage_page()
     $rows[$index]['user']="无";
     $rows[$index]['link']=l('配置','admin/structure/block/manage/block/'.$block->bid.'/config');
     foreach($nodes as $nkey=>$node){
-      if($node->field_ad_block_id['und'][0]['value']==$block->bid){
-        $user = user_load($node->field_ad_appl_uid['und'][0]['value']);
+      if($node->field_ad_block_id[LANGUAGE_NONE][0]['value']==$block->bid){
+        $user = user_load($node->field_ad_appl_uid[LANGUAGE_NONE][0]['value']);
         $rows[$index]['user']=$user->name;
       }
     }
