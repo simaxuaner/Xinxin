@@ -6,10 +6,13 @@ core = 7.x
 
 stylesheets[all][] = styles.css
 stylesheets[all][] = member.css
-stylesheets[all][] = bootstrap.css
-stylesheets[all][] = xinxin.css
+stylesheets[all][] = reveal.css
+stylesheets[all][] = recruit.css
 
 scripts[] = js/scripts.js
+scripts[] = js/jquery-1.11.3.min.js
+scripts[] = js/jquery-1.4.4.min.js
+scripts[] = js/jquery.reveal.js
 
 regions[header] = Header
 regions[highlighted] = Highlighted

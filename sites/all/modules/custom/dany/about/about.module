@@ -54,6 +54,13 @@ function about_menu() {
 			'type' => MENU_LOCAL_TASK, 
 			'weight' => 5 
 	);
+	$items ['about/recruitment'] = array (
+			'title' => '人才招聘',
+			'page callback' => 'about_recruitment_page_callback',
+			'access callback' => TRUE,
+			'type' => MENU_LOCAL_TASK, 
+			'weight' => 0 
+	);
 	return $items;
 }
 function about_introduction_page_callback() {
@@ -217,7 +224,106 @@ EOS;
 			"sidebarleft"=>get_sidebar_menu_list($class),
 	) );
 }
+function about_recruitment_page_callback(){
+	global $user;
+	$class="人才招聘";
+	$module_path = drupal_get_path ( 'module', 'about' );
+	$recruitmenttml=<<<EOS
+	<div class="bar blue w80">
+				<h1>人才招聘</h1>
+                <div class="search floatRight">
+					<a href="#"><img alt="search" src="$module_path/images/search_bar.png"></a><input name="search" type="text">
+				</div>
+                </div>
+                <section class="w80">
+                <table class="jobList w100 floatRight marginBottom marginTop">
+				<thead>
+                <tr>
+					<td class="theme alignLeft w40">岗位名称</td>
+					<td class="reply alignCenter w20">招聘人数</td>
+					<td class="check alignCenter w20">发布时间</td>
+					<td class="state alignRight w20">详情</td>
+				</tr>
+                </thead>
+                <tbody>
+				<tr>
+				    <td class="theme alignLeft w40">商务运营专员</td>
+					<td class="reply alignCenter w20">1</td>
+					<td class="check alignCenter w20">2016.5.4</td>
+					<td class="state alignRight w20"><a href="#" data-reveal-id="myModal01" data-animation="fade">查看详情</a></td>	
+				</tr>
+				<tr class="lighter">
+					<td class="theme alignLeft w40">社会化媒体营销经理</td>
+					<td class="reply alignCenter w20">2</td>
+					<td class="check alignCenter w20">2016.5.4</td>
+					<td class="state alignRight w20"><a href="#" data-reveal-id="myModal02" data-animation="fade">查看详情</a></td>	
+				</tr>
+				<tr>
+				    <td class="theme alignLeft w40">内容（社区）运营专员</td>
+					<td class="reply alignCenter w20">3</td>
+					<td class="check alignCenter w20">2016.5.4</td>
+					<td class="state alignRight w20"><a href="#" data-reveal-id="myModal03" data-animation="fade">查看详情</a></td>	
+				</tr>
+				</tbody>
+			</table>
+			</section>
 
+       <div id="myModal01" class="reveal-modal">
+			<h2>商务运营专员</h2><br>
+            <h3>岗位描述：</h3>
+			<p>根据业务规划负责拓展和维护商家合作关系</p>
+            <p>负责商业化业务的承接及落地实施，并追踪效</p>
+            <p>制定商务拓展业务合作流程及规范</p>
+            <p>挖掘商户、优化运营的需求，深入挖掘并整合各方面优势资源</p>
+            <h3>岗位要求：</h3>
+			<p>性格外向，善于团队合作，有较强的沟通能力</p>
+            <p>熟练使用Office办公软件及PPT等商务必备工具的使用</p>
+            <p>工作认真细致、敬业负责、有很强的责任心和进取心</p>
+            <h3>工作地点：</h3>
+            <p>泉州</p>
+            <br><p>简历发至邮箱：123@qq.com</p>
+			<a class="close-reveal-modal">&#215;</a>
+		</div>       
+        <div id="myModal02" class="reveal-modal">
+			<h2>社会化媒体营销经理</h2><br>
+            <h3>岗位描述：</h3>
+			<p>参与制定社会化媒体的营销方案及执行（包括但不限于微信、微博）</p>
+            <p>把控品牌社会化媒体营销方向并进行传播</p>
+            <p>配合内部产品及运营团队，规划站内外用户互动活动</p> 
+            <p>营销效果的收集及分析</p>
+            <h3>岗位要求：</h3>
+			<p>本科及以上学历</p>
+            <p>熟悉社会化媒体（微信、微博、百度、豆瓣等等）营销及运营</p>
+            <p>思维活跃脑洞大，逻辑清晰善探索，有一定的文字功底</p>
+            <p>对市场营销有热情，对品牌构建有敏感度</p>
+            <h3>工作地点：</h3>
+            <p>泉州</p>
+            <br><p>简历发至邮箱：123@qq.com</p>
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
+         <div id="myModal03" class="reveal-modal">
+			<h2>内容（社区）运营专员</h2><br>
+            <h3>岗位描述：</h3>
+			<p>负责各社区话题的发布、互动、维护</p>
+            <p>负责带动、活跃社区氛围</p>
+            <p>负责相关活动的策划和执行</p> 
+            <p>营销效果的收集及分析</p>
+            <h3>岗位要求：</h3>
+			<p>长期混迹社区，熟悉移动互动型产品玩法</p>
+            <p>对新鲜事物具有强烈敏感度，善于把握网络热点话题和热门词汇</p>
+            <p>思维活跃脑洞大，逻辑清晰善探索，有一定的文字功底</p>
+            <p>兴趣爱好广泛，或对某一兴趣领域有较深入的了解</p>
+            <h3>工作地点：</h3>
+            <p>泉州</p>
+            <br><p>简历发至邮箱：123@qq.com</p>
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
+EOS;
+	return theme ( "aboutpage_page", array (
+			"pagemain" => $recruitmenttml ,
+			"sidebarleft"=>get_sidebar_menu_list($class),
+	) );
+}
 /**
  * Implements hook_theme()
  */

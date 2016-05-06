@@ -1,0 +1,160 @@
+.jobList tbody{
+	display:"";
+}
+thead{
+	display:"";
+}
+
+.jobList thead tr {
+   background-color:#E9E9E9;
+}
+table{
+	display:table !important;
+}
+table thead{
+	font-size:24px;
+	
+}
+table thead tr td{
+	font-size:20px;
+		color:#000;
+}
+.jobList {
+    background: none;
+    display: block;
+	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+}
+.jobList tr {
+}
+.jobList tr td {
+    padding: 12px 16px;
+}
+.alignLeft {
+    text-align: left;
+}
+.alignRight {
+    text-align: right;
+}
+.alignCenter {
+    text-align: center;
+}
+.floatLeft {
+    float: left;
+}
+.floatRight {
+    float: right;
+}
+table {
+    border-collapse: collapse;
+}
+.forumInfo{
+		-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+}
+.forumInfo thead tr td{
+	background-color: #aaaaaa;
+	color: #ffffff;
+}
+.forumInfo tbody{
+	background-color: #e6e6e6;
+}
+.forumInfo tbody td{
+	padding: 8px;
+}
+.jobList td{
+	min-width: 64px;
+}
+.jobList .theme,
+.jobList .reply,
+.jobList .check,
+.jobList .state{
+    padding: 24px 12px;
+}
+.jobList .theme {
+    width: 40%;
+}
+.jobList .reply {
+    width: 20%;
+}
+.jobList .check {
+	width:20%;
+} 
+.jobList .state {
+    width: 20%;
+}
+
+.jobList tbody .state {
+    width: 20%;
+	color:#5868C0;
+}
+.jobList tbody a {
+    width: 20%;
+	color:#5868C0;
+}
+
+.jobList .lighter,
+.comments .lighter {
+    background-color: #ebebeb !important;
+}
+select{
+	width:20px !important;
+	float:left !important;
+	margin-right:20px !important;
+	margin-left:10px !important;
+}
+.pageNav{
+	display:inline-block;
+}
+.pageNav .button{
+	width:30px;
+	height:30px;
+	margin: 20px 0;
+
+}
+.pageNav .button a{
+		line-height: initial !important;
+		padding:4px;
+}
+.topicList {
+    background: none;
+    display: block;
+	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+}
+.topicList td{
+	min-width: 64px;
+	min-height:100px;
+}
+.topicList .theme
+.topicList .reply{
+	padding: 24px 12px;
+	min-height:100px;
+}
+.topicList .theme{
+	width:20%;
+	background-color:#F6F6F6;
+}
+.topicList .reply{
+	width:80%;
+}
+.topicList .lighter,
+.comments .lighter {
+    background-color: #ebebeb !important;
+}
+.topicList tr {
+    background-color: #e6e6e6;
+	min-height:100px;
+}
+.topicList tr td {
+    padding: 12px 16px;
+		min-height:100px;
+		height:200px;
+		vertical-align:top;
+}
+.topicList tr td span{
+	font-size:10px;
+}
