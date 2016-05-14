@@ -26,15 +26,17 @@
             foreach($classList as $key => $value)
             {
             ?>           
-                <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
-                    <span class="fav">收藏</span> 
-                    <img src="<?php print $value['imgurl']?>" />
-                        <h3><?php print $value['shortTitle']?></h3>
-				    <p>
-                        <span class="farmName"><?php print $value['teachername']?></span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
+                <a href="<?php print $value['detailurl']?>">
+                    <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
+                        <span class="fav">收藏</span> 
+                        <img src="<?php print $value['imgurl']?>" />
+                            <h3><?php print $value['shortTitle']?></h3>
+                        <p>
+                            <span class="farmName"><?php print $value['teachername']?></span>
+                            <span class="floatRight">01</span>
+                            <span class="floatRight">02</span>
+                        </p>
+                    </div>
 			    </a>
             <?php
             }
@@ -46,20 +48,21 @@
 				<h2>推荐</h2>
 			</div>
 		    <!--动态获取课程列表 -->
-            <!--动态获取课程列表 -->
             <?php 
             foreach($classList as $key => $value)
             {
             ?>           
-                <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">收藏</span> 
-                    <img src="<?php print $value['imgurl']?>" />
-                        <h3><?php print $value['title']?></h3>
-				    <p>
-                        <span class="farmName"><?php print $value['teachername']?></span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
+                <a href="<?php print $value['detailurl']?>">
+                    <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
+                        <span class="fav">收藏</span> 
+                        <img src="<?php print $value['imgurl']?>" />
+                            <h3><?php print $value['shortTitle']?></h3>
+                        <p>
+                            <span class="farmName"><?php print $value['teachername']?></span>
+                            <span class="floatRight">01</span>
+                            <span class="floatRight">02</span>
+                        </p>
+                    </div>
 			    </a>
             <?php
             }
@@ -70,20 +73,21 @@
 				<h2>收藏列表</h2>
 			</div>
 			<!--动态获取课程列表 -->
-            <!--动态获取课程列表 -->
             <?php 
             foreach($classList as $key => $value)
             {
             ?>           
-                <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">收藏</span> 
-                    <img src="<?php print $value['imgurl']?>" />
-                        <h3><?php print $value['title']?></h3>
-				    <p>
-                        <span class="farmName"><?php print $value['teachername']?></span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
+                <a href="<?php print $value['detailurl']?>">
+                    <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
+                        <span class="fav">收藏</span> 
+                        <img src="<?php print $value['imgurl']?>" />
+                            <h3><?php print $value['shortTitle']?></h3>
+                        <p>
+                            <span class="farmName"><?php print $value['teachername']?></span>
+                            <span class="floatRight">01</span>
+                            <span class="floatRight">02</span>
+                        </p>
+                    </div>
 			    </a>
             <?php
             }
@@ -94,20 +98,21 @@
 				<h2>最近访问</h2>
 			</div>
 			<!--动态获取课程列表 -->
-            <!--动态获取课程列表 -->
             <?php 
             foreach($classList as $key => $value)
             {
             ?>           
-                <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">收藏</span> 
-                    <img src="<?php print $value['imgurl']?>" />
-                        <h3><?php print $value['title']?></h3>
-				    <p>
-                        <span class="farmName"><?php print $value['teachername']?></span>
-                        <span class="floatRight">01</span>
-                        <span class="floatRight">02</span>
-                    </p>
+                <a href="<?php print $value['detailurl']?>">
+                    <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
+                        <span class="fav">收藏</span> 
+                        <img src="<?php print $value['imgurl']?>" />
+                            <h3><?php print $value['shortTitle']?></h3>
+                        <p>
+                            <span class="farmName"><?php print $value['teachername']?></span>
+                            <span class="floatRight">01</span>
+                            <span class="floatRight">02</span>
+                        </p>
+                    </div>
 			    </a>
             <?php
             }
