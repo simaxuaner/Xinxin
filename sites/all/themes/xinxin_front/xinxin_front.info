@@ -8,6 +8,8 @@ stylesheets[all][] = styles.css
 stylesheets[all][] = member.css
 stylesheets[all][] = reveal.css
 stylesheets[all][] = recruit.css
+stylesheets[all][] = forum1.css
+stylesheets[all][] = slide.css
 
 scripts[] = js/scripts.js
 scripts[] = js/jquery-1.11.3.min.js
