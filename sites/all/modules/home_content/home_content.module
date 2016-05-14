@@ -65,16 +65,47 @@ function home_content_block_view($delta = '')
     $module_path = drupal_get_path('module', 'home_content');
     if ($delta == 'home_content') {
         $block = array();
+        //========================================
+        //此处js需要修改
+        //待解决的问题div background不能显示
+        //待解决的问题search_form 未修改
+        //========================================
         $html = <<<EOS
-        <div id="slider" class="w100">
-            <img id="sliderImg0" src="$module_path/images/slider/0.jpg" alt="slider"/>
-            <img id="sliderImg1" class="hidden" src="$module_path/images/slider/1.jpg" alt="slider"/>
-            <img id="sliderImg2" class="hidden" src="$module_path/images/slider/2.jpg" alt="slider"/>
-            <img id="sliderImg3" class="hidden" src="$module_path/images/slider/3.jpg" alt="slider"/>
-            <img id="sliderImg4" class="hidden" src="$module_path/images/slider/4.jpg" alt="slider"/>
-        </div> 
+        <header>
+        <div class="slider" data-i="0">
+			<div class="controls">
+				<div class="bulletNav">
+						<div class="bullet" name="bullet" data-i="0" style="background-color: #68b7fd" onClick="slide(this.parentNode.parentNode.parentNode, this.dataset.i)"></div>
+						<div class="bullet" name="bullet" data-i="1" onClick="slide(this.parentNode.parentNode.parentNode, this.dataset.i)"></div>
+						<div class="bullet" name="bullet" data-i="2" onClick="slide(this.parentNode.parentNode.parentNode, this.dataset.i)"></div>
+						<div class="bullet" name="bullet" data-i="3" onClick="slide(this.parentNode.parentNode.parentNode, this.dataset.i)"></div>
+						<div class="bullet" name="bullet" data-i="4" onClick="slide(this.parentNode.parentNode.parentNode, this.dataset.i)"></div>
+				</div>
+				<div class="arrowNav">
+					<div class="arrowLeft" onClick="slide(this.parentNode.parentNode.parentNode, parseInt(this.parentNode.parentNode.parentNode.dataset.i)-1)">
+					</div>
+					<div class="arrowRight" onClick="slide(this.parentNode.parentNode.parentNode, parseInt(this.parentNode.parentNode.parentNode.dataset.i)+1)">
+					</div>
+				</div>
+			</div>
+			<div class="slide" data-i="0">
+				<img src="$module_path/images/slider/0.jpg"/>
+			</div>
+			<div class="slide" data-i="1" style="display: none">
+				<img src="$module_path/images/slider/1.jpg"/>
+			</div>
+			<div class="slide" data-i="2" style="display: none">
+				<img src="$module_path/images/slider/2.jpg"/>
+			</div>
+			<div class="slide" data-i="3" style="display: none">
+				<img src="$module_path/images/slider/3.jpg"/>
+			</div>
+			<div class="slide" data-i="4" style="display: none">
+				<img src="$module_path/images/slider/4.jpg"/>
+			</div>
+		</div> 
+        </header>
 EOS;
-        //    $block['subject'] = t('home content');
         $block['content'] = $html;
         return $block;
     } else if ($delta == 'home_highlighted') {
@@ -84,35 +115,46 @@ EOS;
         $productsurl=url('farmshow/product');
         $classesurl=url('classes');
         $forumurl=url('forum');
+        
         $html =<<<EOS
         <nav class="homenav">
 		<a href="$newsurl">
-			<div class="bigbutton">
-				<img src="$module_path/images/news.png" alt="news"/>
+            <div class="bigbutton blue">
+				<div class="iconArea">
+					<img alt="news" src="$module_path/images/icons/news.png">
+				</div>
 				<h2>活动报道</h2>
 			</div>
 		</a>
 		<a href="$farmshowurl">
-			<div class="bigbutton">
-				<img src="$module_path /images/farms.png" alt="farms"/>
+            <div class="bigbutton green">
+				<div class="iconArea">
+					<img alt="farms" src="$module_path/images/icons/farms.png">
+				</div>
 				<h2>农场信息</h2>
 			</div>
 		</a>
 		<a href="$productsurl">
-			<div class="bigbutton">
-				<img src=" $module_path /images/products.png" alt="products"/>
+			<div class="bigbutton orange">
+				<div class="iconArea">
+					<img alt="products" src="$module_path/images/icons/products.png">
+				</div>
 				<h2>农产品信息</h2>
 			</div>
 		</a>
 		<a href="$classesurl">
-			<div class="bigbutton">
-				<img src=" $module_path /images/training.png" alt="training"/>
+			<div class="bigbutton red">
+				<div class="iconArea">
+					<img alt="training" src="$module_path/images/icons/training.png">
+				</div>
 				<h2>培训方案</h2>
 			</div>
 		</a>
 		<a href="$forumurl">
-			<div class="bigbutton">
-				<img alt="bbs" src="$module_path/images/forum.png">
+			<div class="bigbutton purple">
+				<div class="iconArea">
+					<img alt="bbs" src="$module_path/images/icons/forum.png">
+				</div>
 				<h2>讨论区</h2>
 			</div>
 		</a>

@@ -958,3 +958,102 @@ h3.product_title{
 #edit-user-roles{
     background-color: rgb(250, 255, 189);
 }
+
+
+.homenav .bigbutton {
+    float: left;
+    height: 128px;
+    text-align: center;
+    width: 20%;
+	opacity: 0.8;
+	overflow: hidden;
+	-webkit-transition: opacity 1s, -webkit-transform 1s;
+	transition: opacity 1s, transform 1s;
+	cursor: pointer;
+	position:relative;
+}
+.homenav .bigbutton h2 {
+	color:#f2f2f2;
+	line-height: 128px;
+	vertical-align: top;
+	-webkit-transition: opacity .5s, -webkit-transform 0.3s;
+	transition: opacity .5s, transform .3s;
+	position: absolute;
+	width: 60%;
+	right: 0;
+	text-align: center;
+}
+.homenav .bigbutton h3 {
+	color:#f2f2f2;
+	line-height: 128px;
+	vertical-align: top;
+	-webkit-transition: opacity .5s, -webkit-transform 0.3s;
+	transition: opacity .5s, transform .3s;
+	
+}
+.homenav .bigbutton .iconArea{
+	width: 40%;
+	min-width: 64px;
+	height: 100%;
+	min-height: 64px;
+	text-align: right;
+	position: absolute;
+	left: 0;
+	height: 100%;
+	padding-top: 32px;
+	padding-bottom: 32px;
+	padding-right: 0;
+}
+.homenav .bigbutton .iconArea img {
+    width: auto;
+	height: 100%;
+	-webkit-transition: opacity .5s, -webkit-transform 0.3s;
+	transition: opacity .5s, transform .3s;
+	position: relative;
+}
+.homenav .bigbutton:hover {
+	opacity: 1;
+}
+.homenav .bigbutton:hover img{
+	transform:scale(1.3,1.3);
+}
+.homenav .bigbutton:hover h2{
+	color:#FFF;
+	transform:scale(1.1,1.1);
+}
+.homenav .bigbutton:hover h3{
+	color:#FFF;
+	transform:scale(1.3,1.3);
+}
+
+
+.green{
+	background-color: rgb(122,174,48);
+}
+.orange{
+	background-color: rgb(204,151,38);
+}
+.red{
+	background-color: #da251e;
+}
+.purple{
+	background-color: rgb(168,82,187);
+}
+.blue{
+	background-color: #025196;
+}
+
+
+.bar h1{
+	color:#025196;
+	float: left;
+}
+.bar a{
+	color:#025196;
+}
+.bar .icon{
+	height: 32px;
+	width: 32px;
+	margin: 16px;
+	float: left;
+}
