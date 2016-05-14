@@ -164,8 +164,6 @@ function classes_detailteacher_page_callback($nid){
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
-    print_r($teacher['teacherName']);
-    print_r($nids);
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
         foreach ($nodes as $key => $node) {
@@ -179,6 +177,7 @@ function classes_detailteacher_page_callback($nid){
                     'dataurl' => url('classes/detailclass/'.$key),
                     'imgurl'  => $imageurl,
                     'name'    => $node->title,
+                    'shortName'=>getShortTitle($node->title,7),
                     'teacherName'    => $teacher['teacherName'],
                 );
             }
@@ -249,6 +248,7 @@ function template_preprocess_classes_page(&$variables) {
                 'detailurl' => "?q=classes/detailclass/".$key,
                 'imgurl'    => $imageurl,
                 'title'     => $node->title,
+                'shortTitle'=> getShortTitle($node->title,7),
                 'teachername'=>$node->field_teacher_name[LANGUAGE_NONE][0]['value'],
                 );
         }

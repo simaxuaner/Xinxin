@@ -26,11 +26,11 @@
     foreach($refClassList as $key => $value)
     {
     ?>  
-			<a href="<?php print $value['dataurl']?>">
+			<a href="<?php print $value['dataurl']?>" title="<?php print $value['name']?>">
 					<div class="block1">
 					<span class="fav">收藏</span> 
 					<img alt="class" src="<?php print $value['imgurl']?>">
-					<h3><?php print $value['name']?></h3>
+					<h3><?php print $value['shortName']?></h3>
 					<p>
 						<span class="farmName"><?php print $value['teacherName']?></span>
 						<span class="floatRight">01</span>

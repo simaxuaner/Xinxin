@@ -26,10 +26,10 @@
             foreach($classList as $key => $value)
             {
             ?>           
-                <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+                <a href="<?php print $value['detailurl']?>" class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
                     <span class="fav">收藏</span> 
                     <img src="<?php print $value['imgurl']?>" />
-                        <h3><?php print $value['title']?></h3>
+                        <h3><?php print $value['shortTitle']?></h3>
 				    <p>
                         <span class="farmName"><?php print $value['teachername']?></span>
                         <span class="floatRight">01</span>

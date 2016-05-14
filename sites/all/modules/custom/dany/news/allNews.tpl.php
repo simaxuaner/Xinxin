@@ -8,6 +8,7 @@
     <?php print $secondMenuNav ?>
 	<section class="w80">
 		<div class="bar">
+            <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/<?php print $icon_image?>.png">
 			<h1><?php print $newsTitle?></h1>
             <select>
 			  <option value="volvo">2011</option>
@@ -46,12 +47,12 @@
         foreach($magzineList as $key => $value)
         {
         ?>
-            <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
+            <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
                 <span class="fav">收藏</span> 
-                <img src="<?php print $imageLinkPathHead.'/'.$value['imgurl']?>"/>
-                <a href="#" ><h3>论坛杂志</h3></a>
+                <img src="<?php print $value['imgurl']?>"/>
+                <a href="<?php print $value['downloadUrl']?>" ><h3><?php print $value['shortTitle']?></h3></a>
                 <p>
-                    <span class="farmName">2016.4.10</span>
+                    <span class="farmName"><?php print $value['date']?></span>
                 </p>
             </div>           
          <?php

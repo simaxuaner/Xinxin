@@ -88,29 +88,38 @@ function news_newsxinhui_page_callback()
  * Implements hook_theme()
  */
 function news_theme() {
+    $module_path = drupal_get_path('module','news');
     return array(
         'allNews_page'  => array(
             'variables'=> array('newsTitle'=>'品牌论坛',
                                 'secondMenuNav'=>getNewsSecondMenuNav('/danyOrigin/'),
                                 'info' => getNewsInfo(),
+                                'icon_image' => 'news_icon',
+                                'imageLinkPathHead'=> $module_path,
                             ),
             'template' => 'newsHead',
         ),
         'news66_page' => array(
             'variables'=> array('newsTitle'=>'6.6涂岭论坛',
                                 'secondMenuNav'=>getNewsSecondMenuNav('/dany66/'),
+                                'icon_image' => '66_icon',
+                                'imageLinkPathHead'=> $module_path,
                             ),
             'template' => 'allNews',
         ),
         'news1212_page' => array(
             'variables'=> array('newsTitle'=>'12.12电商论坛',
                                 'secondMenuNav'=>getNewsSecondMenuNav('/dany1212/'),
+                                'icon_image' => '1212_icon',
+                                'imageLinkPathHead'=> $module_path,
                             ),
             'template' => 'allNews',
         ),
         'newsXinhui_page' => array(
             'variables'=> array('newsTitle'=>'海促会资讯',
-                                'secondMenuNav'=>getNewsSecondMenuNav('/danyXinxin/'),     
+                                'secondMenuNav'=>getNewsSecondMenuNav('/danyXinxin/'), 
+                                'icon_image' => 'haicuhui_icon',
+                                'imageLinkPathHead'=> $module_path,    
                            ),
             'template' => 'allNews',
         ),
@@ -120,6 +129,7 @@ function news_theme() {
 function template_preprocess_allNews_page(&$variables) {
     $module_path = drupal_get_path('module','news');
     $variables['imageLinkPathHead']=$module_path;
+    print_r("alskjdflksajdfk");
 }
 
 
@@ -160,14 +170,33 @@ function getNoteList($type)
 function getMagzineList($type)
 {
     $magzineList=array();
-    foreach(range(0,4) as $value)
-    {
-        $magzineList[$value]=array(
-        'imgurl'      => 'images/magazine/magazine.jpg',
-        'date' => 'Jackie Chan'.$value,
-        'title'    => 'farmName1'.$value,
-        'content'   => $value,
-        );
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $nids = $query
+    ->fields('n', array('nid', 'created'))
+    ->condition('type', 'magzine')
+    ->condition('status', 1)
+    ->orderBy('created', 'DESC')
+    ->addTag('node_access')
+    ->execute()
+    ->fetchCol();
+    if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+        $index=0;
+        foreach ($nodes as $key => $node) {
+            $imgid = $node->field_image[LANGUAGE_NONE][0]['fid'];
+            $imgfile = file_load($imgid);
+            $imageurl = file_create_url($imgfile->uri);
+            
+            $fileUrl=file_create_url($node->field_field_magzine_file[LANGUAGE_NONE][0]['uri']);
+            $magzineList[$index]=array(
+                'imgurl'    => $imageurl,
+                'date'      => date('y-m-d',$node->created),
+                'title'     => $node->title,
+                'shortTitle'=> getShortTitle($node->title),
+                'downloadUrl'=>$fileUrl,
+            );
+            $index++;
+        }   
     }
     return $magzineList;
 }
@@ -218,7 +247,7 @@ function changeDateform($date)
     return $day." ". $month;
 }
 
-function getNewsSecondMenuNav($type)
+function getNewsSecondMenuNav($type,$icon)
 {
     $nav='<nav id="sideNav" class="w20">
 			<ul>
@@ -229,6 +258,7 @@ function getNewsSecondMenuNav($type)
 				
 			</ul>
 		</nav>';
+        
     $html=preg_replace($type,"activeNavItem",$nav);
     return $html;
 }
@@ -252,4 +282,16 @@ function getNewsInfo()
         $info['newsXinxin'] = $node->body[LANGUAGE_NONE][0]['value'];
     }
     return $info;
+}
+
+function getShortTitle($title,$length=4)
+{
+    if(utf8_strlen($title) > $length)
+        $title=substr($title,0,($length-1)*3)."...";
+    return $title;
+}
+
+function utf8_strlen($string = null) {
+    preg_match_all("/./us", $string, $match);
+    return count($match[0]);
 }
