@@ -74,6 +74,7 @@ function classes_menu(){
  * functions of page callback
  */
 function classes_class_page_callback() {
+
     $module_path = drupal_get_path('module', 'classes');
     return theme("classes_page", array());
 }
@@ -94,6 +95,11 @@ function classes_admission_page_callback(){
 }
 
 function classes_files_page_callback(){
+    if(variable_get('file_download_node_id',0))
+    {
+           
+    } //render node
+  
     $module_path = drupal_get_path('module', 'classes');
     return theme("files_page", array());
 }

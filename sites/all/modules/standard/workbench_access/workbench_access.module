@@ -2188,3 +2188,8 @@ function workbench_access_update_records($find, $replace, $scheme = NULL) {
   variable_set('workbench_access_' . $scheme, $new);
   drupal_set_message(t('Editorial sections have been updated.'));
 }
+
+function workbench_access_node_type_insert($info)
+{
+  variable_set('workbench_access_node_type_'.$info->type,0);
+}
