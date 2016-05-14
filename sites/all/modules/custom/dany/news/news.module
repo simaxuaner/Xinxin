@@ -129,7 +129,6 @@ function news_theme() {
 function template_preprocess_allNews_page(&$variables) {
     $module_path = drupal_get_path('module','news');
     $variables['imageLinkPathHead']=$module_path;
-    print_r("alskjdflksajdfk");
 }
 
 
