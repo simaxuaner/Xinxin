@@ -67,11 +67,9 @@ function home_content_block_view($delta = '')
         $block = array();
         //========================================
         //此处js需要修改
-        //待解决的问题div background不能显示
         //待解决的问题search_form 未修改
         //========================================
         $html = <<<EOS
-        <header>
         <div class="slider" data-i="0">
 			<div class="controls">
 				<div class="bulletNav">
@@ -104,7 +102,6 @@ function home_content_block_view($delta = '')
 				<img src="$module_path/images/slider/4.jpg"/>
 			</div>
 		</div> 
-        </header>
 EOS;
         $block['content'] = $html;
         return $block;
