@@ -228,6 +228,37 @@ function about_recruitment_page_callback(){
 	global $user;
 	$class="人才招聘";
 	$module_path = drupal_get_path ( 'module', 'about' );
+	//dany add at 2016-05-14
+	$noteList=array();
+    $query = db_select('node', 'n')->extend('PagerDefault');
+    $nids = $query
+    ->fields('n', array('nid', 'created'))
+    ->condition('type', 'front_news')
+    ->condition('status', 1)
+    ->orderBy('created', 'DESC')
+    ->addTag('node_access')
+    ->execute()
+    ->fetchCol();
+
+    if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+        foreach ($nodes as $key => $node) {
+            if($node->field_news_type[LANGUAGE_NONE][0]['value']==$type)
+            {
+                $imgid = $node->field_image[LANGUAGE_NONE][0]['fid'];
+                $imgfile = file_load($imgid);
+                $imageurl = file_create_url($imgfile->uri);
+                $noteList[$key]=array(
+                    'imgurl'      => $imageurl,
+                    'date'        => changeDateform(date('m-d',$node->created)),
+                    'title'       => $node->title,
+                    'content'     => $node->body[LANGUAGE_NONE][0]['value'],
+                );
+            }
+        }
+    }
+    return $noteList;
+	/*
 	$recruitmenttml=<<<EOS
 	<div class="bar blue w80">
 				<h1>人才招聘</h1>
@@ -322,7 +353,7 @@ EOS;
 	return theme ( "aboutpage_page", array (
 			"pagemain" => $recruitmenttml ,
 			"sidebarleft"=>get_sidebar_menu_list($class),
-	) );
+	) );*/
 }
 /**
  * Implements hook_theme()

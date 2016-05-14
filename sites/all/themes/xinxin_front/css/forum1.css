@@ -1,12 +1,12 @@
-.jobList tbody{
+.forumList tbody{
 	display:"";
 }
 thead{
 	display:"";
 }
 
-.jobList thead tr {
-   background-color:#E9E9E9;
+.forumList thead tr {
+   background-color:#d9d9d9 !important;
 }
 table{
 	display:table !important;
@@ -17,18 +17,19 @@ table thead{
 }
 table thead tr td{
 	font-size:20px;
-		color:#000;
+		color: #ffffff;
 }
-.jobList {
+.forumList {
     background: none;
     display: block;
 	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 }
-.jobList tr {
+.forumList tr {
+    background-color: #f2f2f2;
 }
-.jobList tr td {
+.forumList tr td {
     padding: 12px 16px;
 }
 .alignLeft {
@@ -55,49 +56,40 @@ table {
 	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 }
 .forumInfo thead tr td{
-	background-color: #aaaaaa;
+	background-color: #d9d9d9;
 	color: #ffffff;
 }
 .forumInfo tbody{
-	background-color: #e6e6e6;
+	background-color: #f2f2f2;
 }
 .forumInfo tbody td{
 	padding: 8px;
 }
-.jobList td{
+.forumList td{
 	min-width: 64px;
 }
-.jobList .theme,
-.jobList .reply,
-.jobList .check,
-.jobList .state{
+.forumList .theme,
+.forumList .reply,
+.forumList .check,
+.forumList .state{
     padding: 24px 12px;
 }
-.jobList .theme {
+.forumList .theme {
     width: 40%;
 }
-.jobList .reply {
-    width: 20%;
+.forumList .reply {
+    width: 10%;
 }
-.jobList .check {
-	width:20%;
+.forumList .check {
+	width:10%;
 } 
-.jobList .state {
-    width: 20%;
+.forumList .state {
+    width: 40%;
 }
 
-.jobList tbody .state {
-    width: 20%;
-	color:#5868C0;
-}
-.jobList tbody a {
-    width: 20%;
-	color:#5868C0;
-}
-
-.jobList .lighter,
+.forumList .lighter,
 .comments .lighter {
-    background-color: #ebebeb !important;
+    background-color: #f6f6f6 !important;
 }
 select{
 	width:20px !important;
@@ -146,7 +138,7 @@ select{
     background-color: #ebebeb !important;
 }
 .topicList tr {
-    background-color: #e6e6e6;
+    background-color: #f2f2f2;
 	min-height:100px;
 }
 .topicList tr td {
@@ -157,22 +149,4 @@ select{
 }
 .topicList tr td span{
 	font-size:10px;
-}
-
-.jobItem{
-	position: relative;
-    width: 100%;
-    min-width: 640px;;
-    overflow: hidden;
-    background-color: #f2f2f2;
-    margin-bottom: 32px;
-	padding:32px;
-    cursor: pointer;
-	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
-	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
-	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
-}
-.hideModal{
-	display:none;
-	width: 100%;
 }

@@ -9,10 +9,11 @@
 -->
 <main>
 	<?php print $secondMenuNav?>
+	<div class="bar w80">		
+		<img class="icon" src="<?php print $modulePath?>/images/icons/campus_icon.png">
+		<h1>创业园地</h1>
+	</div>
 	<section class="w80">
-		<div class="bar">
-			<h1>创业园地</h1>
-		</div>
 		<img class="w40 floatRight marginLeft marginBottom" src="<?php print $imgurl?>"/>
 		<?php print $pioneeringContext?>
 	</section>
