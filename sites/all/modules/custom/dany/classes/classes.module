@@ -95,11 +95,6 @@ function classes_admission_page_callback(){
 }
 
 function classes_files_page_callback(){
-    if(variable_get('file_download_node_id',0))
-    {
-           
-    } //render node
-  
     $module_path = drupal_get_path('module', 'classes');
     return theme("files_page", array());
 }
@@ -120,7 +115,6 @@ function classes_detailclass_page_callback($nid){
     $class['classType']=$node->field_lesson_type[LANGUAGE_NONE][0]['value'];
     $class['info']=$node->field_lesson_info[LANGUAGE_NONE][0]['value'];
     
-    print_r($class['teacherName']);
     $teacher=array();
     $query = db_select('node', 'n')->extend('PagerDefault');
     $nids = $query
@@ -133,7 +127,6 @@ function classes_detailclass_page_callback($nid){
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
-    print_r($nids);
     if (!empty($nids)) {
         $node = node_load($nids[0]);
         $imgid = $node->field_teacher_pic[LANGUAGE_NONE][0]['fid'];
@@ -373,15 +366,33 @@ function template_preprocess_admission_page(&$variables) {
     $nid = variable_get('baseFacilities', 43);
     $node = node_load($nid);
     if ($node) {
+        $title=$node->title;
         $admission = $node->body[LANGUAGE_NONE][0]['value'];
     }
+    $variables['title']=$title;
     $variables['admission']=$admission;
     $variables['secondMenuNav']=getSecondMenuNav('/danyAdmission/');
 }
 
 function template_preprocess_files_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
+    if($nid=variable_get('file_download_node_id',0))
+    {
+        $node = node_load($nid);
+        if ($node) {
+            $content=$node->body[LANGUAGE_NONE][0]['value'];
+            $title=$node->title;
+            $fileList=$node->field_files_download[LANGUAGE_NONE];
+            foreach ($fileList as $key => $file) 
+            {
+                $fileList[$key]['url']=file_create_url($file['uri']);
+            }
+        }
+    } //render node
     //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    $variables['title']=$title;
+    $variables['content']=$content;
+    $variables['fileList']=$fileList;
     $variables['modulePath']=$module_path;
     $variables['secondMenuNav']=getSecondMenuNav('/danyFiles/');
 }

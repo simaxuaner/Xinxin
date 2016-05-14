@@ -7,16 +7,18 @@
         <?php print $secondMenuNav?>
 		<section class="w80">
 			<div class="bar">
-			  <h1>课程</h1> <select>
-			  <option value="volvo">种植培养</option>
-			  <option value="saab">市场</option>
-			  <option value="mercedes">管理</option>
-			  <option value="audi">金融</option>
+              <img class="icon" src="images/icons/classes_icon.png">
+			  <h1>课程</h1> 
+              <select>
+                <option value="volvo">种植培养</option>
+                <option value="saab">市场</option>
+                <option value="mercedes">管理</option>
+                <option value="audi">金融</option>
 			  </select> 
-                <div class="search floatRight">
-                    <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search"></a>
-                    <input type="text" name="search">
-                </div> 
+              <div class="search floatRight">
+                <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search"></a>
+                <input type="text" name="search">
+              </div> 
             </div>
 			
             <!--动态获取课程列表 -->
