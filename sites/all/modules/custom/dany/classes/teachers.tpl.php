@@ -4,7 +4,7 @@
     <?php print $secondMenuNav?>
     <section class="w80">
         <div class="bar">
-            <img class="icon" src="<?php print $imageLinkPathHead?>images/icons/teachers_icon.png">
+            <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/teachers_icon.png">
         	<h1>农业名师</h1>
         	<div class="search floatRight">
                 <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search">

@@ -7,7 +7,7 @@
         <?php print $secondMenuNav?>
 		<section class="w80">
 			<div class="bar">
-              <img class="icon" src="images/icons/classes_icon.png">
+              <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/classes_icon.png">
 			  <h1>课程</h1> 
               <select>
                 <option value="volvo">种植培养</option>
