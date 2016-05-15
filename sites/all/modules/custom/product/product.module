@@ -217,13 +217,14 @@ function product_page_callback($pid){
     $build = "<main id='mainSection'>
                <nav id='sideNav' class='w20'>
 			<ul>
-			    <li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
-				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
+			    <li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/?q=farmshow/product'>农产品</a> </li>
+				<li> <a href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>农庄</a> </li>
 			</ul>
 		</nav>
 		<section class='w80'>
 			<div class='bar'>
-			<h1><a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> > ".$product->title."</h1>
+            <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
+			<h1><a href='".$GLOBALS['base_url'] ."/?q=farmshow/product'>农产品</a> > ".$product->title."</h1>
 			</div>
 			<img class='w50 floatLeft productImage' src='".$farm_image_filepath."'/>
 			<div class='productInfo w50 floatLeft'>
@@ -302,7 +303,7 @@ function product_page_callback($pid){
         $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
 
         $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				<a href='".$GLOBALS['base_url']."/product/".$node->nid."' ><h3 class='product_title'>".$node->title."</h3></a>
+				<a href='".$GLOBALS['base_url']."/?q=product/".$node->nid."' ><h3 class='product_title'>".$node->title."</h3></a>
 				<p class='product_price'><span class='farmName'>产品类型：".$type->name."</span><span class='floatRight'>".$node->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>";
         $count++;
@@ -320,13 +321,14 @@ function product_term_page_callback($tid){
     $build = "<main>
             <nav id='sideNav' class='w20'>
 			<ul>
-			    <li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
-				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
+			    <li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/?q=farmshow/product'>农产品</a> </li>
+				<li> <a href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>农庄</a> </li>
 			</ul>
 		    </nav>
             <section class='w80'>
             <div class='bar'>
-            <a href='".$GLOBALS['base_url'] ."/farmshow/product'><h1>农业产品</h1></a><h1> >".$term->name."</h1>
+            <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
+            <a href='".$GLOBALS['base_url'] ."/?q=farmshow/product'><h1>农业产品</h1></a><h1> >".$term->name."</h1>
             <div class='search floatRight'>
 					<a href='#'><img alt='search' src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
 				</div>
@@ -340,7 +342,7 @@ function product_term_page_callback($tid){
         $p_image_locate = explode('//', $p_image_uri);
         $p_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $p_image_locate[1];
 
-        $build .="<a href='".$GLOBALS['base_url'] ."/product/".$product->nid."'>
+        $build .="<a href='".$GLOBALS['base_url'] ."/?q=product/".$product->nid."'>
 			<div class='block1'>
 				<span class='fav'>收藏</span> <img src='".$p_image_filepath."'>
 				<h3 class='product_title'>".$product->title."</h3>
@@ -381,8 +383,9 @@ function template_preprocess_product_page(&$variables){
         return array();
     }
     $tree = taxonomy_get_tree($vocabulary->vid);
-
+    
     $build .="<div class='bar'>
+            <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
             <h1>农业产品</h1>
             <div class='search floatRight'>
 					<a href='#'><img alt='search' src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
@@ -407,16 +410,17 @@ function template_preprocess_product_page(&$variables){
             } else {
                 $build .= "<div id='node-" . $product->nid  . "' class='block1'>";
             }
+            //这个if好像有问题，注释掉了160515
+            /*
             if (user_is_logged_in()) {
                 $collection_link = collection_get_collection_link($product);
                 $build .= $collection_link;
-            }
-            $build .= "<img src=".$product_image_filepath." /><a href='".$GLOBALS['base_url'] ."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>" .
+            }*/
+            $build .= "<img src=".$product_image_filepath." /><a href='".$GLOBALS['base_url'] ."/?q=product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>" .
 				        "<p class='product_price'><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>" .
 			        "</div>";
             $count++;
         }
     }
     $variables['content'] = $build;
-
 }

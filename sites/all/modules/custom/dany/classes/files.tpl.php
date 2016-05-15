@@ -5,7 +5,7 @@
 -->
 <?php print $secondMenuNav?>
 <div class="bar w80">		
-	<img class="icon" src="images/icons/files_icon.png"><h1>资料下载</h1>
+	<img class="icon" src="<?php print $modulePath?>/images/icons/files_icon.png"><h1>资料下载</h1>
 </div>
 <section class="w80">
 	<p><?php print $content?></p>
