@@ -15,7 +15,7 @@
 			  <option value="saab">2012</option>
 			  <option value="mercedes">2013</option>
 			  <option value="audi">2014</option>
-              <option value="audi">2014</option>
+              <option value="audi">2014</option> 
 			</select> 
             <select>
 			  <option value="volvo">参会指南</option>
