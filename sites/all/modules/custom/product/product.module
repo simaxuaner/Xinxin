@@ -383,6 +383,7 @@ function template_preprocess_product_page(&$variables){
     $tree = taxonomy_get_tree($vocabulary->vid);
 
     $build .="<div class='bar'>
+            <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
             <h1>农业产品</h1>
             <div class='search floatRight'>
 					<a href='#'><img alt='search' src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>

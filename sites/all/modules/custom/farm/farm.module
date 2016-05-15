@@ -287,7 +287,7 @@ function template_preprocess_farm_page(&$variables){
  * @return 页面数据
  */
 function template_preprocess_farms_page(&$variables){
-    $build_search = "<div class='bar'><h1>农庄</h1>
+    $build_search = "<div class='bar'><img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'><h1>农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
                     <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/farmshow/farm'>+</a></div>
                     </div>";
