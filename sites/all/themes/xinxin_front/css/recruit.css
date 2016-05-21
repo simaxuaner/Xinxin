@@ -99,12 +99,6 @@ table {
 .comments .lighter {
     background-color: #ebebeb !important;
 }
-select{
-	width:20px !important;
-	float:left !important;
-	margin-right:20px !important;
-	margin-left:10px !important;
-}
 .pageNav{
 	display:inline-block;
 }

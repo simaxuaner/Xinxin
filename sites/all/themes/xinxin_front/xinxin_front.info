@@ -12,8 +12,6 @@ stylesheets[all][] = forum1.css
 stylesheets[all][] = slider.css
 
 scripts[] = js/scripts.js
-scripts[] = js/jquery-1.11.3.min.js
-scripts[] = js/jquery-1.4.4.min.js
 scripts[] = js/jquery.reveal.js
 
 regions[header] = Header

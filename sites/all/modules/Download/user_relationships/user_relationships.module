@@ -20,21 +20,21 @@ define('USER_RELATIONSHIPS_NAME_REVERSE', 4);
  */
 function user_relationships_menu() {
   $items['admin/config/people/relationships'] = array(
-    'title' => 'Relationships',
+    'title' => '朋友圈管理',
     'description' => 'Create relationship types',
     'access arguments' => array('administer user relationships'),
     'page callback' => 'user_relationships_admin_types_list_page',
     'file' => 'user_relationships.admin.inc',
   );
   $items['admin/config/people/relationships/list'] = array(
-    'title' => 'List',
+    'title' => '关系类型列表',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'page callback' => 'user_relationships_admin_types_list_page',
     'access arguments' => array('administer user relationships'),
     'file' => 'user_relationships.admin.inc',
   );
   $items['admin/config/people/relationships/add'] = array(
-    'title' => 'Add relationship type',
+    'title' => '添加关系类型',
     'type' => MENU_LOCAL_ACTION,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('user_relationships_admin_type_edit'),
@@ -42,7 +42,7 @@ function user_relationships_menu() {
     'file' => 'user_relationships.admin.inc',
   );
   $items['admin/config/people/relationships/%user_relationships_type/edit'] = array(
-    'title' => 'Edit type',
+    'title' => '编辑类型',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('user_relationships_admin_type_edit', 4),
@@ -51,7 +51,7 @@ function user_relationships_menu() {
     'weight' => 5,
   );
   $items['admin/config/people/relationships/%user_relationships_type/delete'] = array(
-    'title' => 'Delete type',
+    'title' => '删除类型',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('user_relationships_admin_type_delete', 4),
@@ -60,7 +60,7 @@ function user_relationships_menu() {
     'weight' => 15,
   );
   $items['admin/config/people/relationships/settings'] = array(
-    'title' => 'Settings',
+    'title' => '配置',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('user_relationships_admin_settings'),
@@ -69,7 +69,7 @@ function user_relationships_menu() {
     'weight' => 20,
   );
   $items['admin/user_relationships/autocomplete/types'] = array(
-    'title' => 'User Relationships Types Autocomplete',
+    'title' => '用户关系类型',
     'type' => MENU_CALLBACK,
     'page callback' => 'user_relationships_autocomplete_types',
     'access callback' => 'user_access',

@@ -122,7 +122,7 @@ EOS;
 				<div class="iconArea">
 					<img alt="news" src="$module_path/images/icons/news.png">
 				</div>
-				<h2>园区招商</h2>
+				<h2>活动报道</h2>
 			</div>
 		</a>
 		<a href="$investorurl">
@@ -167,7 +167,7 @@ EOS;
 /**
  * Implements hook_user_login
  */
-function hoem_content_user_login(&$edit, $account) {
+function home_content_user_login(&$edit, $account) {
 	if (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset') {
 		global $user;
 		if (in_array('administrator', $user->roles))
