@@ -480,7 +480,6 @@ function lesson_admin_nodes() {
         ->condition('type', 'lesson')   //山选出产品类型的node
         ->limit(50)
         ->orderByHeader($header)
-        ->addTag('node_access')
         ->execute()
         ->fetchCol();
     $nodes = node_load_multiple($nids);

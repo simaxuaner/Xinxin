@@ -74,7 +74,7 @@ function about_introduction_page_callback() {
 	$nodes = node_load_multiple ( $nids );
 	$html = '';
 	foreach ( $nodes as $node ) {
-		$html .= $node->body [LANGUAGE_NONE] [0] ['value'];
+		$html .= (isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '';
 	}
 	$pagehtml = <<<EOS
 <section class="w80">
@@ -108,13 +108,13 @@ function about_park_page_callback() {
 	$nodes = node_load_multiple ( $nids );
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
-		if(isset($node->field_image)){
+		if(isset($node->field_image) && isset($node->field_image[LANGUAGE_NONE]) ){
 			foreach ($node->field_image[LANGUAGE_NONE] as $img){
 				$bodyhtml.='<img class="showcaseImg" src="'.file_create_url($img['uri']).'"/>';
 			}
 		}
-		if(isset($node->body)){
-			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
+		if(isset($node->body) && isset($node->body [LANGUAGE_NONE]) && isset($node->body [LANGUAGE_NONE][0])){
+			$bodyhtml .= $node->body [LANGUAGE_NONE][0]['value'];
 		}
 	}
 	$parkhtml =<<<EOS
@@ -142,11 +142,11 @@ function about_school_page_callback() {
 	$nodes = node_load_multiple ( $nids );
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
-		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w40 floatRight marginLeft marginBottom" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
+		if(isset($node->field_image)&&isset($node->field_image[LANGUAGE_NONE])&&isset($node->field_image[LANGUAGE_NONE][0])){
+			$bodyhtml.='<img class="w40 floatRight marginLeft marginBottom" src="'.file_create_url($node->field_image[LANGUAGE_NONE][0]['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
+			$bodyhtml .= (isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '';
 		}
 	}
 	$schoolhtml = <<<EOS
@@ -176,11 +176,11 @@ function about_investors_page_callback() {
 	$nodes = node_load_multiple ( $nids );
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
-		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
+		if(isset($node->field_image)&&isset($node->field_image[LANGUAGE_NONE])&&isset($node->field_image[LANGUAGE_NONE][0])){
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image[LANGUAGE_NONE][0]['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
+			$bodyhtml .= (isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '';
 		}
 	}
 	$investorshtml =<<<EOS
@@ -208,11 +208,11 @@ function about_partners_page_callback() {
 	$nodes = node_load_multiple ( $nids );
 	$bodyhtml = '';
 	foreach ( $nodes as $node ) {
-		if(isset($node->field_image)){
-			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image [LANGUAGE_NONE] [0] ['uri']).'"/>';
+		if(isset($node->field_image)&&isset($node->field_image[LANGUAGE_NONE])&&isset($node->field_image[LANGUAGE_NONE][0])){
+			$bodyhtml.='<img class="w100" src="'.file_create_url($node->field_image[LANGUAGE_NONE][0]['uri']).'"/>';
 		}
 		if(isset($node->body)){
-			$bodyhtml .= $node->body [LANGUAGE_NONE] [0] ['value'];
+			$bodyhtml .= (isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '';
 		}
 	}
 	$partners =<<<EOS
@@ -254,7 +254,7 @@ function about_recruitment_page_callback(){
 				'request_num'	=> $node->field_recruit_num[LANGUAGE_NONE][0]['value'],
         		'title'			=> $node->title,
 				'createDate'	=> date('y-m-d',$node->created),
-				'content'		=> $node->body[LANGUAGE_NONE][0]['value'],
+				'content'		=> (isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '',
 			);
 		}
     }

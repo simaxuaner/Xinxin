@@ -260,7 +260,7 @@ function user_relationships_ui_page_alter(&$page) {
  */
 function user_relationships_ui_menu() {
   $items['relationships'] = array(
-    'title' => 'My relationships',
+    'title' => '我的朋友圈',
     'type' => MENU_NORMAL_ITEM,
     'access callback' => 'user_relationships_ui_check_access',
     'access arguments' => array('view'),
@@ -269,7 +269,7 @@ function user_relationships_ui_menu() {
     'menu_name' => 'user-menu',
   );
   $items['relationships/list'] = array(
-    'title' => 'Current',
+    'title' => '好友列表',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
     'access callback' => 'user_relationships_ui_check_access',
@@ -277,7 +277,7 @@ function user_relationships_ui_menu() {
     'menu_name' => 'user-menu',
   );
   $items['relationships/received'] = array(
-    'title' => 'Received requests',
+    'title' => '好友请求',
     'title callback' => 'user_relationships_ui_title_callback_pending',
     'title arguments' => array('requestee_id'),
     'access callback' => 'user_relationships_ui_check_access',
@@ -290,7 +290,7 @@ function user_relationships_ui_menu() {
     'menu_name' => 'user-menu',
   );
   $items['relationships/sent'] = array(
-    'title' => 'Sent requests',
+    'title' => '已发送请求',
     'title callback' => 'user_relationships_ui_title_callback_pending',
     'title arguments' => array('requester_id'),
     'access callback' => 'user_relationships_ui_check_access',

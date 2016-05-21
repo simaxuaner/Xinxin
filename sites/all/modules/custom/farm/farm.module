@@ -104,30 +104,31 @@ function farm_page_callback($fid){
     $farm = node_load($fid);
     //查找出农场图片
     $farm_image_uri = $farm->field_farm_image[LANGUAGE_NONE][1]['uri'];
-    $farm_image_locate = explode('//', $farm_image_uri);
-    $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
+    //$farm_image_locate = explode('//', $farm_image_uri);
+    //$farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
+    $farm_image_filepath =file_create_url($farm_image_uri);
     $build ="<main>
 		    <nav id='sideNav' class='w20'>
 			<ul>
-				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>农庄</a> </li>
-				<li > <a href='".$GLOBALS['base_url'] ."/?q=farmshow/product'>农产品</a> </li>
+				<li class='activeNavItem'> <a href='".url("farmshow/farm")."'>休闲农庄</a> </li>
+				<li > <a href='".url("farmshow/product")."'>农业展品</a> </li>
 			</ul>
 		</nav>";
     $build .="<section class='w80'>
 			<div class='bar'>
                 <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'>
-				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>农庄</a> >".$farm->title."</h1></div>
+				<h1><a class='underline' href='".url("farmshow/farm")."'>休闲农庄</a> >".$farm->title."</h1></div>
 			<img src=".$farm_image_filepath." alt='Jackie Chan' class='alignCenter w100'/>
 		</section>";
     $build .="<section class='w80'>
 			<div class='bar w100'>
-				<h3>".$farm->field_farm_location[LANGUAGE_NONE][0]['value']."</h3>
+				<h3>".( (isset($farm->field_farm_location[LANGUAGE_NONE]) && isset($farm->field_farm_location[LANGUAGE_NONE][0])) ? $farm->field_farm_location[LANGUAGE_NONE][0]['value'] : '' )."</h3>
 				<div class='floatRight alignRight'> <a href='#' class='favLink'>加入收藏</a></div>
 			</div>
 			<div class='w100'>
-				<p>".$farm->body[LANGUAGE_NONE][0]['value']."</p>
+				<p>".( (isset($farm->body[LANGUAGE_NONE]) && isset($farm->body[LANGUAGE_NONE][0])) ? $farm->body[LANGUAGE_NONE][0]['value'] : '' )."</p>
 				<h2>联系方式</h2>
-                <h3>".$farm->field_farm_telephone[LANGUAGE_NONE][0]['value']."</h3>
+                <h3>".( (isset($farm->field_farm_telephone[LANGUAGE_NONE]) && isset($farm->field_farm_telephone[LANGUAGE_NONE][0])) ? $farm->field_farm_telephone[LANGUAGE_NONE][0]['value'] : '' )."</h3>
 			</div>
 			</section>";
     $build .="<section class='w80'>
@@ -140,7 +141,6 @@ function farm_page_callback($fid){
         ->fields('f', array('entity_id'))
         ->condition('f.field_product_farm_value', $farm->nid)
         ->orderBy('entity_id', 'DESC')
-        ->addTag('node_access')
         ->limit(4)
         ->execute()
         ->fetchCol();
@@ -149,21 +149,19 @@ function farm_page_callback($fid){
         //查询产品的类型
         $myfield_array = field_get_items('node', $product,'field_product_type');
         $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
-        $tid = $myfield['tid'];
-        $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
+        if (!empty($myfield)) {
+            $tid = $myfield['tid'];
+            $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
 
-        //获取产品图片
-        $myfield_array = field_get_items('node', $product, 'field_product_photo');
-        $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
-        $product_image_uri = $image['uri'];
-        // assuming that the uri starts with "public://"
-        $product_image_locate = explode('//', $product_image_uri);
-        $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
-
-        $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				<a href='".$GLOBALS['base_url']."/?q=product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
-				<p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
-			</div>";
+            //获取产品图片
+            $myfield_array = field_get_items('node', $product, 'field_product_photo');
+            $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
+            $product_image_filepath = file_create_url($image['uri']);
+            $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
+                    <a href='".url("product/{$product->nid}") . "'><h3 class='product_title'>".$product->title."</h3></a>
+                    <p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
+                </div>";
+        }
     }
     $build .="</main>";
     return $build;
@@ -193,7 +191,7 @@ function farm_theme(){
             'template' => 'farm',
         ),
         'farms_page'=>array(
-            'variables'=> array('title'=>'农庄'),
+            'variables'=> array('title'=>'休闲农庄'),
             'template' => 'farm',
         ),
     );
@@ -204,8 +202,8 @@ function farm_theme(){
  * @param $variables
  */
 function template_preprocess_farm_page(&$variables){
-    $variables['farm_page']=$GLOBALS['base_url'] .'/?q=farmshow/farm';
-    $variables['product_page']=$GLOBALS['base_url'] .'/?q=farmshow/product';
+    $variables['farm_page']=url("farmshow/farm");
+    $variables['product_page']=url("farmshow/product");
 
     $build = "";
     $query = db_select('node', 'n')->extend('PagerDefault');
@@ -215,7 +213,6 @@ function template_preprocess_farm_page(&$variables){
         ->condition('status', 1)
         ->orderBy('created', 'DESC')
         ->limit(variable_get('default_nodes_main', 10))
-        ->addTag('node_access')
         ->execute()
         ->fetchCol();
 
@@ -225,9 +222,7 @@ function template_preprocess_farm_page(&$variables){
 
     foreach($nodes as $key=>$value){
         //查找出农场图片
-        $farm_image_uri = $value->field_farm_image[LANGUAGE_NONE][0]['uri'];
-        $farm_image_locate = explode('//', $farm_image_uri);
-        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
+        $farm_image_filepath = isset($value->field_farm_image[LANGUAGE_NONE]) && isset($value->field_farm_image[LANGUAGE_NONE][0]) ? file_create_url($value->field_farm_image[LANGUAGE_NONE][0]['uri']) : '';
 
         //查询出此农场中的产品
         $query = db_select('field_data_field_product_farm', 'f')->extend('PagerDefault');
@@ -235,7 +230,6 @@ function template_preprocess_farm_page(&$variables){
             ->fields('f', array('entity_id'))
             ->condition('f.field_product_farm_value', $value->nid)
             ->orderBy('entity_id', 'DESC')
-            ->addTag('node_access')
             ->limit(10)
             ->execute()
             ->fetchCol();
@@ -249,25 +243,20 @@ function template_preprocess_farm_page(&$variables){
             //获取产品图片
             $myfield_array = field_get_items('node', $product, 'field_product_photo');
             $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
-            $product_image_uri = $image['uri'];
-            // assuming that the uri starts with "public://"
-            $product_image_locate = explode('//', $product_image_uri);
-            $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
-            $product_images[$key] = $product_image_filepath;
-            $count++;
+            if (!empty($image)) {
+                $product_images[$key] = file_create_url($image['uri']);
+                $count++;
+            }
         }
-        $build .= "<a href='".$GLOBALS['base_url'] ."/?q=farm/".$value->nid."'>";
+        $build .= '<a href="'.url("farm/{$value->nid}") . '">';
         $build .= "<div class='wideBlock'>";
-
         $build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
-                <h3>地址：".$value->field_farm_location[LANGUAGE_NONE][0]['value']."</h3></div>";
-
+                <h3>地址：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '' ) ."</h3></div>";
         $build .="<img src='".$farm_image_filepath."' class='w40 floatLeft'/>";
-
         $build .="<div class='blockInformation w60 floatLeft'>
                 <p class='alignRight'><a href='#' class=''>加入收藏</p></a>";
-        $build .="<p>".$value->body[LANGUAGE_NONE][0]['value']."</p>";
-        $build .="<p class='alignRight'><a href='".$GLOBALS['base_url'] ."/farm/".$value->nid."'>详细信息 ></a></p>" ;
+        $build .="<p>". ( ( isset($value->body[LANGUAGE_NONE]) && isset($value->body[LANGUAGE_NONE][0]) ) ? $value->body[LANGUAGE_NONE][0]['value'] : '' ) ."</p>";
+        $build .="<p class='alignRight'><a href='". url("farm/{$value->nid}") ."'>详细信息 ></a></p>" ;
         $build .="<div class='alignRight products'>";
         foreach($product_images as $value){
             $build .= "<img src=".$value.">";
@@ -278,9 +267,9 @@ function template_preprocess_farm_page(&$variables){
 
     $build_search = "<div class='bar'>
                     <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'>
-                    <h1>农庄</h1>
+                    <h1>休闲农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
-                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/?q=farms'>+</a></div>
+                    <div class='button floatRight'><a href='". url("farms") . "'>㗊</a></div>
                     </div>";
     $variables['search'] = $build_search;
 }
@@ -290,9 +279,9 @@ function template_preprocess_farm_page(&$variables){
  * @return 页面数据
  */
 function template_preprocess_farms_page(&$variables){
-    $build_search = "<div class='bar'><img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'><h1>农庄</h1>
+    $build_search = "<div class='bar'><img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'><h1>休闲农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
-                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>+</a></div>
+                    <div class='button floatRight'><a href='".url("farmshow/farm")."'>三</a></div>
                     </div>";
     $build = "";
     $query = db_select('node', 'n')->extend('PagerDefault');
@@ -302,7 +291,6 @@ function template_preprocess_farms_page(&$variables){
         ->condition('status', 1)
         ->orderBy('created', 'DESC')
         ->limit(variable_get('default_nodes_main', 10))
-        ->addTag('node_access')
         ->execute()
         ->fetchCol();
 
@@ -311,15 +299,15 @@ function template_preprocess_farms_page(&$variables){
     }
     foreach($nodes as $key=>$value){
         //查找出农场图片
-        $farm_image_uri = $value->field_farm_image[LANGUAGE_NONE][0]['uri'];
-        $farm_image_locate = explode('//', $farm_image_uri);
-        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
+        $farm_image_uri = ( isset($value->field_farm_image[LANGUAGE_NONE]) && isset($value->field_farm_image[LANGUAGE_NONE][0]) ) ? $value->field_farm_image[LANGUAGE_NONE][0]['uri'] : '';
+//        $farm_image_locate = explode('//', $farm_image_uri);
+//        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
 
-        $build .="<a href='".$GLOBALS['base_url'] ."/?q=farm/".$value->nid."'>
+        $build .="<a href='". url("farm/{$value->nid}")."'>
 			<div class='block1'>
-				<span class='fav'>收藏</span> <img src='".$farm_image_filepath."'/>
+				<span class='fav'>收藏</span> <img src='".file_create_url($farm_image_uri)."'/>
 				<h3>".$value->title."</h3>
-				<p><span class='farmName'>地点：".$value->field_farm_location[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>&gt;</span><span class='floatRight'>详细信息</span></p>
+				<p><span class='farmName'>地点：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '') ."</span><span class='floatRight'>&gt;</span><span class='floatRight'>详细信息</span></p>
 			</div>
             </a>";
 

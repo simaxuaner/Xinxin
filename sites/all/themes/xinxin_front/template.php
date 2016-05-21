@@ -38,8 +38,6 @@ function xinxin_front_preprocess_html(&$vars)
     drupal_add_css($xinxin_front . '/css/recruit.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
     drupal_add_js($xinxin_front . '/js/scripts.js');
-    drupal_add_js($xinxin_front . '/js/jquery-1.11.3.min.js');
-    drupal_add_js($xinxin_front . '/js/jquery-1.4.4.min.js');
     drupal_add_js($xinxin_front . '/js/jquery.reveal.js');
 
 }

@@ -114,15 +114,14 @@ function shelf_node_del_form_ajax_submit($form, $form_state){
     //更新数据保存到数据库中
     $node = node_submit((object)$node_uri);
     node_save((object)$node_uri);
-   // taxonomy_term_save((object)$shelf_uri);
 
     $update_node = node_load($node->vid);
     $shelf = $update_node->field_product_shelf;
     if(count($shelf)==0){
-        return t('下架产品成功!');
+        return '产品下架成功!';
     }
     else{
-        form_set_error('message', t('产品未下架成功'));
+        form_set_error('message', '产品未下架成功');
     }
     return $form;
 }

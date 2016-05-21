@@ -95,7 +95,8 @@ function memberIndividual_call_back()
     $membercenter_url = url('membercenter');
     $collection_url = url("mycollection");
     $friend_circle_url = url("user/".$user->uid."/relationships");
-    
+    $edit_url = ("user/".$user->uid."/edit");
+
     $build =<<<EOS
     <main id='mainSection'>
         <nav class="w20" id="sideNav">
@@ -115,7 +116,7 @@ function memberIndividual_call_back()
             <div class='bar'>
                 <img class="icon" src="$base_url/sites/all/themes/xinxin_front/images/icons/member_icon.png"/>
                 <h1>我的信息</h1>
-                <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
+                <a class='floatRight' href="$edit_url">修改信息 &gt;</a>
             </div>
             <div class='profilePicture floatLeft alignCenter w25'>
                 <img class='w100' src="$imgthumbnailurl">
@@ -199,7 +200,9 @@ function memberCompany_call_back()
     $adform = drupal_render($adform_array);
     $collection_url = url("mycollection");
     $membercenter_url = url('membercenter');
-    
+
+    $edit_url = ("user/".$user->uid."/edit");
+
     $build =<<<EOS
     <main id="mainSection">
         <nav class="w20" id="sideNav">
@@ -216,7 +219,7 @@ function memberCompany_call_back()
             <div class="bar">
                 <img class="icon" src="$base_url/sites/all/themes/xinxin_front/images/icons/member_icon.png"/>
                 <h1>企业会员</h1>
-                <a class='floatRight' href="$base_url?q=/user/$user->uid/edit">修改信息 &gt;</a>
+                <a class='floatRight' href="$edit_url">修改信息 &gt;</a>
             </div>
             <div class="profilePicture floatLeft w100">
                 <img class='w100' src="$imgthumbnailurl">
@@ -258,8 +261,6 @@ function memberCompany_call_back()
     </main>
 EOS;
     return $build;
-    //申请链接待修改
-    //上传文件待修改
 }
 
 

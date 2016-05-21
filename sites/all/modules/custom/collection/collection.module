@@ -370,21 +370,19 @@ function collection_get_collected_products(){
 	if( !empty($nids) ){
 		$products = node_load_multiple($nids);
 		foreach($products as $pkey=>$product) {
-
-			$product_image_uri = $product->field_product_photo[LANGUAGE_NONE][0]['uri'];
-			$product_image_locate = explode('//', $product_image_uri);
-			$product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
+			$image_uri = isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
+			$product_image_filepath = file_create_url($image_uri);
 			if ($pkey == 3) {
 				$build .= "<div id='node-" . $product->nid  . "' class='block1 noMarginRight'>";
 			} else {
 				$build .= "<div id='node-" . $product->nid  . "' class='block1'>";
 			}
-			if (user_is_logged_in()) {
+			if (user_is_logged_in() && module_exists('collection')) {
 				$collection_link = collection_get_collection_link($product);
 				$build .= $collection_link;
 			}
-			$build .= "<img src=".$product_image_filepath." /><a href='".$GLOBALS['base_url'] ."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>" .
-				"<p class='product_price'><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>" .
+			$build .= "<img src=".$product_image_filepath." /><a href='". url("product/$product->nid")."' ><h3 class='product_title'>".$product->title."</h3></a>" .
+				"<p class='product_price'><span class='floatRight'>". (isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : '')."</span><span class='floatRight'>￥</span></p>" .
 				"</div>";
 		}
 

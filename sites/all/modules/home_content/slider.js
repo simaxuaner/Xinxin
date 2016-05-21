@@ -1,25 +1,7 @@
 (function ($) {
-	Drupal.news = Drupal.news || {};
-	/**
-	 * Attach toggling behavior and notify the overlay of the toolbar.
- 	*/
-	Drupal.behaviors.news = {
-	attach: function(context) {
-		$('.newsItem', context).click(function(e) {
-			if($(this).css('maxHeight') == '256px' || $(this).css('maxHeight') == ""){
-				$(this).css('maxHeight', 'initial');
-			}
-			else{
-				$(this).css('maxHeight', '256px');
-			}
-			return false;
-		});
-	}
-	};
-})(jQuery);
-
-(function($){
-	Drupal.behaviors.mainSlider = {
+	Drupal.mainSlider = Drupal.mainSlider || {};
+    
+    Drupal.behaviors.mainSlider = {
 		attach: function(context) {
 			$("body").ready(function(e) {
 				startSliders()
@@ -51,7 +33,7 @@
 		setBullet(slider, i);
 		resetSlides(slider, i);
 		resetBullets(slider, i);
-		slideDelay = setTimeout(function(){slide(slider);},5000);
+		slideDelay = setTimeout(function(){slide(slider);},3000);
 	}
 	function setSlide(slider, i){
 		slider.dataset.i = i;
@@ -105,7 +87,7 @@
 		var sliders = getSliders();
 		for(i=0; i < sliders.length; i++){
 			var slider = sliders[i];
-			slideDelay = setTimeout(function(){slide(slider);},5000);
+			slideDelay = setTimeout(function(){slide(slider);},4000);
 		}		
 	}	
 })(jQuery);
