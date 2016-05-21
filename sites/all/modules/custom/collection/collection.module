@@ -367,21 +367,15 @@ function collection_get_collected_products(){
 			<div class="bar">
 				<h1>我的收藏</h1>
 			</div>';
-	if( !empty($nids) ){
-		$products = node_load_multiple($nids);
-		foreach($products as $pkey=>$product) {
-			$image_uri = isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
-			$product_image_filepath = file_create_url($image_uri);
-			if ($pkey == 3) {
-				$build .= "<div id='node-" . $product->nid  . "' class='block1 noMarginRight'>";
-			} else {
-				$build .= "<div id='node-" . $product->nid  . "' class='block1'>";
-			}
-			$build .= "<img src=".$product_image_filepath." /><a href='". url("product/$product->nid")."' ><h3 class='product_title'>".$product->title."</h3></a>" .
-				"<p class='product_price'><span class='floatRight'>". (isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : '')."</span><span class='floatRight'>￥</span></p>" .
-				"</div>";
+	if( !empty($nids) )
+	{
+		$nodes = node_load_multiple($nids);
+		$index=1;
+		foreach($nodes as $key=>$node) 
+		{
+			$build=$build.call_user_func($node->type."_get_htmlview",$node,$index);
+			$index++;
 		}
-
 	}
 	$build .= '</section></main>';
 	return $build;

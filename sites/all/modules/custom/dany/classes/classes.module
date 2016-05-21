@@ -288,7 +288,7 @@ function template_preprocess_teachers_page(&$variables) {
             $collectLink=collection_get_collection_link($node);
             $teacherList[]=array(
                 'id'        => $node->nid,
-                'detailurl' => url("classes/detailteacher/$key"),
+                'detailurl' => url("classes/detailteacher/".$key),
                 'imgurl'    => $imageurl,
                 'teacherName'=> $node->title,
                 'career'    => $node->field_career[LANGUAGE_NONE][0]['value'],
@@ -414,4 +414,44 @@ function getSecondMenuNav($type)
 EOS;
     $html=preg_replace($type,"activeNavItem",$nav);
     return $html;
+}
+
+function lesson_get_htmlview($class,$pkey)
+{
+    $imgid = $class->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
+    $imgfile = file_load($imgid);
+    $class_image_filepath = file_create_url($imgfile->uri);
+    $build="";
+	if ($pkey%4 == 0) {
+		$build .= "<div id='node-" . $class->nid  . "' class='block1 noMarginRight'>";
+	} else {
+		$build .= "<div id='node-" . $class->nid  . "' class='block1'>";
+	}
+	$build .= "<img src=".$class_image_filepath." />
+               <a href='". url("classes/detailclass/$class->nid")."' ><h3 class='product_title'>".getShortTitle($class->title,7)."</h3></a>
+			        <p class='product_price'>
+                        <span class='floatRight'>查看更多"."</span>
+                        <span class='floatRight'></span></p>
+               </div>";
+    return $build;
+}
+
+function teacher_get_htmlview($teacher,$pkey)
+{
+    $imgid = $teacher->field_teacher_pic[LANGUAGE_NONE][0]['fid'];
+    $imgfile = file_load($imgid);
+    $teacher_image_filepath = file_create_url($imgfile->uri);
+    $build="";
+	if ($pkey%4 == 0) {
+		$build .= "<div id='node-" . $teacher->nid  . "' class='block1 noMarginRight'>";
+	} else {
+		$build .= "<div id='node-" . $teacher->nid  . "' class='block1'>";
+	}
+	$build .= "<img src=".$teacher_image_filepath." />
+               <a href='". url("classes/detailteacher/$teacher->nid")."' ><h3 class='product_title'>".getShortTitle($teacher->title,7)."</h3></a>
+			        <p class='product_price'>
+                        <span class='floatRight'>查看更多"."</span>
+                        <span class='floatRight'></span></p>
+               </div>";
+    return $build;
 }

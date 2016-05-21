@@ -421,3 +421,24 @@ function template_preprocess_product_page(&$variables){
     }
     $variables['content'] = $build;
 }
+
+//utils
+function product_get_htmlview($product,$pkey)
+{
+    $image_uri = isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
+	$product_image_filepath = file_create_url($image_uri);
+    $build="";
+	if ($pkey%4 == 0) {
+		$build .= "<div id='node-" . $product->nid  . "' class='block1 noMarginRight'>";
+	} else {
+		$build .= "<div id='node-" . $product->nid  . "' class='block1'>";
+	}
+	$build .= "<img src=".$product_image_filepath." />
+               <a href='". url("product/$product->nid")."' ><h3 class='product_title'>".$product->title."</h3></a>
+			        <p class='product_price'>
+                        <span class='floatRight'>". (isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : '')."</span>
+                        <span class='floatRight'>￥</span>
+                    </p>
+               </div>";
+    return $build;
+}
