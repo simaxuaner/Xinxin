@@ -109,13 +109,14 @@ function farm_page_callback($fid){
     $build ="<main>
 		    <nav id='sideNav' class='w20'>
 			<ul>
-				<li> <a href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> </li>
-				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/farmshow/product'>农产品</a> </li>
+				<li class='activeNavItem'> <a href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>农庄</a> </li>
+				<li > <a href='".$GLOBALS['base_url'] ."/?q=farmshow/product'>农产品</a> </li>
 			</ul>
 		</nav>";
     $build .="<section class='w80'>
 			<div class='bar'>
-				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/farmshow/farm'>农庄</a> >".$farm->title."</h1></div>
+                <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'>
+				<h1><a class='underline' href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>农庄</a> >".$farm->title."</h1></div>
 			<img src=".$farm_image_filepath." alt='Jackie Chan' class='alignCenter w100'/>
 		</section>";
     $build .="<section class='w80'>
@@ -160,7 +161,7 @@ function farm_page_callback($fid){
         $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
 
         $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				<a href='".$GLOBALS['base_url']."/product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
+				<a href='".$GLOBALS['base_url']."/?q=product/".$product->nid."' ><h3 class='product_title'>".$product->title."</h3></a>
 				<p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
 			</div>";
     }
@@ -203,8 +204,8 @@ function farm_theme(){
  * @param $variables
  */
 function template_preprocess_farm_page(&$variables){
-    $variables['farm_page']=$GLOBALS['base_url'] .'/farmshow/farm';
-    $variables['product_page']=$GLOBALS['base_url'] .'/farmshow/product';
+    $variables['farm_page']=$GLOBALS['base_url'] .'/?q=farmshow/farm';
+    $variables['product_page']=$GLOBALS['base_url'] .'/?q=farmshow/product';
 
     $build = "";
     $query = db_select('node', 'n')->extend('PagerDefault');
@@ -255,7 +256,7 @@ function template_preprocess_farm_page(&$variables){
             $product_images[$key] = $product_image_filepath;
             $count++;
         }
-        $build .= "<a href='".$GLOBALS['base_url'] ."/farm/".$value->nid."'>";
+        $build .= "<a href='".$GLOBALS['base_url'] ."/?q=farm/".$value->nid."'>";
         $build .= "<div class='wideBlock'>";
 
         $build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
@@ -275,9 +276,11 @@ function template_preprocess_farm_page(&$variables){
     }
     $variables['content'] = $build;
 
-    $build_search = "<div class='bar'><h1>农庄</h1>
+    $build_search = "<div class='bar'>
+                    <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'>
+                    <h1>农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
-                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/farms'>+</a></div>
+                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/?q=farms'>+</a></div>
                     </div>";
     $variables['search'] = $build_search;
 }
@@ -287,9 +290,9 @@ function template_preprocess_farm_page(&$variables){
  * @return 页面数据
  */
 function template_preprocess_farms_page(&$variables){
-    $build_search = "<div class='bar'><h1>农庄</h1>
+    $build_search = "<div class='bar'><img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'><h1>农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
-                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/farmshow/farm'>+</a></div>
+                    <div class='button floatRight'><a href='".$GLOBALS['base_url'] ."/?q=farmshow/farm'>+</a></div>
                     </div>";
     $build = "";
     $query = db_select('node', 'n')->extend('PagerDefault');
@@ -312,7 +315,7 @@ function template_preprocess_farms_page(&$variables){
         $farm_image_locate = explode('//', $farm_image_uri);
         $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
 
-        $build .="<a href='".$GLOBALS['base_url'] ."/farm/".$value->nid."'>
+        $build .="<a href='".$GLOBALS['base_url'] ."/?q=farm/".$value->nid."'>
 			<div class='block1'>
 				<span class='fav'>收藏</span> <img src='".$farm_image_filepath."'/>
 				<h3>".$value->title."</h3>

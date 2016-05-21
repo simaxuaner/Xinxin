@@ -31,7 +31,8 @@ function xinxin_front_preprocess_html(&$vars)
 
     // Add default styles.
     drupal_add_css($xinxin_front . '/css/styles.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-//    	drupal_add_css($xinxin_front . '/css/menu.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_css($xinxin_front . '/css/slider.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+    drupal_add_css($xinxin_front . '/css/forum1.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/member.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/reveal.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     drupal_add_css($xinxin_front . '/css/recruit.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));

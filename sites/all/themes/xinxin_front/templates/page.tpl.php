@@ -1,24 +1,26 @@
 <div id="wrapper">
 	<header>
-		<div class="logo">
-			<a href="?q=homepage"><img alt="logo"
-				src="sites/all/themes/xinxin_front/images/icons/logo colored.png"></a>
-		</div>
-		<nav class="mainmenu">
-			<ul class="mainmenu-link-left">
-				<?php if ($primary_nav): print $primary_nav; endif; ?>
-				<div class="loginMenu floatRight">
-					<?php if (user_is_logged_in()): ?>
-						<a href="<?php print url("user/logout"); ?>">退出</a>
-					<?php else : ?>
-						<a href="<?php print url("user/login"); ?>">登录</a>
-						|
-						<a href="<?php print url("user/register"); ?>">注册</a>
-					<?php endif; ?>
-				</div>
-				<?php print render($search_form); ?>
-			</ul>
-        </nav>
+		<div class="headerBar">
+			<div class="logo">
+				<a href="?q=homepage"><img alt="logo"
+					src="sites/all/themes/xinxin_front/images/icons/logo colored.png"></a>
+			</div>
+			<nav class="mainmenu">
+				<ul class="mainmenu-link-left">
+					<?php if ($primary_nav): print $primary_nav; endif; ?>
+					<div class="loginMenu floatRight">
+						<?php if (user_is_logged_in()): ?>
+							<a href="<?php print url("user/logout"); ?>">退出</a>
+						<?php else : ?>
+							<a href="<?php print url("user/login"); ?>">登录</a>
+							|
+							<a href="<?php print url("user/register"); ?>">注册</a>
+						<?php endif; ?>
+					</div>
+					<?php print render($search_form); ?>
+				</ul>
+	        </nav>
+	    </div>
 	</header>
 
 	<main id="mainSection"> 
