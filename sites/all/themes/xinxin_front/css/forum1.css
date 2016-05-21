@@ -1,11 +1,11 @@
-.forumList tbody{
+.forum-table tbody{
 	display:"";
 }
 thead{
 	display:"";
 }
 
-.forumList thead tr {
+.forum-table thead tr {
    background-color:#d9d9d9 !important;
 }
 table{
@@ -19,17 +19,27 @@ table thead tr td{
 	font-size:20px;
 		color: #ffffff;
 }
-.forumList {
-    background: none;
+.forum-table {
+	margin-bottom: 32px;
+	margin-top: 32px;
+	margin-left: 32px;
+	margin-right: 32px;
+	float: left;
+	width: 60%;
     display: block;
 	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	background-color: white;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0 32px 32px;
+    min-height: 128px;
 }
-.forumList tr {
+.forum-table tr {
     background-color: #f2f2f2;
 }
-.forumList tr td {
+.forum-table tr td {
     padding: 12px 16px;
 }
 .alignLeft {
@@ -65,29 +75,29 @@ table {
 .forumInfo tbody td{
 	padding: 8px;
 }
-.forumList td{
+.forum-table td{
 	min-width: 64px;
 }
-.forumList .theme,
-.forumList .reply,
-.forumList .check,
-.forumList .state{
+.forum-table .theme,
+.forum-table .reply,
+.forum-table .check,
+.forum-table .state{
     padding: 24px 12px;
 }
-.forumList .theme {
+.forum-table .theme {
     width: 40%;
 }
-.forumList .reply {
+.forum-table .reply {
     width: 10%;
 }
-.forumList .check {
+.forum-table .check {
 	width:10%;
 } 
-.forumList .state {
+.forum-table .state {
     width: 40%;
 }
 
-.forumList .lighter,
+.forum-table .lighter,
 .comments .lighter {
     background-color: #f6f6f6 !important;
 }
