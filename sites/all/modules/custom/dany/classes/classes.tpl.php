@@ -69,41 +69,16 @@
             }
             ?>
 		</section>		
-		<section class="w40" id="section401">
+		<section class="w80">
             <div class="bar">
-				<h2>收藏列表</h2>
+				<h2>收藏</h2>
 			</div>
-			<!--动态获取课程列表 -->
+		    <!--动态获取课程列表 -->
             <?php 
-            foreach($classList as $key => $value)
+            foreach($favClassList as $key => $value)
             {
             ?>           
-                <div id="node-<?php print $value['id'];?>" class="block1 <?php if(($key+1)%4==0):print "noMarginRight"; endif; ?>" title="<?php print $value['title']?>"> 
-                        <?php print $value['collectionLink'];?>
-                        <img src="<?php print $value['imgurl']?>" />
-                        <a href="<?php print $value['detailurl']?>">
-                            <h3><?php print $value['shortTitle']?></h3>
-                        </a>             
-                        <p>
-                            <span class="farmName"><?php print $value['teachername']?></span>
-                            <span class="floatRight">01</span>
-                            <span class="floatRight">02</span>
-                        </p>
-               </div>
-            <?php
-            }
-            ?>
-		</section>		
-		<section class="w40" id="section402">
-			<div class="bar">
-				<h2>最近访问</h2>
-			</div>
-			<!--动态获取课程列表 -->
-            <?php 
-            foreach($classList as $key => $value)
-            {
-            ?>           
-                <div id="node-<?php print $value['id'];?>" class="block1 <?php if(($key+1)%4==0):print "noMarginRight"; endif; ?>" title="<?php print $value['title']?>"> 
+                    <div id="node-<?php print $value['id'];?>"  class="block1 <?php if(($key+1)%4==0):print "noMarginRight"; endif; ?>" title="<?php print $value['title']?>"> 
                         <?php print $value['collectionLink'];?>
                         <img src="<?php print $value['imgurl']?>" />
                         <a href="<?php print $value['detailurl']?>">

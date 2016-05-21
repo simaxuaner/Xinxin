@@ -233,6 +233,7 @@ function classes_theme() {
 function template_preprocess_classes_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
     $classList=array();
+    $favClassList=array();
     $query = db_select('node', 'n')->extend('PagerDefault');
     $nids = $query
     ->fields('n', array('nid'))
@@ -242,25 +243,22 @@ function template_preprocess_classes_page(&$variables) {
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
-    if (!empty($nids)) {
-        $nodes = node_load_multiple($nids);
-        foreach ($nodes as $key => $node) {
-            $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
-            $imgfile = file_load($imgid);
-            $imageurl = file_create_url($imgfile->uri);
-            $collectLink=collection_get_collection_link($node);
-            $detailurl=url("classes/detailclass/".$key);
-            $classList[]=array(
-                'id'        => $node->nid,
-                'detailurl' => $detailurl,
-                'imgurl'    => $imageurl,
-                'title'     => $node->title,
-                'shortTitle'=> getShortTitle($node->title,7),
-                'teachername'=>$node->field_teacher_name[LANGUAGE_NONE][0]['value'],
-                'collectionLink' => $collectLink,
-                );
-        }
+    $classList=getClassesByNids($nids);
+    
+    if(user_is_logged_in())
+    {
+        global $user;
+	    $favNids = db_select('collection', 'c')
+		->fields('c', array('nid'))
+		->condition('c.uid', $user->uid)
+		->orderby('c.timestamp', 'desc')
+		->range(0, variable_get('collection_users_default_teaser', 20))
+		->execute()
+		->fetchCol();
+        $favClassList=getClassesByNids($favNids);
     }
+    
+    $variables['favClassList']=$favClassList;
     $variables['classList']=$classList;
     $variables['imageLinkPathHead']=$module_path;
     $variables['secondMenuNav']=getSecondMenuNav('/danyClass/');
@@ -454,4 +452,33 @@ function teacher_get_htmlview($teacher,$pkey)
                         <span class='floatRight'></span></p>
                </div>";
     return $build;
+}
+
+
+function getClassesByNids($nids)
+{
+    $classList=array();
+    if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+        foreach ($nodes as $key => $node) {
+            if($node->type == 'lesson')
+            {
+                $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
+                $imgfile = file_load($imgid);
+                $imageurl = file_create_url($imgfile->uri);
+                $collectLink=collection_get_collection_link($node);
+                $detailurl=url("classes/detailclass/".$key);
+                $classList[]=array(
+                    'id'        => $node->nid,
+                    'detailurl' => $detailurl,
+                    'imgurl'    => $imageurl,
+                    'title'     => $node->title,
+                    'shortTitle'=> getShortTitle($node->title,7),
+                    'teachername'=>$node->field_teacher_name[LANGUAGE_NONE][0]['value'],
+                    'collectionLink' => $collectLink,
+                );
+            }
+        }
+    }
+    return $classList;
 }
