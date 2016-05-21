@@ -16,6 +16,7 @@ a * {
     cursor: pointer;
     text-decoration: none;
 }
+
 div {
     margin: 0;
     padding: 0;
@@ -195,7 +196,6 @@ nav ul
 {
 	list-style: none;
 	margin: 0;
-	overflow: auto;
 	padding: 0;
 	text-align: center;
 }
@@ -673,9 +673,10 @@ section video {
 	display: block;
 }
 .headerBar .logo a span{
-	padding: 16px 16px 16px 0;
+	padding: 30px 16px 16px 0;
 	font-weight: bold;
 	float: left;
+	font-size: 0.75em;
 }
 .headerBar .logo a img {
     height: inherit;
@@ -1147,7 +1148,6 @@ fieldset.collapsible .fieldset-legend {
   padding: 0 1em 0 0;
   margin-bottom: 1em;
 }
-
-#mainSection #main-content .content{
-	padding: 20px 40px;
+.region-content-before p{
+	margin:0;
 }

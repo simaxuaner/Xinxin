@@ -2,8 +2,8 @@
 	<header>
 		<div class="headerBar">
 			<div class="logo">
-				<a href="?q=homepage"><img alt="logo"
-					src="sites/all/themes/xinxin_front/images/icons/logo colored.png"></a>
+				<a href="<?php print url("homepage")?>"><img alt="logo"
+					src="sites/all/themes/xinxin_front/images/icons/logo colored.png"><span>首页</span></a>
 			</div>
 			<nav class="mainmenu">
 				<ul class="mainmenu-link-left">
