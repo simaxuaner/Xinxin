@@ -16,19 +16,19 @@
         <?php 
         foreach($teacherList as $key => $value)
         {
-        ?>  
-            <a href="<?php print $value['detailurl']?>" >         
-                <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>"> 
-                    <span class="fav">收藏</span> 
+        ?>     
+                <div id="node-<?php print $value['id'];?>" class="block1 <?php if(($key+1)%4==0): print "noMarginRight"; endif; ?>"> 
+                    <?php print $value['collectionLink'];?>
                         <img src="<?php print $value['imgurl']?>" />
-				        <h3><?php print $value['teacherName']?></h3>
-				        <p>
+				        <a href="<?php print $value['detailurl']?>" > 
+                            <h3><?php print $value['teacherName']?></h3>
+				        </a>
+                        <p>
                             <span class="farmName"><?php print $value['career']?></span>
                             <span class="floatRight">01</span>
                             <span class="floatRight">02</span>
                         </p>
 			   </div>
-            </a>
         <?php
         }
         ?>

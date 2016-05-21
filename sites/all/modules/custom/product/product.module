@@ -409,12 +409,10 @@ function template_preprocess_product_page(&$variables){
             } else {
                 $build .= "<div id='node-" . $product->nid  . "' class='block1'>";
             }
-            //这个if好像有问题，注释掉了160515
-            /*
-            if (user_is_logged_in()) {
-                $collection_link = collection_get_collection_link($product);
-                $build .= $collection_link;
-            }*/
+            if (user_is_logged_in() && module_exists('collection')) {
+				$collection_link = collection_get_collection_link($product);
+				$build .= $collection_link;
+			}
             $build .= "<img src=".$product_image_filepath." /><a href='". url("product/{$product->nid}") . "' ><h3 class='product_title'>".$product->title."</h3></a>" .
 				        "<p class='product_price'><span class='floatRight'>". ( ( isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : '' ) ."</span><span class='floatRight'>￥</span></p>" .
 			        "</div>";

@@ -123,7 +123,7 @@ function farm_page_callback($fid){
     $build .="<section class='w80'>
 			<div class='bar w100'>
 				<h3>".( (isset($farm->field_farm_location[LANGUAGE_NONE]) && isset($farm->field_farm_location[LANGUAGE_NONE][0])) ? $farm->field_farm_location[LANGUAGE_NONE][0]['value'] : '' )."</h3>
-				<div class='floatRight alignRight'> <a href='#' class='favLink'>加入收藏</a></div>
+				
 			</div>
 			<div class='w100'>
 				<p>".( (isset($farm->body[LANGUAGE_NONE]) && isset($farm->body[LANGUAGE_NONE][0])) ? $farm->body[LANGUAGE_NONE][0]['value'] : '' )."</p>
@@ -253,8 +253,7 @@ function template_preprocess_farm_page(&$variables){
         $build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
                 <h3>地址：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '' ) ."</h3></div>";
         $build .="<img src='".$farm_image_filepath."' class='w40 floatLeft'/>";
-        $build .="<div class='blockInformation w60 floatLeft'>
-                <p class='alignRight'><a href='#' class=''>加入收藏</p></a>";
+        $build .="<div class='blockInformation w60 floatLeft'>";
         $build .="<p>". ( ( isset($value->body[LANGUAGE_NONE]) && isset($value->body[LANGUAGE_NONE][0]) ) ? $value->body[LANGUAGE_NONE][0]['value'] : '' ) ."</p>";
         $build .="<p class='alignRight'><a href='". url("farm/{$value->nid}") ."'>详细信息 ></a></p>" ;
         $build .="<div class='alignRight products'>";
@@ -302,14 +301,17 @@ function template_preprocess_farms_page(&$variables){
         $farm_image_uri = ( isset($value->field_farm_image[LANGUAGE_NONE]) && isset($value->field_farm_image[LANGUAGE_NONE][0]) ) ? $value->field_farm_image[LANGUAGE_NONE][0]['uri'] : '';
 //        $farm_image_locate = explode('//', $farm_image_uri);
 //        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
-
-        $build .="<a href='". url("farm/{$value->nid}")."'>
-			<div class='block1'>
-				<span class='fav'>收藏</span> <img src='".file_create_url($farm_image_uri)."'/>
-				<h3>".$value->title."</h3>
+        if (user_is_logged_in() && module_exists('collection')) {
+				$collection_link = collection_get_collection_link($value);
+		}
+        $build .="
+            <div id='node-{$value->nid}' class='block1'>
+				".$collection_link."<img src='".file_create_url($farm_image_uri)."'/>
+				<a href='". url("farm/{$value->nid}")."'>
+                    <h3>".$value->title."</h3>
+                </a>
 				<p><span class='farmName'>地点：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '') ."</span><span class='floatRight'>&gt;</span><span class='floatRight'>详细信息</span></p>
-			</div>
-            </a>";
+			</div>";
 
     }
     $variables['search'] = $build_search;

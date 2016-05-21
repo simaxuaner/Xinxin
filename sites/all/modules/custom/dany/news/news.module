@@ -24,14 +24,14 @@ function news_menu(){
         'weight' => 45,
     );
     $items['news/news66']=array(
-        'title' => t('6.6涂岭论坛'),
+        'title' => t('6.6论坛'),
         'page callback' => 'news_news66_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
         'weight' => 35,
     );
     $items['news/news1212']=array(
-        'title' => t('12.12电商论坛'),
+        'title' => t('12.12论坛'),
         'page callback' => 'news_news1212_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,

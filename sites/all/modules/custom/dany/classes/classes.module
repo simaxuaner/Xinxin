@@ -135,6 +135,8 @@ function classes_detailclass_page_callback($nid){
         $teacher['career'] = $node->field_career[LANGUAGE_NONE][0]['value'];
         $teacher['dataurl']=url('classes/detailteacher/'.$nids[0]);
         $teacher['name'] = $class['teacherName'];
+        $teacher['collectLink']=collection_get_collection_link($node);
+        $teacher['id']=$node->nid;
     }
     return theme("detailclass_page", array(
         'detailClass' => $class,
@@ -174,11 +176,13 @@ function classes_detailteacher_page_callback($nid){
                 $imageurl = file_create_url($imgfile->uri);
                 
                 $refClassList[$key]=array(
+                    'id'        => $node->nid,
                     'dataurl' => url('classes/detailclass/'.$key),
                     'imgurl'  => $imageurl,
                     'name'    => $node->title,
                     'shortName'=>getShortTitle($node->title,7),
                     'teacherName'    => $teacher['teacherName'],
+                    'collectLink'=>collection_get_collection_link($node),
                 );
             }
         }
@@ -244,12 +248,16 @@ function template_preprocess_classes_page(&$variables) {
             $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
             $imgfile = file_load($imgid);
             $imageurl = file_create_url($imgfile->uri);
+            $collectLink=collection_get_collection_link($node);
+            $detailurl=url("classes/detailclass/".$key);
             $classList[]=array(
-                'detailurl' => "?q=classes/detailclass/".$key,
+                'id'        => $node->nid,
+                'detailurl' => $detailurl,
                 'imgurl'    => $imageurl,
                 'title'     => $node->title,
                 'shortTitle'=> getShortTitle($node->title,7),
                 'teachername'=>$node->field_teacher_name[LANGUAGE_NONE][0]['value'],
+                'collectionLink' => $collectLink,
                 );
         }
     }
@@ -277,11 +285,14 @@ function template_preprocess_teachers_page(&$variables) {
             $imgid = $node->field_teacher_pic[LANGUAGE_NONE][0]['fid'];
             $imgfile = file_load($imgid);
             $imageurl = file_create_url($imgfile->uri);
+            $collectLink=collection_get_collection_link($node);
             $teacherList[]=array(
+                'id'        => $node->nid,
                 'detailurl' => url("classes/detailteacher/$key"),
                 'imgurl'    => $imageurl,
                 'teacherName'=> $node->title,
-                'career'    => $node->field_career[LANGUAGE_NONE][0]['value'],   
+                'career'    => $node->field_career[LANGUAGE_NONE][0]['value'],
+                'collectionLink' => $collectLink,
                 );
         }
     }
