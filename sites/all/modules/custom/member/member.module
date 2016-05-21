@@ -11,31 +11,31 @@
  */
  function member_menu()
  {
- 	//member-front
- 	$items['membercenter'] = array(
- 		'title' => '会员中心',
- 		'access callback' => TRUE,
- 		'type' => MENU_SUGGESTED_ITEM,
- 		'menu_name'=>'main-menu',
+    //member-front
+    $items['membercenter'] = array(
+        'title' => '会员中心',
+        'access callback' => TRUE,
+        'type' => MENU_SUGGESTED_ITEM,
+        'menu_name'=>'main-menu',
         'weight'=>0,
- 		'page callback' => 'member_call_back',
- 	);
+        'page callback' => 'member_call_back',
+    );
     return $items;
 }
 
 function member_call_back() {
-	if(user_is_logged_in()) {
-		global $user;
-		if (in_array('企业会员', $user->roles)) {
-			return memberCompany_call_back();
-		}
-		else {
-			return memberIndividual_call_back();
-		}
-	}
-	else {
-		drupal_goto('user/login',  array('query'=>drupal_get_destination()));
-	}
+    if(user_is_logged_in()) {
+        global $user;
+        if (in_array('企业会员', $user->roles)) {
+            return memberCompany_call_back();
+        }
+        else {
+            return memberIndividual_call_back();
+        }
+    }
+    else {
+        drupal_goto('user/login',  array('query'=>drupal_get_destination()));
+    }
 }
 
 function memberIndividual_call_back()
