@@ -5,7 +5,7 @@ function admanage_menu() {
 
   $items['admin/admanage'] = array(
     'title' => t('广告管理'),
-    'description' => 'ads management page',
+    'description' => '进行广告位的配置和管理',
     'page callback' => 'admanage_page',
     'access callback' => true,
     'type' => MENU_NORMAL_ITEM,
@@ -23,7 +23,6 @@ function admanage_page()
       ->fields('n',array('nid'))
       ->condition('type', 'advertising_application')   //选出广告位申请记录类型中的广告id,和申请人id
       ->limit(50)
-      ->addTag('node_access')
       ->execute()
       ->fetchCol();
   $nodes = node_load_multiple($nids);
