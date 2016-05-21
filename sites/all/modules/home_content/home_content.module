@@ -34,12 +34,12 @@ function home_content_block_info()
 {
     $blocks['home_content'] = array(
         'info' => t('Home Content'),
-        'cache' => DRUPAL_NO_CACHE,//TODO 不起作用
+        'cache' => DRUPAL_NO_CACHE,
         'status' => 1,
         'weight' => 0,
         'region' => 'Content',
         'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => true,
+        'pages' => implode("\n", array('homepage')),
     );
     $blocks['home_content']['properties']['administrative'] = TRUE;
 
@@ -50,7 +50,7 @@ function home_content_block_info()
         'weight' => 0,
         'region' => 'Highlighted',
         'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => true,
+        'pages' =>implode("\n", array('homepage')),
     );
     $blocks['home_highlighted']['properties']['administrative'] = TRUE;
 
