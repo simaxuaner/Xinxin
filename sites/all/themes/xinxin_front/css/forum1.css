@@ -146,7 +146,7 @@ select{
 	width:20px !important;
 	float:left !important;
 	margin-right:20px !important;
-	margin-left:10px !important;
+	margin-left:10px;
     font-family:calibri, arial, sans-serif;
 }
 .pageNav{
@@ -203,11 +203,114 @@ select{
 	font-size:10px;
 }
 .form-select{
-	width: 100px !important;
+	width: 200px !important;
     height: 30px;
     background-color: #f2f2f2;
-    font-size:10px;
+    font-size:15px;
+    margin-left:32px;
 }
-.element-invisible{
-	
+#ctools-jump-menu{
+	float: left;
+    margin-top: 0px;
+}
+#sort-topic-submit{
+	font-size:15px;
+	height: 28px;
+    width: 50px;
+    background-color: rgba(0,0,0,.4);
+}
+.forum-post{
+	margin-left: 32px !important;
+    margin-right: 32px !important;
+    margin-top: 20px !important;
+}
+.post-by-starter{
+	margin-left: 0px !important;
+    margin-right: 0px !important;
+    margin-top: 0px !important;
+}
+.comment-wrapper{
+	margin-left: 32px;
+    margin-right: 32px;
+    border: 1px solid #C1C1C1;
+}
+.topic-reply-allowed{
+	margin-left: 32px;
+}
+.topic-post-count{
+	margin-right: 32px !important;
+}
+.form-text{
+	border: 1px solid #ddd;
+    min-width: 128px;
+    margin-top:5px;
+    height: 30px;
+}
+#comment-confirm-delete{
+	border: 1px solid #ddd;
+	margin-left: 32px;
+    margin-right:32px;
+    margin-top:32px;
+    margin-bottom:32px;
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+    font-family: simhei, arial, sans-serif;
+}
+#comment-confirm-delete input{
+    margin-right:32px;
+}
+#comment-confirm-delete div{
+	margin-left: 32px;
+    margin-right:32px;
+    margin-top:32px;
+}
+#edit-cancel{
+	font-weight: bold;
+    color: #ffffff;
+    padding: 7px 24px !important;
+    font-family: calibri, arial, sans-serif;
+    background-color: #4d93e3 !important;
+}
+.form-item,
+.ckeditor_links,
+#edit-actions,
+#edit-comment-body-und-0-format{
+    margin-left: 10px;
+    margin-right:10px;
+    font-family: simhei, arial, sans-serif;
+}
+.ckeditor_links{
+	margin-top:10px;
+}
+.fieldset-wrapper{
+	margin-left:0px;
+	margin-right:0px;
+    font-family: simhei, arial, sans-serif;
+}
+.filter-guidelines-item{
+	margin-left:-15px;
+}
+#edit-comment-body-und-0-format--2{
+	margin-left:-24px !important;
+}
+.form-item-comment-body-und-0-format label{
+	margin-top:10px;
+    font-family: simhei, arial, sans-serif;
+    font-size: 20px;
+}
+#comment-form{
+	border: 1px solid #ddd;
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-left: 32px;
+    margin-right: 32px;
+}
+.indented{
+	margin-left:0px;
+}
+.forum-topic-legend{
+	margin-left:32px;
+	margin-right:32px;
+}
+h2 .title{
+	margin-left:32px;
 }

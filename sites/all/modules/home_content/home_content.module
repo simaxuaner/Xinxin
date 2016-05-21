@@ -122,7 +122,7 @@ EOS;
 				<div class="iconArea">
 					<img alt="news" src="$module_path/images/icons/news.png">
 				</div>
-				<h2>园区招商</h2>
+				<h2>活动报道</h2>
 			</div>
 		</a>
 		<a href="$investorurl">

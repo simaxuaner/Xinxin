@@ -971,11 +971,10 @@ h3.product_title{
 	background-color: rgb(250, 255, 189);
 	padding: 1%;
 }
-#edit-submit{
+#edit-submit,#edit-preview{
 	font-weight: bold;
     text-decoration: none;
     color: #ffffff;
-    display: block;
     padding: 0 24px !important;
     line-height: 35px;
     cursor: pointer;
@@ -984,6 +983,7 @@ h3.product_title{
     font-family: calibri, arial, sans-serif;
     margin-top: -5px;
     background-color: #4d93e3 !important;
+    margin-left: 10px;
 }
 #edit-user-roles{
     background-color: rgb(250, 255, 189);
