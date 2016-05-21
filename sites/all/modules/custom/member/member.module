@@ -50,19 +50,52 @@ function memberIndividual_call_back()
     }
 
     //0 for male and 1 for female
-    $sex = ( isset($user->sex) && isset($user->sex[LANGUAGE_NONE]) ) ? $user->sex[LANGUAGE_NONE][0]['value'] : '';
-    $company = ( isset($user->personal_company) && isset($user->personal_company[LANGUAGE_NONE]) ) ? $user->personal_company[LANGUAGE_NONE][0]['value'] : '';
-    $real_name = ( isset($user->real_name) && isset($user->real_name[LANGUAGE_NONE]) ) ? $user->real_name[LANGUAGE_NONE][0]['value'] : '';
+    //$sex = ( isset($user->sex) && isset($user->sex[LANGUAGE_NONE]) ) ? $user->sex[LANGUAGE_NONE][0]['value'] : '';
+    //$company = ( isset($user->personal_company) && isset($user->personal_company[LANGUAGE_NONE]) ) ? $user->personal_company[LANGUAGE_NONE][0]['value'] : '';
+    //$real_name = ( isset($user->real_name) && isset($user->real_name[LANGUAGE_NONE]) ) ? $user->real_name[LANGUAGE_NONE][0]['value'] : '';
+    //user register location
+    //$register_location = ( isset($user->field_user_location) && isset($user->field_user_location[LANGUAGE_NONE]) ) ? $user->field_user_location[LANGUAGE_NONE][0]['value'] : '';
+    
+    //0 for male and 1 for female
+    $sex_1 = db_select('field_data_field_sex', 'f')
+        ->fields('f', array('field_sex_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
 
-    if($sex)
-    {
-        if($sex==0)
-            $sex_value='男';
-        else
-            $sex_value='女';
-    }
+    $company_1 = db_select('field_data_field_personal_company', 'f')
+        ->fields('f', array('field_personal_company_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+
+    $real_name_1 = db_select('field_data_field_real_name','f')
+        ->fields('f', array('field_real_name_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+        
+    $register_location_1 = db_select('field_data_field_user_location','f')
+        ->fields('f', array('field_user_location_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+        
+    $sex =  isset($sex_1) ? $sex_1[0] : '';
+    $company =  isset($company_1) ? $company_1[0] : '';
+    $real_name =  isset($real_name_1) ? $real_name_1[0] : '';
+    $register_location =  isset($register_location_1) ? $register_location_1[0] : '';
+    
+    if($sex==0)
+        $sex_value='男';
+    else
+        $sex_value='女';
+ 
+    
     $membercenter_url = url('membercenter');
     $collection_url = url("mycollection");
+    $friend_circle_url = "$base_url?q=/user/$user->uid/relationships";
+    
     $build =<<<EOS
     <main id='mainSection'>
         <nav class="w20" id="sideNav">
@@ -74,7 +107,7 @@ function memberIndividual_call_back()
                     <a href="$collection_url">我的收藏</a>
                 </li>               
                 <li>
-                    <a href="">我的朋友圈</a>
+                    <a href="$friend_circle_url">我的朋友圈</a>
                 </li>
             </ul>
         </nav>
@@ -109,6 +142,10 @@ function memberIndividual_call_back()
                         <td>电子邮件</td>
                         <td class='alignRight'>$user->mail</td>
                     </tr>
+                    <tr>
+                        <td>注册地点</td>
+                        <td class='alignRight'>$register_location</td>
+                    </tr>
                 </table>
             </div>
         </section>
@@ -127,13 +164,42 @@ function memberCompany_call_back()
         $file_path = file_unmanaged_copy($imgfile->uri);
         $imgthumbnailurl = image_style_url('thumbnail', $file_path) ? $file_path : $imgthumbnailurl;
     }
+    
+    $tel_1 = db_select('field_data_field_user_tel', 'f')
+        ->fields('f', array('field_user_tel_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
 
+    $address_1 = db_select('field_data_field_address','f')
+        ->fields('f', array('field_address_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+        
+    $register_location_1 = db_select('field_data_field_user_location','f')
+        ->fields('f', array('field_user_location_value'))
+        ->condition('f.entity_id', $user->uid)
+        ->execute()
+        ->fetchCol();
+        
+    $tel =  isset($tel_1) ? $tel_1[0] : '';
+    $address =  isset($address_1) ? $address_1[0] : '';
+    $register_location =  isset($register_location_1) ? $register_location_1[0] : '';
+    
+    
+    //user register location
+    //$register_location = ( isset($user->field_user_location) && isset($user->user_location[LANGUAGE_NONE]) ) ? $user->user_location[LANGUAGE_NONE][0]['value'] : '';
+    //$tel = ( isset($user->field_user_tel) && isset($user->field_user_tel[LANGUAGE_NONE]) ) ? $user->field_user_tel[LANGUAGE_NONE][0]['value'] : '';
+    //$address = ( isset($user->address) && isset($user->address[LANGUAGE_NONE]) ) ? $user->address[LANGUAGE_NONE][0]['value'] : '';
     /*$tel = $user->field_user_tel[LANGUAGE_NONE][0]['value'];
     $address = $user->field_address[LANGUAGE_NONE][0]['value'];*/
+    
     $adform_array = drupal_get_form('advertistment_form');
     $adform = drupal_render($adform_array);
     $collection_url = url("mycollection");
     $membercenter_url = url('membercenter');
+    
     $build =<<<EOS
     <main id="mainSection">
         <nav class="w20" id="sideNav">
@@ -163,15 +229,19 @@ function memberCompany_call_back()
                     </tr>
                     <tr>
                         <td>地址</td>
-                        <td class="alignRight">泉州市</td>
+                        <td class="alignRight">$address</td>
                     </tr>
                     <tr>
                         <td>联系方式</td>
-                        <td class="alignRight">15759324521</td>
+                        <td class="alignRight">$tel</td>
                     </tr>
                     <tr>
                         <td>电子邮件</td>
                         <td class="alignRight">$user->mail</td>
+                    </tr>
+                    <tr>
+                        <td>注册地点</td>
+                        <td class='alignRight'>$register_location</td>
                     </tr>
                 </table>
                 <br>
