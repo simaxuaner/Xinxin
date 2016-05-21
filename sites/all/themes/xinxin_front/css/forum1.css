@@ -1,5 +1,6 @@
 .forum-table tbody{
 	display:"";
+	font-family:calibri, arial, sans-serif;
 }
 thead{
 	display:"";
@@ -35,6 +36,46 @@ table thead tr td{
     overflow: hidden;
     padding: 0 32px 32px;
     min-height: 128px;
+}
+#forum-statistics{
+    width: 100%;
+    font-size: 1.2em;
+}
+#forum-statistics-header {
+	border-top: 0px solid #C1C1C1;
+    padding: 15px;
+}
+.forum-statistics-sub-header{
+	margin-top: 32px;
+	margin-left: 32px;
+	margin-right: 32px;
+	float: left;
+	width: 60%;
+    display: block;
+	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+    display: inline-block;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    background-color: #d9d9d9;
+}
+#forum-statistics-statistics-body{
+	margin-bottom: 32px;
+}
+
+.forum-statistics-sub-body{
+	margin-left: 32px;
+	margin-right: 32px;
+	float: left;
+	width: 60%;
+	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+    display: inline-block;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    padding: 0.1em 0.6em;
 }
 .forum-table tr {
     background-color: #f2f2f2;
@@ -106,6 +147,7 @@ select{
 	float:left !important;
 	margin-right:20px !important;
 	margin-left:10px !important;
+    font-family:calibri, arial, sans-serif;
 }
 .pageNav{
 	display:inline-block;
@@ -159,4 +201,13 @@ select{
 }
 .topicList tr td span{
 	font-size:10px;
+}
+.form-select{
+	width: 100px !important;
+    height: 30px;
+    background-color: #f2f2f2;
+    font-size:10px;
+}
+.element-invisible{
+	
 }
