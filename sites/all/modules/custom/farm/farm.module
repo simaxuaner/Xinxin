@@ -122,13 +122,13 @@ function farm_page_callback($fid){
 		</section>";
     $build .="<section class='w80'>
 			<div class='bar w100'>
-				<h3>".$farm->field_farm_location[LANGUAGE_NONE][0]['value']."</h3>
+				<h3>".( (isset($farm->field_farm_location[LANGUAGE_NONE]) && isset($farm->field_farm_location[LANGUAGE_NONE][0])) ? $farm->field_farm_location[LANGUAGE_NONE][0]['value'] : '' )."</h3>
 				<div class='floatRight alignRight'> <a href='#' class='favLink'>加入收藏</a></div>
 			</div>
 			<div class='w100'>
-				<p>".$farm->body[LANGUAGE_NONE][0]['value']."</p>
+				<p>".( (isset($farm->body[LANGUAGE_NONE]) && isset($farm->body[LANGUAGE_NONE][0])) ? $farm->body[LANGUAGE_NONE][0]['value'] : '' )."</p>
 				<h2>联系方式</h2>
-                <h3>".$farm->field_farm_telephone[LANGUAGE_NONE][0]['value']."</h3>
+                <h3>".( (isset($farm->field_farm_telephone[LANGUAGE_NONE]) && isset($farm->field_farm_telephone[LANGUAGE_NONE][0])) ? $farm->field_farm_telephone[LANGUAGE_NONE][0]['value'] : '' )."</h3>
 			</div>
 			</section>";
     $build .="<section class='w80'>
@@ -141,7 +141,6 @@ function farm_page_callback($fid){
         ->fields('f', array('entity_id'))
         ->condition('f.field_product_farm_value', $farm->nid)
         ->orderBy('entity_id', 'DESC')
-        ->addTag('node_access')
         ->limit(4)
         ->execute()
         ->fetchCol();
@@ -150,22 +149,19 @@ function farm_page_callback($fid){
         //查询产品的类型
         $myfield_array = field_get_items('node', $product,'field_product_type');
         $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
-        $tid = $myfield['tid'];
-        $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
+        if (!empty($myfield)) {
+            $tid = $myfield['tid'];
+            $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
 
-        //获取产品图片
-        $myfield_array = field_get_items('node', $product, 'field_product_photo');
-        $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
-        //$product_image_uri = $image['uri'];
-        // assuming that the uri starts with "public://"
-        //$product_image_locate = explode('//', $product_image_uri);
-        //$product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
-        $product_image_filepath = file_create_url($image['uri']);
-
-        $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				<a href='".url("product/{$product->nid}") . "'><h3 class='product_title'>".$product->title."</h3></a>
-				<p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
-			</div>";
+            //获取产品图片
+            $myfield_array = field_get_items('node', $product, 'field_product_photo');
+            $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
+            $product_image_filepath = file_create_url($image['uri']);
+            $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
+                    <a href='".url("product/{$product->nid}") . "'><h3 class='product_title'>".$product->title."</h3></a>
+                    <p class='product_price'><span class='farmName'>产品类型：".check_plain($product_type->name)."</span><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
+                </div>";
+        }
     }
     $build .="</main>";
     return $build;
@@ -217,7 +213,6 @@ function template_preprocess_farm_page(&$variables){
         ->condition('status', 1)
         ->orderBy('created', 'DESC')
         ->limit(variable_get('default_nodes_main', 10))
-        ->addTag('node_access')
         ->execute()
         ->fetchCol();
 
@@ -227,10 +222,7 @@ function template_preprocess_farm_page(&$variables){
 
     foreach($nodes as $key=>$value){
         //查找出农场图片
-//        $farm_image_uri = $value->field_farm_image[LANGUAGE_NONE][0]['uri'];
-//        $farm_image_locate = explode('//', $farm_image_uri);
-//        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
-          $farm_image_filepath = file_create_url($value->field_farm_image[LANGUAGE_NONE][0]['uri']);
+        $farm_image_filepath = isset($value->field_farm_image[LANGUAGE_NONE]) && isset($value->field_farm_image[LANGUAGE_NONE][0]) ? file_create_url($value->field_farm_image[LANGUAGE_NONE][0]['uri']) : '';
 
         //查询出此农场中的产品
         $query = db_select('field_data_field_product_farm', 'f')->extend('PagerDefault');
@@ -238,7 +230,6 @@ function template_preprocess_farm_page(&$variables){
             ->fields('f', array('entity_id'))
             ->condition('f.field_product_farm_value', $value->nid)
             ->orderBy('entity_id', 'DESC')
-            ->addTag('node_access')
             ->limit(10)
             ->execute()
             ->fetchCol();
@@ -252,13 +243,10 @@ function template_preprocess_farm_page(&$variables){
             //获取产品图片
             $myfield_array = field_get_items('node', $product, 'field_product_photo');
             $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
-//            $product_image_uri = $image['uri'];
-            // assuming that the uri starts with "public://"
-//            $product_image_locate = explode('//', $product_image_uri);
- //           $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
-//            $product_images[$key] = $product_image_filepath;
-              $product_images[$key] = file_create_url($image['uri']);
-            $count++;
+            if (!empty($image)) {
+                $product_images[$key] = file_create_url($image['uri']);
+                $count++;
+            }
         }
         $build .= '<a href="'.url("farm/{$value->nid}") . '">';
         $build .= "<div class='wideBlock'>";
@@ -303,7 +291,6 @@ function template_preprocess_farms_page(&$variables){
         ->condition('status', 1)
         ->orderBy('created', 'DESC')
         ->limit(variable_get('default_nodes_main', 10))
-        ->addTag('node_access')
         ->execute()
         ->fetchCol();
 

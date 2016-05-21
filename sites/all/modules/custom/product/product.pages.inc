@@ -483,7 +483,6 @@ function product_admin_nodes() {
         ->condition('type', 'product')   //山选出产品类型的node
         ->limit(50)
         ->orderByHeader($header)
-        ->addTag('node_access')
         ->execute()
         ->fetchCol();
     $nodes = node_load_multiple($nids);
@@ -496,124 +495,126 @@ function product_admin_nodes() {
         //查询产品的类型
         $myfield_array = field_get_items('node', $node,'field_product_type');
         $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
-        $tid = $myfield['tid'];
-        $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
-
-        //查询产品的农场
-        $myfield_array = field_get_items('node', $node,'field_product_farm');
-        $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
-        if($myfield)
-        {
-            $fid = $myfield['value'];
-            $product_farm = node_load($fid);
-        }else{
-            $product_farm = NULL;
-        }
-
-        //查询产品的货架
-        $myfield_array = field_get_items('node', $node,'field_product_shelf');
-        $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
-        if($myfield)
-        {
+        if (!empty($myfield)) {
             $tid = $myfield['tid'];
-            $product_shelf = taxonomy_term_load($tid);
-        }else{
-            $product_shelf = NULL;
-        }
+            $product_type = taxonomy_term_load($tid);//使用API函数查找出类型
 
-        $langcode = entity_language('node', $node);
-        $uri = entity_uri('node', $node);
-        if ($langcode != LANGUAGE_NONE && isset($languages[$langcode])) {
-            $uri['options']['language'] = $languages[$langcode];
-        }
-        $options[$node->nid] = array(
-            'title' => array(
-                'data' => array(
-                    '#type' => 'link',
-                    '#title' => $node->title,
-                    '#href' => $uri['path'],
-                    '#options' => $uri['options'],
-                    '#suffix' => ' ' . theme('mark', array('type' => node_mark($node->nid, $node->changed))),
-                ),
-            ),
-            'type' => check_plain($product_type->name),//查询数据库中产品类型的名称，并转换为utf-8
-            'author' => theme('username', array('account' => $node)),
-            'status' => $node->status ? t('published') : t('not published'),
-            'changed' => format_date($node->changed, 'short'),
-        );
-        if(!$product_shelf){
-            $options[$node->nid]['shelf'] = '未上架' ;
-        }else{
-            $options[$node->nid]['shelf'] = array(
-                'data' => array(
-                    '#type' => 'link',
-                    '#title' => $product_shelf->name,
-                    '#href' => 'admin/productShelf/'.$product_shelf->tid,
-                ),
-            );
-        }
-        if(!$product_farm){
-            $options[$node->nid]['farm'] = '不在农场' ;
-        }else{
-            $options[$node->nid]['farm'] = array(
-                'data' => array(
-                    '#type' => 'link',
-                    '#title' => $product_farm->title,
-                    '#href' => 'node/'.$product_farm->nid,
-                ),
-            );
-        }
-        // Build a list of all the accessible operations for the current node.
-        $operations = array();
-        if (node_access('update', $node)) {
-            $operations['edit'] = array(
-                'title' => t('edit'),
-                'href' => 'node/' . $node->nid . '/edit',
-                'query' => $destination,
-            );
-        }
-        if (node_access('delete', $node)) {
-            $operations['delete'] = array(
-                'title' => t('delete'),
-                'href' => 'node/' . $node->nid . '/delete',
-                'query' => $destination,
-            );
-        }
-        //上架的ajax处理
-        drupal_add_library('system', 'drupal.ajax');
-        $class = "rp-shelf rp-shelf-on";
-        $url = "admin/product/".$node->nid."/nojs";
-       // $title = l('上架', $url, array('attributes'=>array('class'=>"use-ajax {$class}",'id'=>"onshelf-links")));
-        if (!$product_shelf) {
-            $operations['onshelf'] = array(
-                'title' => t('上架'),
-                'href' => $url,
-                'attributes' => array('class'=>"use-ajax {$class}",'id'=>"onshelf-links".$node->nid) ,
-            );
-        }
+            //查询产品的农场
+            $myfield_array = field_get_items('node', $node,'field_product_farm');
+            $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
+            if($myfield)
+            {
+                $fid = $myfield['value'];
+                $product_farm = node_load($fid);
+            }else{
+                $product_farm = NULL;
+            }
 
-        $options[$node->nid]['operations'] = array();
-        if (count($operations) > 1) {
-            // Render an unordered list of operations links.
-            $options[$node->nid]['operations'] = array(
-                'data' => array(
-                    '#theme' => 'links__node_operations',
-                    '#links' => $operations,
-                    '#attributes' => array('class' => array('links', 'inline')),
+            //查询产品的货架
+            $myfield_array = field_get_items('node', $node,'field_product_shelf');
+            $myfield = isset($myfield_array[0]) ? $myfield_array[0] :'';
+            if($myfield)
+            {
+                $tid = $myfield['tid'];
+                $product_shelf = taxonomy_term_load($tid);
+            }else{
+                $product_shelf = NULL;
+            }
+
+            $langcode = entity_language('node', $node);
+            $uri = entity_uri('node', $node);
+            if ($langcode != LANGUAGE_NONE && isset($languages[$langcode])) {
+                $uri['options']['language'] = $languages[$langcode];
+            }
+            $options[$node->nid] = array(
+                'title' => array(
+                    'data' => array(
+                        '#type' => 'link',
+                        '#title' => $node->title,
+                        '#href' => $uri['path'],
+                        '#options' => $uri['options'],
+                        '#suffix' => ' ' . theme('mark', array('type' => node_mark($node->nid, $node->changed))),
+                    ),
                 ),
+                'type' => check_plain($product_type->name),//查询数据库中产品类型的名称，并转换为utf-8
+                'author' => theme('username', array('account' => $node)),
+                'status' => $node->status ? t('published') : t('not published'),
+                'changed' => format_date($node->changed, 'short'),
             );
-        }
-        elseif (!empty($operations)) {
-            // Render the first and only operation as a link.
-            $link = reset($operations);
-            $options[$node->nid]['operations'] = array(
-                'data' => array(
-                    '#type' => 'link',
-                    '#title' => $link['title'],
-                    '#href' => $link['href'],
-                    '#options' => array('query' => $link['query']),
-                ),
-            );
+            if(!$product_shelf){
+                $options[$node->nid]['shelf'] = '未上架' ;
+            }else{
+                $options[$node->nid]['shelf'] = array(
+                    'data' => array(
+                        '#type' => 'link',
+                        '#title' => $product_shelf->name,
+                        '#href' => 'admin/productShelf/'.$product_shelf->tid,
+                    ),
+                );
+            }
+            if(!$product_farm){
+                $options[$node->nid]['farm'] = '不在农场' ;
+            }else{
+                $options[$node->nid]['farm'] = array(
+                    'data' => array(
+                        '#type' => 'link',
+                        '#title' => $product_farm->title,
+                        '#href' => 'node/'.$product_farm->nid,
+                    ),
+                );
+            }
+            // Build a list of all the accessible operations for the current node.
+            $operations = array();
+            if (node_access('update', $node)) {
+                $operations['edit'] = array(
+                    'title' => t('edit'),
+                    'href' => 'node/' . $node->nid . '/edit',
+                    'query' => $destination,
+                );
+            }
+            if (node_access('delete', $node)) {
+                $operations['delete'] = array(
+                    'title' => t('delete'),
+                    'href' => 'node/' . $node->nid . '/delete',
+                    'query' => $destination,
+                );
+            }
+            //上架的ajax处理
+            drupal_add_library('system', 'drupal.ajax');
+            $class = "rp-shelf rp-shelf-on";
+            $url = "admin/product/".$node->nid."/nojs";
+        // $title = l('上架', $url, array('attributes'=>array('class'=>"use-ajax {$class}",'id'=>"onshelf-links")));
+            if (!$product_shelf) {
+                $operations['onshelf'] = array(
+                    'title' => t('上架'),
+                    'href' => $url,
+                    'attributes' => array('class'=>"use-ajax {$class}",'id'=>"onshelf-links".$node->nid) ,
+                );
+            }
+
+            $options[$node->nid]['operations'] = array();
+            if (count($operations) > 1) {
+                // Render an unordered list of operations links.
+                $options[$node->nid]['operations'] = array(
+                    'data' => array(
+                        '#theme' => 'links__node_operations',
+                        '#links' => $operations,
+                        '#attributes' => array('class' => array('links', 'inline')),
+                    ),
+                );
+            }
+            elseif (!empty($operations)) {
+                // Render the first and only operation as a link.
+                $link = reset($operations);
+                $options[$node->nid]['operations'] = array(
+                    'data' => array(
+                        '#type' => 'link',
+                        '#title' => $link['title'],
+                        '#href' => $link['href'],
+                        '#options' => array('query' => $link['query']),
+                    ),
+                );
+            }
         }
     }
 

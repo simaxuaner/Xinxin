@@ -399,7 +399,6 @@ function farm_admin_nodes() {
         ->condition('type', 'farm')   //筛选出农场类型的内容
         ->limit(50)
         ->orderByHeader($header)
-        ->addTag('node_access')
         ->execute()
         ->fetchCol();
     $nodes = node_load_multiple($nids);

@@ -33,7 +33,6 @@ function farm_product_page($farm)
         ->fields('f', array('entity_id'))
         ->condition('f.field_product_farm_value', $fid)
         ->orderBy('entity_id', 'DESC')
-        ->addTag('node_access')
         ->limit(10)
         ->execute()
         ->fetchCol();
@@ -49,59 +48,57 @@ function farm_product_page($farm)
             //获取产品图片
             $myfield_array = field_get_items('node', $node,'field_product_photo');
             $image = isset($myfield_array[0]) ? $myfield_array[0] :'';
- //           $search_image_uri = $image['uri'];
-            // assuming that the uri starts with "public://"
- //           $search_image_locate = explode('//', $search_image_uri);
- //           $search_image_filepath = $GLOBALS['base_url'] .'/sites/default/files/' . $search_image_locate[1];
-            $search_image_filepath = file_create_url($image['uri']);
+            if (!empty($image)) {
+                $search_image_filepath = file_create_url($image['uri']);
 
-            $rows[$key]['title'] = array(
-                'data' => array(
-                    '#type' => 'link',
-                    '#title' => $node->title,
-                    '#href' => $uri['path'],
-                ),
-            );
-            $rows[$key]['image'] = "<img class='product-img' src=".$search_image_filepath.">";
-            $rows[$key]['author'] = theme('username', array('account' => $node));
-
-            $operations = array();
-            if (node_access('update', $node)) {
-                $operations['edit'] = array(
-                    'title' => t('edit'),
-                    'href' => 'node/' . $node->nid . '/edit',
-                    'query' => $destination,
-                );
-            }
-            if (node_access('delete', $node)) {
-                $operations['delete'] = array(
-                    'title' => t('delete'),
-                    'href' => 'node/' . $node->nid . '/delete',
-                    'query' => $destination,
-                );
-            }
-
-            if (count($operations) > 1) {
-                // Render an unordered list of operations links.
-                $rows[$key]['operations'] = array(
-                    'data' => array(
-                        '#theme' => 'links__node_operations',
-                        '#links' => $operations,
-                        '#attributes' => array('class' => array('links', 'inline')),
-                    ),
-                );
-            }
-            elseif (!empty($operations)) {
-                // Render the first and only operation as a link.
-                $link = reset($operations);
-                $rows[$key]['operations'] = array(
+                $rows[$key]['title'] = array(
                     'data' => array(
                         '#type' => 'link',
-                        '#title' => $link['title'],
-                        '#href' => $link['href'],
-                        '#options' => array('query' => $link['query']),
+                        '#title' => $node->title,
+                        '#href' => $uri['path'],
                     ),
                 );
+                $rows[$key]['image'] = "<img class='product-img' src=".$search_image_filepath.">";
+                $rows[$key]['author'] = theme('username', array('account' => $node));
+
+                $operations = array();
+                if (node_access('update', $node)) {
+                    $operations['edit'] = array(
+                        'title' => t('edit'),
+                        'href' => 'node/' . $node->nid . '/edit',
+                        'query' => $destination,
+                    );
+                }
+                if (node_access('delete', $node)) {
+                    $operations['delete'] = array(
+                        'title' => t('delete'),
+                        'href' => 'node/' . $node->nid . '/delete',
+                        'query' => $destination,
+                    );
+                }
+
+                if (count($operations) > 1) {
+                    // Render an unordered list of operations links.
+                    $rows[$key]['operations'] = array(
+                        'data' => array(
+                            '#theme' => 'links__node_operations',
+                            '#links' => $operations,
+                            '#attributes' => array('class' => array('links', 'inline')),
+                        ),
+                    );
+                }
+                elseif (!empty($operations)) {
+                    // Render the first and only operation as a link.
+                    $link = reset($operations);
+                    $rows[$key]['operations'] = array(
+                        'data' => array(
+                            '#type' => 'link',
+                            '#title' => $link['title'],
+                            '#href' => $link['href'],
+                            '#options' => array('query' => $link['query']),
+                        ),
+                    );
+                }
             }
         }
         $table = theme('table', array('header' => $header,'rows' => $rows ,'attributes' => array('class' => array('shelf-term-table'))));

@@ -163,3 +163,16 @@ EOS;
         return $block;
     }
 }
+
+/**
+ * Implements hook_user_login
+ */
+function hoem_content_user_login(&$edit, $account) {
+	if (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset') {
+		global $user;
+		if (in_array('administrator', $user->roles))
+			drupal_goto('admin');
+	}
+	drupal_goto('homepage');
+}
+

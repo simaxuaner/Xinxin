@@ -150,17 +150,19 @@ function getNoteList($type)
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
         foreach ($nodes as $key => $node) {
-            if($node->field_news_type[LANGUAGE_NONE][0]['value']==$type)
+            if(isset($node->field_news_type[LANGUAGE_NONE]) && isset($node->field_news_type[LANGUAGE_NONE][0]) && $node->field_news_type[LANGUAGE_NONE][0]['value']==$type)
             {
-                $imgid = $node->field_image[LANGUAGE_NONE][0]['fid'];
-                $imgfile = file_load($imgid);
-                $imageurl = file_create_url($imgfile->uri);
-                $noteList[$key]=array(
-                    'imgurl'      => $imageurl,
-                    'date'        => changeDateform(date('m-d',$node->created)),
-                    'title'       => $node->title,
-                    'content'     => $node->body[LANGUAGE_NONE][0]['value'],
-                );
+                if (isset($node->field_image[LANGUAGE_NONE])&&isset($node->field_image[LANGUAGE_NONE][0])) {
+                    $imgid = $node->field_image[LANGUAGE_NONE][0]['fid'];
+                    $imgfile = file_load($imgid);
+                    $imageurl = file_create_url($imgfile->uri);
+                    $noteList[$key]=array(
+                        'imgurl'      => $imageurl,
+                        'date'        => changeDateform(date('m-d',$node->created)),
+                        'title'       => $node->title,
+                        'content'     => (isset($node->body[LANGUAGE_NONE])&&isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '',
+                    );
+                }
             }
         }
     }
@@ -183,18 +185,20 @@ function getMagzineList($type)
         $nodes = node_load_multiple($nids);
         $index=0;
         foreach ($nodes as $key => $node) {
-            $imgid = $node->field_image[LANGUAGE_NONE][0]['fid'];
-            $imgfile = file_load($imgid);
-            $imageurl = file_create_url($imgfile->uri);
-            
-            $fileUrl=file_create_url($node->field_field_magzine_file[LANGUAGE_NONE][0]['uri']);
-            $magzineList[$index]=array(
-                'imgurl'    => $imageurl,
-                'date'      => date('y-m-d',$node->created),
-                'title'     => $node->title,
-                'shortTitle'=> getShortTitle($node->title),
-                'downloadUrl'=>$fileUrl,
-            );
+            if (isset($node->field_image[LANGUAGE_NONE]) && isset($node->field_image[LANGUAGE_NONE][0])) {
+                $imgfile = file_load($node->field_image[LANGUAGE_NONE][0]['fid']);
+                $imageurl = file_create_url($imgfile->uri);
+                if (isset($node->field_field_magzine_file[LANGUAGE_NONE]) && isset($node->field_field_magzine_file[LANGUAGE_NONE][0])) {
+                    $fileUrl=file_create_url($node->field_field_magzine_file[LANGUAGE_NONE][0]['uri']);
+                    $magzineList[$index]=array(
+                        'imgurl'    => $imageurl,
+                        'date'      => date('y-m-d',$node->created),
+                        'title'     => $node->title,
+                        'shortTitle'=> getShortTitle($node->title),
+                        'downloadUrl'=>$fileUrl,
+                    );
+                }
+            }
             $index++;
         }   
     }

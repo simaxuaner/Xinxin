@@ -173,7 +173,7 @@ function node_on_shelf_form_ajax_submit($form, $form_state){
     $product_shelf_id = $form['shelf_term']['#value'];
     $shelf = taxonomy_term_load($product_shelf_id);
     $shelf_uri = (array)$shelf;
-    $count = $shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]['value'];
+    $count = isset($shelf_uri['field_shelf_product_count']) && isset($shelf_uri['field_shelf_product_count'][LANGUAGE_NONE]) && isset($shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]) ? $shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]['value'] : 0;
     if($count==0){
         form_set_error('message', t('此货架栏位已满！'));
     }
@@ -207,8 +207,6 @@ function product_page_callback($pid){
     $product = node_load($pid);
     //查找出农业展品图片
     $product_image_uri = ( isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
-//    $product_image_locate = explode('//', $product_image_uri);
-//    $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $product_image_locate[1];
     $farm_image_filepath = file_create_url($product_image_uri);
 
     //查询产品的农场
@@ -241,39 +239,39 @@ function product_page_callback($pid){
     $build .="<table class='w100'>
 	  <tr>
 		<td>产品标准号</td>
-		<td> ".$product->field_product_num[LANGUAGE_NONE][0]['value']."</td>
+		<td> ". isset($product->field_product_num[LANGUAGE_NONE]) && isset($product->field_product_num[LANGUAGE_NONE][0]) ? $product->field_product_num[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	  <tr>
 		<td>价格</td>
-		<td>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</td>
+		<td>". isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	  <tr>
 		<td>配送服务</td>
-		<td>".$product->field_product_server[LANGUAGE_NONE][0]['value']."</td>
+		<td>".isset($product->field_product_server[LANGUAGE_NONE]) && isset($product->field_product_server[LANGUAGE_NONE][0]) ? $product->field_product_server[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	   <tr>
 		<td>储藏方式</td>
-		<td>".$product->field_product_storage_mode[LANGUAGE_NONE][0]['value']."</td>
+		<td>".isset($product->field_product_storage_mode[LANGUAGE_NONE]) && isset($product->field_product_storage_mode[LANGUAGE_NONE][0]) ? $product->field_product_storage_mode[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	   <tr>
 		<td>净含量</td>
-		<td>".$product->field_product_net_weight[LANGUAGE_NONE][0]['value']."</td>
+		<td>".isset($product->field_product_net_weight[LANGUAGE_NONE]) && isset($product->field_product_net_weight[LANGUAGE_NONE][0]) ? $product->field_product_net_weight[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	   <tr>
 		<td>联系方式</td>
-		<td>".$product->field_product_telephone[LANGUAGE_NONE][0]['value']."</td>
+		<td>".isset($product->field_product_telephone[LANGUAGE_NONE]) && isset($product->field_product_telephone[LANGUAGE_NONE][0]) ? $product->field_product_telephone[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	   <tr>
 		<td>热卖时间</td>
-		<td>".$product->field_product_sale_time[LANGUAGE_NONE][0]['value']."</td>
+		<td>".isset($product->field_product_sale_time[LANGUAGE_NONE]) && isset($product->field_product_sale_time[LANGUAGE_NONE][0]) ? $product->field_product_sale_time[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	   <tr>
 		<td>产地</td>
-		<td>".$product->field_product_area[LANGUAGE_NONE][0]['value']."</td>
+		<td>".isset($product->field_product_area[LANGUAGE_NONE]) && isset($product->field_product_area[LANGUAGE_NONE][0]) ? $product->field_product_area[LANGUAGE_NONE][0]['value'] : ''."</td>
 	  </tr>
 	</table>
 	</div>";
-    $build .="<div class='w100 floatLeft'>".$product->body[LANGUAGE_NONE][0]['value']."
+    $build .="<div class='w100 floatLeft'>".isset($product->body[LANGUAGE_NONE]) && isset($product->body[LANGUAGE_NONE][0]) ? $product->body[LANGUAGE_NONE][0]['value'] : ''."
 			</div>
 	</section>";
     $build .="<section class='w80'>
@@ -298,17 +296,14 @@ function product_page_callback($pid){
         //获取产品图片
         $myfield_array = field_get_items('node', $node, 'field_product_photo');
         $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
-//        $product_image_uri = $image['uri'];
-        // assuming that the uri starts with "public://"
-//        $product_image_locate = explode('//', $product_image_uri);
-//        $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
-        $product_image_filepath = file_create_url($image['uri']);
-
-        $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-				<a href='". url("product/$node->nid") ."' ><h3 class='product_title'>".$node->title."</h3></a>
-				<p class='product_price'><span class='farmName'>产品类型：".$type->name."</span><span class='floatRight'>". ( ( isset($node->field_product_price[LANGUAGE_NONE]) && isset($node->field_product_price[LANGUAGE_NONE][0]) ) ? $node->field_product_price[LANGUAGE_NONE][0]['value'] : '' )."</span><span class='floatRight'>￥</span></p>
-			</div>";
-        $count++;
+        if (!empty($image)) {
+            $product_image_filepath = file_create_url($image['uri']);
+            $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
+                    <a href='". url("product/$node->nid") ."' ><h3 class='product_title'>".$node->title."</h3></a>
+                    <p class='product_price'><span class='farmName'>产品类型：".$type->name."</span><span class='floatRight'>". ( ( isset($node->field_product_price[LANGUAGE_NONE]) && isset($node->field_product_price[LANGUAGE_NONE][0]) ) ? $node->field_product_price[LANGUAGE_NONE][0]['value'] : '' )."</span><span class='floatRight'>￥</span></p>
+                </div>";
+            $count++;
+        }
     }
     $build .="</section>";
     return $build;
@@ -349,7 +344,7 @@ function product_term_page_callback($tid){
 			<div class='block1'>
 				<span class='fav'>收藏</span> <img src='".$p_image_filepath."'>
 				<h3 class='product_title'>".$product->title."</h3>
-				<p class='product_price'><span class='floatRight'>".$product->field_product_price[LANGUAGE_NONE][0]['value']."</span><span class='floatRight'>￥</span></p>
+				<p class='product_price'><span class='floatRight'>".( isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : ''."</span><span class='floatRight'>￥</span></p>
 			</div>
             </a>";
     }
