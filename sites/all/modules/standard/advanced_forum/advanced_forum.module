@@ -376,12 +376,12 @@ function advanced_forum_links_alter(&$object, $view_mode, $object_type = 'node')
       );
     }
 
-    if (node_access('delete', $node)) {
+    /* if (node_access('delete', $node)) {
       $links['post-delete'] = array(
         'title' => t('delete'),
         'href' => 'node/' . $node->nid . '/delete',
       );
-    }
+    } */
   }
 
   // Change first post from "add comment" to "reply" if it isn't already.
