@@ -10,6 +10,7 @@
 		<div class="bar">
             <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/<?php print $icon_image?>.png">
 			<h1><?php print $newsTitle?></h1>
+            <!--
             <select>
 			  <option value="volvo">2011</option>
 			  <option value="saab">2012</option>
@@ -21,7 +22,7 @@
 			  <option value="volvo">参会指南</option>
 			  <option value="saab">论坛介绍</option>
 			  <option value="mercedes">园区信息</option>
-			</select> 
+			</select> -->
 		</div>
         <!--动态获取资讯列表 -->
         <?php 
@@ -48,7 +49,7 @@
         {
         ?>
             <div class="block1 <?php if(($key+1)%4==0) print "noMarginRight" ?>" title="<?php print $value['title']?>"> 
-                <span class="fav">收藏</span> 
+                
                 <img src="<?php print $value['imgurl']?>"/>
                 <a href="<?php print $value['downloadUrl']?>" ><h3><?php print $value['shortTitle']?></h3></a>
                 <p>

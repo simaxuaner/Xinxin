@@ -95,7 +95,7 @@ function memberIndividual_call_back()
     $membercenter_url = url('membercenter');
     $collection_url = url("mycollection");
     $friend_circle_url = url("user/".$user->uid."/relationships");
-    $edit_url = ("user/".$user->uid."/edit");
+    $edit_url = url("user/".$user->uid."/edit");
 
     $build =<<<EOS
     <main id='mainSection'>
@@ -201,7 +201,7 @@ function memberCompany_call_back()
     $collection_url = url("mycollection");
     $membercenter_url = url('membercenter');
 
-    $edit_url = ("user/".$user->uid."/edit");
+    $edit_url = url("user/".$user->uid."/edit");
 
     $build =<<<EOS
     <main id="mainSection">

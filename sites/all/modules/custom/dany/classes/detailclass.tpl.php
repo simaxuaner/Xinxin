@@ -12,13 +12,16 @@
 			<video controls preload=""><source src="<?php print $detailClass['dataurl']?>"></video>
 		</div>
 		<!--等待填充-->
-		<a href="<?php print $teacher['dataurl'] ?>">
-			<div class="block1 w20 floatRight noMargin">
-				<span class="fav">喜爱</span> <img src="<?php print $teacher['imgurl']?>">
-				<h3><?php print $teacher['name']?></h3>
+		
+			<div id="node-<?php print $teacher['id'];?>" class="block1 w20 floatRight noMargin">
+				<?php print $teacher['collectLink'] ?>
+				<img src="<?php print $teacher['imgurl']?>">
+				<a href="<?php print $teacher['dataurl'] ?>">
+					<h3><?php print $teacher['name']?></h3>
+				</a>
 				<p><span class="farmName"><?php print $teacher['career']?></span><span class="floatRight">01</span><span class="floatRight">02</span></p>
 			</div>
-		</a>
+		
 	</section>
 	<section class="w80">
 		<div class="bar">
