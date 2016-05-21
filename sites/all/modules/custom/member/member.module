@@ -94,7 +94,7 @@ function memberIndividual_call_back()
     
     $membercenter_url = url('membercenter');
     $collection_url = url("mycollection");
-    $friend_circle_url = "$base_url?q=/user/$user->uid/relationships";
+    $friend_circle_url = url("user/".$user->uid."/relationships");
     
     $build =<<<EOS
     <main id='mainSection'>
