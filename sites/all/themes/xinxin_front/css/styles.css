@@ -187,9 +187,9 @@ height: 1em;
 }
 .mainmenu .loginMenu{
 	height: inherit;
-	padding: 16px;
+	padding: 10px;
 	line-height: 1.5em;
-	font-size: 0.75em;
+	font-size: 0.65em;
 }
 nav ul
 {
@@ -204,7 +204,8 @@ nav ul li a {
 	display: block;
 	text-decoration: none;
 	font-weight: bold;
-	padding: 24px 0;
+	font-size:0.75em;
+	padding: 28px 0;
 }
 nav ul li a:hover {
 	background-color: #025196;
@@ -292,7 +293,7 @@ nav ul li ul li{
 }
 
 footer {
-    background-color: #c5c5c5;
+    background-color: #f2f2f2;
     display: inline-block;
 }
 footer .contact p{
@@ -300,7 +301,7 @@ footer .contact p{
 	padding: 16px 0;
 }
 footer .copyright {
-    background-color: #b9b9b9;
+    background-color: #d9d9d9;
     display: inline-block;
     text-align: center;
     width: 100%;
@@ -340,6 +341,7 @@ footer .social img {
     font-size: 1.2em;
     min-width: 104px;
     width: 20%;
+	background-color: #f2f2f2;
 }
 header
 {
@@ -378,10 +380,11 @@ html, body
 	margin: 0;
 	min-width: 480px;
 	padding: 0;
+	background-color: white;
 }
 main
 {
-	background-color: #d2d2d2;
+    background-color: white;
 	width: 100%;
 	overflow: hidden;
 }
@@ -612,7 +615,7 @@ table {
 	}
 }
 section {
-	background-color: #dcdcdc;
+    background-color: white;
 	overflow: hidden;
 	padding: 0 32px 32px;
 	min-height: inherit;
@@ -648,36 +651,46 @@ section video {
 }
 .headerBar {
 	height: 64px;
-	background-color: #eeeeee;
-	font-size: 1.5em;
-	margin: 0;
-	padding: 0;
+    background-color: white;
+    font-size: 1.5em;
+    margin: 0;
+    padding: 0;
 	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
 	overflow: hidden;
 }
 .headerImg {
-	width: 100%;
+    width: 100%;
 }
 .headerBar .logo {
-	float: left;
-	height: inherit;
-	min-width: 64px;
+    float: left;
+    height: inherit;
+    min-width: 64px;
 }
 .headerBar .logo a {
-	height: inherit;
+    height: inherit;
+	display: block;
+}
+.headerBar .logo a span{
+	padding: 16px 16px 16px 0;
+	font-weight: bold;
+	float: left;
 }
 .headerBar .logo a img {
-	height: inherit;
-	padding: 8px;
+    height: inherit;
+    padding: 8px;
+	float: left;
 }
-.headerBar .logo a img:hover {
-	background-color: #dddddd
+.headerBar a:hover {
+    border-bottom: 1px solid #025196;
+}
+.headerBar .logo:hover {
+	background-color: #f2f2f2;
 }
 header,
 footer {
-	width: 100%;
+    width: 100%;
 }
 html,
 body {
@@ -872,7 +885,7 @@ h3.product_title{
 #block-search-form {
 	width: 15%;
 	height: inherit;
-	padding-top: 5px;
+	padding-top: 10px;
 	float: right;
 }
 #search-block-form input.form-text {

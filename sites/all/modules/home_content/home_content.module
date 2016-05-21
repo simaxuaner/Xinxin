@@ -110,10 +110,10 @@ EOS;
     } else if ($delta == 'home_highlighted') {
         $block = array();
         $newsurl=url('news');
-        $farmshowurl=url('farmshow');
-        $productsurl=url('farmshow/product');
-        $classesurl=url('classes');
-        $forumurl=url('forum');
+        $investorurl=url('about/investors');
+        $teachersurl=url('classes/teachers');
+        $classesurl=url('classes/class');
+        $recruitmenturl=url('about/recruitment');
         
         $html =<<<EOS
         <nav class="homenav">
@@ -125,36 +125,36 @@ EOS;
 				<h2>园区招商</h2>
 			</div>
 		</a>
-		<a href="$farmshowurl">
+		<a href="$investorurl">
             <div class="bigbutton green">
 				<div class="iconArea">
-					<img alt="farms" src="$module_path/images/icons/farms.png">
+					<img alt="farms" src="$module_path/images/icons/investors.png">
 				</div>
-				<h2>农场信息</h2>
+				<h2>园区招商</h2>
 			</div>
 		</a>
-		<a href="$productsurl">
+		<a href="$teachersurl">
 			<div class="bigbutton orange">
 				<div class="iconArea">
-					<img alt="products" src="$module_path/images/icons/products.png">
+					<img alt="products" src="$module_path/images/icons/teachers.png">
 				</div>
-				<h2>农产品信息</h2>
+				<h2>农业名师</h2>
 			</div>
 		</a>
 		<a href="$classesurl">
 			<div class="bigbutton red">
 				<div class="iconArea">
-					<img alt="training" src="$module_path/images/icons/training.png">
+					<img alt="training" src="$module_path/images/icons/class.png">
 				</div>
-				<h2>培训方案</h2>
+				<h2>农业课堂</h2>
 			</div>
 		</a>
-		<a href="$forumurl">
+		<a href="$recruitmenturl">
 			<div class="bigbutton purple">
 				<div class="iconArea">
-					<img alt="bbs" src="$module_path/images/icons/forum.png">
+					<img alt="bbs" src="$module_path/images/icons/recruitment.png">
 				</div>
-				<h2>讨论区</h2>
+				<h2>人才招聘</h2>
 			</div>
 		</a>
 	</nav>
