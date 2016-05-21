@@ -40,6 +40,7 @@ function admanage_page()
     $rows[$index]['image']="<div class='admanage-img'>".$block->body."</div>";
     $rows[$index]['user']="无";
     $rows[$index]['link']=l('配置','admin/structure/block/manage/block/'.$block->bid.'/config');
+    $rows[$index]['delete']=l('删除','admin/structure/block/manage/block/'.$block->bid.'/config');
     foreach($nodes as $nkey=>$node){
       if ( isset($node->field_ad_block_id) && isset($node->field_ad_block_id[LANGUAGE_NONE]) && isset($node->field_ad_block_id[LANGUAGE_NONE][0]) ) {
         if($node->field_ad_block_id[LANGUAGE_NONE][0]['value']==$block->bid){
@@ -51,7 +52,7 @@ function admanage_page()
     $index++;
   }
 
-  $header=array(t('id'),t('广告位'),t('预览'),t('申请人'),t('编辑'));
+  $header=array(t('id'),t('广告位'),t('预览'),t('申请人'),t('编辑'),t('删除'));
   $table = theme('table', array('header' => $header,'rows' => $rows ,'attributes' => array('class' => array('private-table'))));
   drupal_add_css(drupal_get_path('module', 'admanage') . '/admanage.css');
 

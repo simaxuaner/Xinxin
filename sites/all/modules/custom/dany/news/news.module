@@ -178,6 +178,7 @@ function getMagzineList($type)
     ->condition('type', 'magzine')
     ->condition('status', 1)
     ->orderBy('created', 'DESC')
+    ->limit(8)
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
@@ -262,8 +263,8 @@ function getNewsSecondMenuNav($type)
     <nav id="sideNav" class="w20">
 			<ul>
 				<li class="danyOrigin"> <a href="$url_allnews">品牌论坛</a> </li>
-				<li class="dany1212"> <a href="$url_1212">12.12电商论坛</a> </li>
-                <li class="dany66"> <a href="$url_66">6.6涂岭论坛</a> </li>
+				<li class="dany1212"> <a href="$url_1212">1212论坛</a> </li>
+                <li class="dany66"> <a href="$url_66">66论坛</a> </li>
 				<li class="danyXinxin"> <a href="$url_xinhui">海促会资讯</a> </li>
 				
 			</ul>
