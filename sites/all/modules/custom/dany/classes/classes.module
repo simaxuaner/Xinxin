@@ -278,22 +278,19 @@ function template_preprocess_teachers_page(&$variables) {
             $imgfile = file_load($imgid);
             $imageurl = file_create_url($imgfile->uri);
             $teacherList[]=array(
-                'detailurl' => "?q=classes/detailteacher/".$key,
+                'detailurl' => url("classes/detailteacher/$key"),
                 'imgurl'    => $imageurl,
                 'teacherName'=> $node->title,
                 'career'    => $node->field_career[LANGUAGE_NONE][0]['value'],   
                 );
         }
     }
-    //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
-    //drupal_add_js($module_path.'/js/scripts.js');
     $variables['teacherList']=$teacherList;
     $variables['secondMenuNav']=getSecondMenuNav('/danyTeacher/');
 }
 
 function template_preprocess_campus_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
-    //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     $pioneeringContext="";
     $baseFacilities="";
     $trainGuide="";
@@ -341,28 +338,6 @@ function template_preprocess_campus_page(&$variables) {
 function template_preprocess_admission_page(&$variables) {
     $module_path = drupal_get_path('module','classes');
     $variables['modulePath']=$module_path;
-    
-    // $build = array();
-    // $query = db_select('node', 'n')->extend('PagerDefault');
-    // $nids = $query
-    // ->fields('n', array('nid'))
-    // ->condition('type', 'article')
-    // ->condition('status', 1)
-    // ->condition('title',"招生信息")
-    // ->orderBy('created', 'DESC')
-    // ->limit(variable_get('default_nodes_main', 1))
-    // ->addTag('node_access')
-    // ->execute()
-    // ->fetchCol();
-    // if (!empty($nids)) {
-    //     $nodes = node_load_multiple($nids);
-    //     $admission=$nodes[$nids[0]]->body['und'][0]['value'];
-    //     //$build += node_view_multiple($nodes);
-    //     //$build['pager'] = array(
-    //     //'#theme' => 'pager',
-    //     //'#weight' => 5,
-    //     //);
-    // }
     $nid = variable_get('baseFacilities', 43);
     $node = node_load($nid);
     if ($node) {
@@ -389,7 +364,6 @@ function template_preprocess_files_page(&$variables) {
             }
         }
     } //render node
-    //drupal_add_css($module_path.'/css/classes_styles.css',array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
     $variables['title']=$title;
     $variables['content']=$content;
     $variables['fileList']=$fileList;
@@ -398,28 +372,35 @@ function template_preprocess_files_page(&$variables) {
 }
 
 
-//util functin
+//util function
 function getSecondMenuNav($type)
 {
-    $nav='<nav class="w20" id="sideNav">
+    $url_class = url('classes/class');
+    $url_teacher = url('classes/teachers');
+    $url_campus = url('classes/campus');
+    $url_admission = url('classes/admission');
+    $url_classfiles = url('classes/files');
+    $nav=<<<EOS
+    <nav class="w20" id="sideNav">
 			<ul>
 				<li class="danyClass">
-					<a href="?q=classes/class">农业课堂</a>
+					<a href="$url_class">农业课堂</a>
 				</li>
 				<li class="danyTeacher">
-					<a href="?q=classes/teachers">农业名师</a>
+					<a href="$url_teacher">农业名师</a>
 				</li>
 				<li class="danyCampus">
-					<a href="?q=classes/campus">创业园地</a>
+					<a href="$url_campus">创业园地</a>
 				</li>
 				<li class="danyAdmission">
-					<a href="?q=classes/admission">招生信息</a>
+					<a href="$url_admission">招生信息</a>
 				</li>
 				<li class="danyFiles">
-					<a href="?q=classes/files">资料下载</a>
+					<a href="$url_classfiles">资料下载</a>
 				</li>
 			</ul>
-	</nav>';
+	</nav>
+EOS;
     $html=preg_replace($type,"activeNavItem",$nav);
     return $html;
 }

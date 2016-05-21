@@ -49,10 +49,11 @@ function farm_product_page($farm)
             //获取产品图片
             $myfield_array = field_get_items('node', $node,'field_product_photo');
             $image = isset($myfield_array[0]) ? $myfield_array[0] :'';
-            $search_image_uri = $image['uri'];
+ //           $search_image_uri = $image['uri'];
             // assuming that the uri starts with "public://"
-            $search_image_locate = explode('//', $search_image_uri);
-            $search_image_filepath = $GLOBALS['base_url'] .'/sites/default/files/' . $search_image_locate[1];
+ //           $search_image_locate = explode('//', $search_image_uri);
+ //           $search_image_filepath = $GLOBALS['base_url'] .'/sites/default/files/' . $search_image_locate[1];
+            $search_image_filepath = file_create_url($image['uri']);
 
             $rows[$key]['title'] = array(
                 'data' => array(

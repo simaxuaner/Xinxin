@@ -21,27 +21,28 @@ function news_menu(){
     $items['news/allnews']=array(
         'title' => t('品牌论坛'),
         'type' => MENU_DEFAULT_LOCAL_TASK,
+        'weight' => 45,
     );
     $items['news/news66']=array(
         'title' => t('6.6涂岭论坛'),
         'page callback' => 'news_news66_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
-        'weight' => 5,
+        'weight' => 35,
     );
     $items['news/news1212']=array(
         'title' => t('12.12电商论坛'),
         'page callback' => 'news_news1212_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
-        'weight' => 5,
+        'weight' => 25,
     );
     $items['news/newsxinhui']=array(
         'title' => t('海促会咨询'),
         'page callback' => 'news_newsxinhui_page_callback',
         'access callback' => TRUE,
         'type' => MENU_LOCAL_TASK,
-        'weight' => 5,
+        'weight' => 15,
     );
     return $items;
 }
@@ -246,17 +247,24 @@ function changeDateform($date)
     return $day." ". $month;
 }
 
-function getNewsSecondMenuNav($type,$icon)
+function getNewsSecondMenuNav($type)
 {
-    $nav='<nav id="sideNav" class="w20">
+    $url_allnews = url('news/allnews');
+    $url_1212 = url('news/news1212');
+    $url_66 = url('news/news66');
+    $url_xinhui = url('news/newsxinhui');
+    
+    $nav=<<<EOS
+    <nav id="sideNav" class="w20">
 			<ul>
-				<li class="danyOrigin"> <a href="?q=news/allnews">品牌论坛</a> </li>
-				<li class="dany1212"> <a href="?q=news/news1212">12.12电商论坛</a> </li>
-                <li class="dany66"> <a href="?q=news/news66">6.6涂岭论坛</a> </li>
-				<li class="danyXinxin"> <a href="?q=news/newsxinhui">海促会资讯</a> </li>
+				<li class="danyOrigin"> <a href="$url_allnews">品牌论坛</a> </li>
+				<li class="dany1212"> <a href="$url_1212">12.12电商论坛</a> </li>
+                <li class="dany66"> <a href="$url_66">6.6涂岭论坛</a> </li>
+				<li class="danyXinxin"> <a href="$url_xinhui">海促会资讯</a> </li>
 				
 			</ul>
-		</nav>';
+	</nav>
+EOS;
         
     $html=preg_replace($type,"activeNavItem",$nav);
     return $html;
@@ -268,17 +276,17 @@ function getNewsInfo()
     $nid = variable_get('news66Info', 80);
     $node = node_load($nid);
     if ($node) {
-        $info['news66'] = $node->body[LANGUAGE_NONE][0]['value'];
+        $info['news66'] = ( isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0]) )  ? $node->body[LANGUAGE_NONE][0]['value'] : '';
     }
     $nid = variable_get('news1212Info', 81);
     $node = node_load($nid);
     if ($node) {
-        $info['news1212'] = $node->body[LANGUAGE_NONE][0]['value'];
+        $info['news1212'] = ( isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0]) )  ? $node->body[LANGUAGE_NONE][0]['value'] : '';
     }
     $nid = variable_get('newsXinxinInfo', 82);
     $node = node_load($nid);
     if ($node) {
-        $info['newsXinxin'] = $node->body[LANGUAGE_NONE][0]['value'];
+        $info['newsXinxin'] = ( isset($node->body[LANGUAGE_NONE]) && isset($node->body[LANGUAGE_NONE][0]) )  ? $node->body[LANGUAGE_NONE][0]['value'] : '';
     }
     return $info;
 }

@@ -104,6 +104,8 @@ function home_content_block_view($delta = '')
 		</div> 
 EOS;
         $block['content'] = $html;
+		drupal_add_css("$module_path/slider.css");
+		drupal_add_js("$module_path/slider.js");
         return $block;
     } else if ($delta == 'home_highlighted') {
         $block = array();
