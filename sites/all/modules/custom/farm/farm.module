@@ -281,7 +281,7 @@ function template_preprocess_farm_page(&$variables){
                     <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'>
                     <h1>休闲农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
-                    <div class='button floatRight'><a href='". url("farms") . "'>+</a></div>
+                    <div class='button floatRight'><a href='". url("farms") . "'>㗊</a></div>
                     </div>";
     $variables['search'] = $build_search;
 }
@@ -293,7 +293,7 @@ function template_preprocess_farm_page(&$variables){
 function template_preprocess_farms_page(&$variables){
     $build_search = "<div class='bar'><img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'><h1>休闲农庄</h1>
                     <div class='search floatRight'><a href='#'><img src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png alt='search'></a><input type='text' name='search'></div>
-                    <div class='button floatRight'><a href='".url("farmshow/farm")."'>+</a></div>
+                    <div class='button floatRight'><a href='".url("farmshow/farm")."'>三</a></div>
                     </div>";
     $build = "";
     $query = db_select('node', 'n')->extend('PagerDefault');
