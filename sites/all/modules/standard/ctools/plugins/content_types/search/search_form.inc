@@ -77,7 +77,7 @@ function ctools_search_form_content_type_render($subtype, $conf, $panel_args, $c
  */
 function ctools_search_form_content_type_edit_form($form, &$form_state) {
   $conf = $form_state['conf'];
-
+  alskdjflkasjdflkja;
   $types = array();
   foreach (search_get_info() as $module => $info) {
     $types[$module] = $info['title'];

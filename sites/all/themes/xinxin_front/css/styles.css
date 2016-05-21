@@ -884,14 +884,12 @@ h3.product_title{
 }
 #block-search-form {
 	width: 15%;
-	height: inherit;
-	padding-top: 10px;
 	float: right;
+	height: 45px;
 }
 #search-block-form input.form-text {
 	float: left;
 	width: 60%;
-	height: 45px;
 	border: 0;
 	color: #4d4d4d;
 	background-color: #e3e3e3;
@@ -900,7 +898,6 @@ h3.product_title{
 #search-block-form input.form-submit {
 	float: left;
     width: 48px;
-    height: 45px;
     min-width: 48px !important;
     margin: 0;
     background-color: #e3e3e3;
