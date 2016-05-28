@@ -897,6 +897,7 @@ h3.product_title{
 	color: #4d4d4d;
 	background-color: #e3e3e3;
 	margin: 0;
+	font-size: 0.5em;
 }
 #search-block-form input.form-submit {
 	float: left;
@@ -972,7 +973,25 @@ h3.product_title{
 	background-color: rgb(250, 255, 189);
 	padding: 1%;
 }
-#edit-submit,#edit-preview{
+.form-submit{
+	font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 0 24px !important;
+    line-height: 35px;
+    cursor: pointer;
+    border: 0;
+    box-sizing: border-box;
+    font-family: calibri, arial, sans-serif;
+    margin-top: 3px;
+    background-color: #4d93e3 !important;
+    min-width: 0px;
+    width: 8%;
+    height: 35px;
+    margin-right: -50px;
+}
+
+#edit-preview{
 	font-weight: bold;
     text-decoration: none;
     color: #ffffff;
@@ -1150,4 +1169,10 @@ fieldset.collapsible .fieldset-legend {
 }
 .region-content-before p{
 	margin:0;
+}
+#node-33 {
+    margin: 4em 4% 16px 0;
+}
+#node-20{
+	margin: 4em 4% 16px 0;
 }

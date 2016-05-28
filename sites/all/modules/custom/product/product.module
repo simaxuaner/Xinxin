@@ -10,77 +10,93 @@
  * Implements hook_node_info()
  * Create the product node.
  */
-function product_node_info(){
-    return array(
-        'product'=>array(
-            'name' => t('product'),
-            'module' => 'product',
-            'base' => 'node_content',
-            'description' => 'the product node type for the company',
-            'has_title' => TRUE,
-            'has_body' => TRUE
-        )
-    );
+function product_node_info() {
+	return array (
+			'product' => array (
+					'name' => t ( 'product' ),
+					'module' => 'product',
+					'base' => 'node_content',
+					'description' => 'the product node type for the company',
+					'has_title' => TRUE,
+					'has_body' => TRUE 
+			) 
+	);
 }
 
 /**
  * Implements hook_menu().
  */
-function product_menu()
-{
-    $items['admin/product'] = array(
-        'title' => t('产品管理'),
-        'description' => '对站点中的产品进行管理,进行编辑、删除、上下架等操作',
-        'page callback' => 'drupal_get_form',
-        'page arguments' => array('product_admin_content'),
-        'access arguments' => array('access content overview'),
-        'file' => 'product.pages.inc',
-    );
-
-    $items['admin/product/%'] = array(
-        'page callback' => 'product_user_page',
-        'page arguments' => array(2),
-        'type' => MENU_CALLBACK,
-    );
-
-    $items['admin/product/%/ajax'] = array(
-            'page callback' => 'onshelf_ajax_callback',
-            'delivery callback' => 'ajax_deliver',
-            'access callback' => TRUE,
-            )+ $items['admin/product/%'];
-
-    $items['admin/product/add'] = array(
-        'title' => '添加产品',
-        'title callback' => 'check_plain',
-        'page callback' => 'product_add',
-        'access callback' => 'node_access',
-        'access arguments' => array('create', 'product'),
-        'type' => MENU_LOCAL_ACTION,
-        'file' => 'product.pages.inc',
-    );
-
-    $items['farmshow/product'] = array(
-        'title' => t('农业展品'),
-        'page callback' => 'farmshow_product_page_callback',
-        'access callback' => TRUE,
-        'type' => MENU_DEFAULT_LOCAL_TASK,
-    );
-
-    $items['product/%'] = array(
-        'title' => t('product'),
-        'page callback' => 'product_page_callback',
-        'page arguments' => array(1),
-        'access arguments' => array('access content'),
-    );
-
-    $items['product/term/%'] = array(
-        'title' => t('product'),
-        'page callback' => 'product_term_page_callback',
-        'page arguments' => array(2),
-        'access arguments' => array('access content'),
-    );
-
-    return $items;
+function product_menu() {
+	$items ['admin/product'] = array (
+			'title' => t ( '产品管理' ),
+			'description' => '对站点中的产品进行管理,进行编辑、删除、上下架等操作',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'product_admin_content' 
+			),
+			'access arguments' => array (
+					'access content overview' 
+			),
+			'file' => 'product.pages.inc' 
+	);
+	
+	$items ['admin/product/%'] = array (
+			'page callback' => 'product_user_page',
+			'page arguments' => array (
+					2 
+			),
+			'type' => MENU_CALLBACK 
+	);
+	
+	$items ['admin/product/%/ajax'] = array (
+			'page callback' => 'onshelf_ajax_callback',
+			'delivery callback' => 'ajax_deliver',
+			'access callback' => TRUE 
+	) + $items ['admin/product/%'];
+	
+	$items ['admin/product/add'] = array (
+			'title' => '添加产品',
+			'title callback' => 'check_plain',
+			'page callback' => 'product_add',
+			'access callback' => 'node_access',
+			'access arguments' => array (
+					'create',
+					'product' 
+			),
+			'type' => MENU_LOCAL_ACTION,
+			'file' => 'product.pages.inc' 
+	);
+	
+	$items ['farmshow/product'] = array (
+			'title' => t ( '农业展品' ),
+			'page callback' => 'farmshow_product_page_callback',
+			'access callback' => TRUE,
+			'type' => MENU_DEFAULT_LOCAL_TASK 
+	);
+	
+	$items ['product/%'] = array (
+			'title' => t ( 'product' ),
+			'page callback' => 'product_page_callback',
+			'page arguments' => array (
+					1 
+			),
+			'access arguments' => array (
+					'access content' 
+			) 
+	);
+	
+	$items ['product/term/%'] = array (
+			'title' => t ( 'product' ),
+			'page callback' => 'product_term_page_callback',
+			'page arguments' => array (
+					2 
+			),
+			'access arguments' => array (
+					'access content' 
+			) 
+	);
+	
+	return $items;
 }
 
 /**
@@ -88,357 +104,387 @@ function product_menu()
  *
  * @see shareto_menu()
  */
-function product_user_page($action, $nid){
-    if (is_numeric($nid)) {
-        $node = node_load($nid);
-        if (!$node )
-            return MENU_NOT_FOUND;
-
-        if (!node_access('view', $node))
-            return MENU_ACCESS_DENIED;
-
-        drupal_goto("node/{$nid}");
-    }
-
-    return MENU_NOT_FOUND;
+function product_user_page($action, $nid) {
+	if (is_numeric ( $nid )) {
+		$node = node_load ( $nid );
+		if (! $node)
+			return MENU_NOT_FOUND;
+		
+		if (! node_access ( 'view', $node ))
+			return MENU_ACCESS_DENIED;
+		
+		drupal_goto ( "node/{$nid}" );
+	}
+	
+	return MENU_NOT_FOUND;
 }
 
 /**
  *
  * Ajax callback for on shelf action
- * @return
- * 	An array of ajax commands.
+ * 
+ * @return An array of ajax commands.
  */
-function onshelf_ajax_callback($nid){
-    $commands = array();
-    $node = node_load($nid);
-    $on_shelf_form = drupal_get_form('on_shelf_form', $node);
-    $commands[] = ajax_command_after("#onshelf-links".$node->nid, drupal_render($on_shelf_form));
-    return array(
-        '#type' => 'ajax',
-        '#commands' => $commands,
-    );
+function onshelf_ajax_callback($nid) {
+	$commands = array ();
+	$node = node_load ( $nid );
+	$on_shelf_form = drupal_get_form ( 'on_shelf_form', $node );
+	$commands [] = ajax_command_after ( "#onshelf-links" . $node->nid, drupal_render ( $on_shelf_form ) );
+	return array (
+			'#type' => 'ajax',
+			'#commands' => $commands 
+	);
 }
 
 /**
  * Generate a on shelf form
- * @param $node
+ * 
+ * @param
+ *        	$node
  */
 function on_shelf_form($form, &$form_state, $node) {
-
-    //获取货架的信息
-    $vocabulary = taxonomy_vocabulary_load(variable_get('shelf_vocabulary',0));
-    if (!$vocabulary){
-        return array();
-    }
-
-    $tree = taxonomy_get_tree($vocabulary->vid);
-    $tree_names = array();
-    foreach($tree as $term){
-        //array_unshift($tree_names,$term->name);
-        $tree_names[$term->tid] = $term->name;
-    }
-
-    $form['#node'] = (array)$node;
-    $form['#id'] = "on_shelf_form-node-{$node->nid}";
-
-    $form['shelf_term'] = array(
-        '#type' => 'select',
-        '#options' => $tree_names,
-    );
-
-    $form['submit'] = array(
-        '#type' => 'submit',
-        '#value' => t('确定'),
-        '#ajax' => array(
-            'callback' => 'node_on_shelf_form_ajax_submit',
-            'wrapper' => $form['#id'],
-            'effect' => 'fade',
-        ),
-    );
-    return $form;
+	
+	// 获取货架的信息
+	$vocabulary = taxonomy_vocabulary_load ( variable_get ( 'shelf_vocabulary', 0 ) );
+	if (! $vocabulary) {
+		return array ();
+	}
+	
+	$tree = taxonomy_get_tree ( $vocabulary->vid );
+	$tree_names = array ();
+	foreach ( $tree as $term ) {
+		// array_unshift($tree_names,$term->name);
+		$tree_names [$term->tid] = $term->name;
+	}
+	
+	$form ['#node'] = ( array ) $node;
+	$form ['#id'] = "on_shelf_form-node-{$node->nid}";
+	
+	$form ['shelf_term'] = array (
+			'#type' => 'select',
+			'#options' => $tree_names 
+	);
+	
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => t ( '确定' ),
+			'#ajax' => array (
+					'callback' => 'node_on_shelf_form_ajax_submit',
+					'wrapper' => $form ['#id'],
+					'effect' => 'fade' 
+			) 
+	);
+	return $form;
 }
 
 /**
- * Ajax out shelf  form callback function.
- * @param $form
- * @param $form_state
+ * Ajax out shelf form callback function.
+ * 
+ * @param
+ *        	$form
+ * @param
+ *        	$form_state
  */
-function node_on_shelf_form_ajax_submit($form, $form_state){
-
-    if(form_get_errors())
-        return $form;
-
-    $node_uri = $form['#node'];
-    $product_shelf_id = $form['shelf_term']['#value'];
-    $shelf = taxonomy_term_load($product_shelf_id);
-    $shelf_uri = (array)$shelf;
-    $count = isset($shelf_uri['field_shelf_product_count']) && isset($shelf_uri['field_shelf_product_count'][LANGUAGE_NONE]) && isset($shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]) ? $shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]['value'] : 0;
-    if($count==0){
-        form_set_error('message', t('此货架栏位已满！'));
-    }
-    else{
-        $count --;
-        $shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]['value'] = $count;
-        $node_uri['field_product_shelf'][LANGUAGE_NONE][0]['tid'] = $product_shelf_id;
-        //将更新的node保存到数据库
-        $node = node_submit((object)$node_uri);
-        node_save((object)$node_uri);
-        taxonomy_term_save((object)$shelf_uri);
-
-        //查询上架操作是否保存到数据库
-        $update_node = node_load($node->nid);
-        $shelf = $update_node->field_product_shelf;
-        if(count($shelf)!=0){
-            return t('产品上架成功!');
-        }
-        else{
-            form_set_error('message', t('产品未上架成功'));
-        }
-    }
-    return $form;
+function node_on_shelf_form_ajax_submit($form, $form_state) {
+	if (form_get_errors ())
+		return $form;
+	
+	$node_uri = $form ['#node'];
+	$product_shelf_id = $form ['shelf_term'] ['#value'];
+	$shelf = taxonomy_term_load ( $product_shelf_id );
+	$shelf_uri = ( array ) $shelf;
+	$count = isset ( $shelf_uri ['field_shelf_product_count'] ) && isset ( $shelf_uri ['field_shelf_product_count'] [LANGUAGE_NONE] ) && isset ( $shelf_uri ['field_shelf_product_count'] [LANGUAGE_NONE] [0] ) ? $shelf_uri ['field_shelf_product_count'] [LANGUAGE_NONE] [0] ['value'] : 0;
+	if ($count == 0) {
+		form_set_error ( 'message', t ( '此货架栏位已满！' ) );
+	} else {
+		$count --;
+		$shelf_uri ['field_shelf_product_count'] [LANGUAGE_NONE] [0] ['value'] = $count;
+		$node_uri ['field_product_shelf'] [LANGUAGE_NONE] [0] ['tid'] = $product_shelf_id;
+		// 将更新的node保存到数据库
+		$node = node_submit ( ( object ) $node_uri );
+		node_save ( ( object ) $node_uri );
+		taxonomy_term_save ( ( object ) $shelf_uri );
+		
+		// 查询上架操作是否保存到数据库
+		$update_node = node_load ( $node->nid );
+		$shelf = $update_node->field_product_shelf;
+		if (count ( $shelf ) != 0) {
+			return t ( '产品上架成功!' );
+		} else {
+			form_set_error ( 'message', t ( '产品未上架成功' ) );
+		}
+	}
+	return $form;
 }
 
 /**
- * @param $pid 产品nid
+ *
+ * @param $pid 产品nid        	
  * @return 产品详细信息页面
  */
-function product_page_callback($pid){
-    $product = node_load($pid);
-    //查找出农业展品图片
-    $product_image_uri = ( isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
-    $farm_image_filepath = file_create_url($product_image_uri);
-
-    //查询产品的农场
-    $myfarm_array = field_get_items('node', $product,'field_product_farm');
-    $myfarm = isset($myfarm_array[0]) ? $myfarm_array[0] :'';
-
-    $build = "<main id='mainSection'>
+function product_page_callback($pid) {
+	$product = node_load ( $pid );
+	// 查找出农业展品图片
+	$product_image_uri = (isset ( $product->field_product_photo [LANGUAGE_NONE] ) && isset ( $product->field_product_photo [LANGUAGE_NONE] [0] )) ? $product->field_product_photo [LANGUAGE_NONE] [0] ['uri'] : '';
+	$farm_image_filepath = file_create_url ( $product_image_uri );
+	
+	// 查询产品的农场
+	$myfarm_array = field_get_items ( 'node', $product, 'field_product_farm' );
+	$myfarm = isset ( $myfarm_array [0] ) ? $myfarm_array [0] : '';
+	
+	$build = "<main id='mainSection'>
                <nav id='sideNav' class='w20'>
 			<ul>
-			    <li class='activeNavItem'> <a href='".url("farmshow/product") . "'>农业展品</a> </li>
-				<li> <a href='".url("farmshow/form") . "'>农庄</a> </li>
+			    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a> </li>
+				<li> <a href='" . url ( "farmshow/form" ) . "'>农庄</a> </li>
 			</ul>
 		</nav>
 		<section class='w80'>
 			<div class='bar'>
-            <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
-			<h1><a href='". url("farmshow/product") . "'>农业展品</a>".$product->title."</h1>
+            <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
+			<h1><a href='" . url ( "farmshow/product" ) . "'>农业展品</a>" . $product->title . "</h1>
 			</div>
-			<img class='w50 floatLeft productImage' src='".$farm_image_filepath."'/>
+			<img class='w50 floatLeft productImage' src='" . $farm_image_filepath . "'/>
 			<div class='productInfo w50 floatLeft'>
-			<h1>".$product->title."</h1><br/>";
-    if($myfarm)
-    {
-        $fid = $myfarm['value'];
-        $product_farm = node_load($fid);
-        $build .= "<a href='". url("farm/$product_farm->nid") ."'><h2>所属农场:".$product_farm->title."</h2></a>";
-    }else{
-        $build .= "<a href='#'><h2>不存在农场中</h2></a>";
-    }
-    $build .="<table class='w100'>
+			<h1>" . $product->title . "</h1><br/>";
+	if ($myfarm) {
+		$fid = $myfarm ['value'];
+		$product_farm = node_load ( $fid );
+		$build .= "<a href='" . url ( "farm/$product_farm->nid" ) . "'><h2>所属农场:" . $product_farm->title . "</h2></a>";
+	} else {
+		$build .= "<a href='#'><h2>不存在农场中</h2></a>";
+	}
+	$build .= "<table class='w100'>
 	  <tr>
 		<td>产品标准号</td>
-		<td> ". isset($product->field_product_num[LANGUAGE_NONE]) && isset($product->field_product_num[LANGUAGE_NONE][0]) ? $product->field_product_num[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td> " . isset ( $product->field_product_num [LANGUAGE_NONE] ) && isset ( $product->field_product_num [LANGUAGE_NONE] [0] ) ? $product->field_product_num [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	  <tr>
 		<td>价格</td>
-		<td>". isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td>" . isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] ) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	  <tr>
 		<td>配送服务</td>
-		<td>".isset($product->field_product_server[LANGUAGE_NONE]) && isset($product->field_product_server[LANGUAGE_NONE][0]) ? $product->field_product_server[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td>" . isset ( $product->field_product_server [LANGUAGE_NONE] ) && isset ( $product->field_product_server [LANGUAGE_NONE] [0] ) ? $product->field_product_server [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	   <tr>
 		<td>储藏方式</td>
-		<td>".isset($product->field_product_storage_mode[LANGUAGE_NONE]) && isset($product->field_product_storage_mode[LANGUAGE_NONE][0]) ? $product->field_product_storage_mode[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td>" . isset ( $product->field_product_storage_mode [LANGUAGE_NONE] ) && isset ( $product->field_product_storage_mode [LANGUAGE_NONE] [0] ) ? $product->field_product_storage_mode [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	   <tr>
 		<td>净含量</td>
-		<td>".isset($product->field_product_net_weight[LANGUAGE_NONE]) && isset($product->field_product_net_weight[LANGUAGE_NONE][0]) ? $product->field_product_net_weight[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td>" . isset ( $product->field_product_net_weight [LANGUAGE_NONE] ) && isset ( $product->field_product_net_weight [LANGUAGE_NONE] [0] ) ? $product->field_product_net_weight [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	   <tr>
 		<td>联系方式</td>
-		<td>".isset($product->field_product_telephone[LANGUAGE_NONE]) && isset($product->field_product_telephone[LANGUAGE_NONE][0]) ? $product->field_product_telephone[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td>" . isset ( $product->field_product_telephone [LANGUAGE_NONE] ) && isset ( $product->field_product_telephone [LANGUAGE_NONE] [0] ) ? $product->field_product_telephone [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	   <tr>
 		<td>热卖时间</td>
-		<td>".isset($product->field_product_sale_time[LANGUAGE_NONE]) && isset($product->field_product_sale_time[LANGUAGE_NONE][0]) ? $product->field_product_sale_time[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td>" . isset ( $product->field_product_sale_time [LANGUAGE_NONE] ) && isset ( $product->field_product_sale_time [LANGUAGE_NONE] [0] ) ? $product->field_product_sale_time [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	   <tr>
 		<td>产地</td>
-		<td>".isset($product->field_product_area[LANGUAGE_NONE]) && isset($product->field_product_area[LANGUAGE_NONE][0]) ? $product->field_product_area[LANGUAGE_NONE][0]['value'] : ''."</td>
+		<td>" . isset ( $product->field_product_area [LANGUAGE_NONE] ) && isset ( $product->field_product_area [LANGUAGE_NONE] [0] ) ? $product->field_product_area [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
 	  </tr>
 	</table>
 	</div>";
-    $build .="<div class='w100 floatLeft'>".isset($product->body[LANGUAGE_NONE]) && isset($product->body[LANGUAGE_NONE][0]) ? $product->body[LANGUAGE_NONE][0]['value'] : ''."
+	$build .= "<div class='w100 floatLeft'>" . isset ( $product->body [LANGUAGE_NONE] ) && isset ( $product->body [LANGUAGE_NONE] [0] ) ? $product->body [LANGUAGE_NONE] [0] ['value'] : '' . "
 			</div>
 	</section>";
-    $build .="<section class='w80'>
+	$build .= "<section class='w80'>
 			<div class='bar w100'>
 				<h2 style='margin-left:20px;'>相关产品</h2>
 			</div>";
-    //查询产品的类型
-    $mytype_array = field_get_items('node', $product,'field_product_type');
-    $mytype = isset($mytype_array[0]) ? $mytype_array[0] :'';
-    $tid = $mytype['tid'];
-    $type = taxonomy_term_load($tid);
-    $nids = taxonomy_select_nodes($tid, TRUE, variable_get('default_nodes_main', 10));
-    $nodes = node_load_multiple($nids);
-    $count=0;
-    foreach($nodes as $key=>$node){
-        if($node->nid==$product->nid){
-            continue;
-        }
-        if($count==3){
-            break;
-        }
-        //获取产品图片
-        $myfield_array = field_get_items('node', $node, 'field_product_photo');
-        $image = isset($myfield_array[0]) ? $myfield_array[0] : '';
-        if (!empty($image)) {
-            $product_image_filepath = file_create_url($image['uri']);
-            $build .="<div class='block1'> <span class='fav'>收藏</span> <img src=".$product_image_filepath." />
-                    <a href='". url("product/$node->nid") ."' ><h3 class='product_title'>".$node->title."</h3></a>
-                    <p class='product_price'><span class='farmName'>产品类型：".$type->name."</span><span class='floatRight'>". ( ( isset($node->field_product_price[LANGUAGE_NONE]) && isset($node->field_product_price[LANGUAGE_NONE][0]) ) ? $node->field_product_price[LANGUAGE_NONE][0]['value'] : '' )."</span><span class='floatRight'>￥</span></p>
+	// 查询产品的类型
+	$mytype_array = field_get_items ( 'node', $product, 'field_product_type' );
+	$mytype = isset ( $mytype_array [0] ) ? $mytype_array [0] : '';
+	$tid = $mytype ['tid'];
+	$type = taxonomy_term_load ( $tid );
+	$nids = taxonomy_select_nodes ( $tid, TRUE, variable_get ( 'default_nodes_main', 10 ) );
+	$nodes = node_load_multiple ( $nids );
+	$count = 0;
+	foreach ( $nodes as $key => $node ) {
+		if ($node->nid == $product->nid) {
+			continue;
+		}
+		if ($count == 3) {
+			break;
+		}
+		// 获取产品图片
+		$myfield_array = field_get_items ( 'node', $node, 'field_product_photo' );
+		$image = isset ( $myfield_array [0] ) ? $myfield_array [0] : '';
+		if (! empty ( $image )) {
+			$product_image_filepath = file_create_url ( $image ['uri'] );
+			$build .= "<div class='block1'> <span class='fav'>收藏</span> <img src=" . $product_image_filepath . " />
+                    <a href='" . url ( "product/$node->nid" ) . "' ><h3 class='product_title'>" . $node->title . "</h3></a>
+                    <p class='product_price'><span class='farmName'>产品类型：" . $type->name . "</span><span class='floatRight'>" . ((isset ( $node->field_product_price [LANGUAGE_NONE] ) && isset ( $node->field_product_price [LANGUAGE_NONE] [0] )) ? $node->field_product_price [LANGUAGE_NONE] [0] ['value'] : '') . "</span><span class='floatRight'>￥</span></p>
                 </div>";
-            $count++;
-        }
-    }
-    $build .="</section>";
-    return $build;
+			$count ++;
+		}
+	}
+	$build .= "</section>";
+	return $build;
 }
 
 /**
- * @param $tid  类别的id
+ *
+ * @param $tid 类别的id        	
  * @return 分类中产品的数据
  */
-function product_term_page_callback($tid){
-    $term = taxonomy_term_load($tid);
-    $build = "<main>
+function product_term_page_callback($tid) {
+	$term = taxonomy_term_load ( $tid );
+	$build = "<main>
             <nav id='sideNav' class='w20'>
 			<ul>
-			    <li class='activeNavItem'> <a href='". url("farmshow/product") . "'>农业展品</a> </li>
-				<li> <a href='". url("farmshow/farm") . "'>农庄</a> </li>
+			    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a> </li>
+				<li> <a href='" . url ( "farmshow/farm" ) . "'>农庄</a> </li>
 			</ul>
 		    </nav>
             <section class='w80'>
             <div class='bar'>
-            <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
-            <a href='". url("farmshow/product") . "'><h1>农业展品</h1></a><h1> >".$term->name."</h1>
+            <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
+            <a href='" . url ( "farmshow/product" ) . "'><h1>农业展品</h1></a><h1> >" . $term->name . "</h1>
             <div class='search floatRight'>
-					<a href='#'><img alt='search' src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
+					<a href='#'><img alt='search' src=" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
 				</div>
             </div>";
-
-    $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
-    $products = node_load_multiple($nids);
-    foreach($products as $key=>$product){
-        //获取产品图片
-        $p_image_uri = ( isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
-//        $p_image_locate = explode('//', $p_image_uri);
-//        $p_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $p_image_locate[1];
-        $p_image_filepath = file_create_url($p_image_uri);
-
-        $build .="<a href='". url("product/$product->nid") ."'>
-			<div class='block1'>
-				<span class='fav'>收藏</span> <img src='".$p_image_filepath."'>
-				<h3 class='product_title'>".$product->title."</h3>
-				<p class='product_price'><span class='floatRight'>".( isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : ''."</span><span class='floatRight'>￥</span></p>
+	
+	$nids = taxonomy_select_nodes ( $term->tid, TRUE, variable_get ( 'default_nodes_main', 10 ) );
+	$products = node_load_multiple ( $nids );
+	foreach ( $products as $key => $product ) {
+		// 获取产品图片
+		$p_image_uri = (isset ( $product->field_product_photo [LANGUAGE_NONE] ) && isset ( $product->field_product_photo [LANGUAGE_NONE] [0] )) ? $product->field_product_photo [LANGUAGE_NONE] [0] ['uri'] : '';
+		// $p_image_locate = explode('//', $p_image_uri);
+		// $p_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $p_image_locate[1];
+		$p_image_filepath = file_create_url ( $p_image_uri );
+		$product_price = (isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] )) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '';
+		$build .= '<a href="' . url ( "product/$product->nid" ) . '">
+				<div class="block1">
+				<span class="fav">收藏</span> <img src="' . $p_image_filepath . '"/>
+				<h3 class="product_title">' . $product->title . '</h3>
+				<p class="product_price"><span class="floatRight">'.$product_price
+						.'</span><span class="floatRight">￥</span></p>
 			</div>
-            </a>";
-    }
-
-    return $build;
+            </a>';
+	}
+	
+	return $build;
 }
 
 /**
+ *
  * @return 农业展品页面
  */
-function farmshow_product_page_callback(){
-    return theme('product_page',array());
+function farmshow_product_page_callback() {
+	return theme ( 'product_page', array () );
 }
 
 /**
+ *
  * @return array
  */
-function product_theme(){
-    return array(
-        'product_page'=>array(
-            'variables'=> array('title'=>'农业展品'),
-            'template' => 'product',
-        ),
-    );
+function product_theme() {
+	return array (
+			'product_page' => array (
+					'variables' => array (
+							'title' => '农业展品' 
+					),
+					'template' => 'product' 
+			) 
+	);
 }
-
-function template_preprocess_product_page(&$variables){
-    $variables['farm_page']=url('farmshow/farm');
-    $variables['product_page']=url('farmshow/product');
-
-    $build = "";
-    $vocabulary = taxonomy_vocabulary_load(variable_get('shelf_vocabulary',0));
-    if (!$vocabulary){
-        return array();
-    }
-    $tree = taxonomy_get_tree($vocabulary->vid);
-    
-    $build .="<div class='bar'>
-            <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
-            <h1>农业展品</h1>
-            <div class='search floatRight'>
-					<a href='#'><img alt='search' src=".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
-				</div>
-            </div>";
-    foreach($tree as $key=>$term){
-        $build .="<div class='bar'><h2>".$term->name."</h2> <a href='". url("product/term/$term->tid")."'><span class='floatRight'>更多 ></span></a>";
-        $build .="</div>";
-        $nids = taxonomy_select_nodes($term->tid, TRUE, variable_get('default_nodes_main', 10));
-        $products = node_load_multiple($nids);
-        $count = 0;
-        foreach($products as $pkey=>$product) {
-            if ($count == 4) {
-                break;
-            }
-            //获取产品图片
-            $product_image_uri = isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
- //           $product_image_locate = explode('//', $product_image_uri);
- //           $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
-            $product_image_filepath = file_create_url($product_image_uri);
-            if ($pkey == 3) {
-                $build .= "<div id='node-" . $product->nid  . "' class='block1 noMarginRight'>";
-            } else {
-                $build .= "<div id='node-" . $product->nid  . "' class='block1'>";
-            }
-            if (user_is_logged_in() && module_exists('collection')) {
-				$collection_link = collection_get_collection_link($product);
+function product_local_search_form() {
+	$form ['product_keywords'] = array (
+			'#id' => 'product_keywords',
+			'#type' => 'textfield' 
+	);
+	
+	$form ['product_keywords_search_submit'] = array (
+			'#id' => 'product_keywords_search_submit',
+			'#type' => 'button',
+			'#value' => t ( 'Search' ) 
+	);
+	
+	if (isset ( $_POST ['product_keywords'] ) && ! empty ( trim ( $_POST ['product_keywords'] ) )) {
+		$results = node_local_search_form_execute ( $_POST ['product_keywords'], 'product' );
+		$form ['product_keywords_search_results'] = array (
+				'#theme' => 'search_results',
+				'#results' => $results 
+		);
+	} else {
+		$form ['product_keywords_search_results'] ['#markup'] = product_page();
+	}
+	
+	$form ['#redirect'] = array (
+			drupal_get_normal_path ( $_GET ['q'] ) 
+	);
+	
+	return $form;
+}
+function product_page() {
+	$vocabulary = taxonomy_vocabulary_load ( variable_get ( 'shelf_vocabulary', 0 ) );
+	if (! $vocabulary) {
+		return array ();
+	}
+	$tree = taxonomy_get_tree ( $vocabulary->vid );
+	$build="";
+	foreach ( $tree as $key => $term ) {
+		$build .= "<div class='bar'><h2>" . $term->name . "</h2> <a href='" . url ( "product/term/$term->tid" ) . "'><span class='floatRight'>更多 ></span></a>";
+		$build .= "</div>";
+		$nids = taxonomy_select_nodes ( $term->tid, TRUE, variable_get ( 'default_nodes_main', 10 ) );
+		$products = node_load_multiple ( $nids );
+		$count = 0;
+		foreach ( $products as $pkey => $product ) {
+			if ($count == 4) {
+				break;
+			}
+			// 获取产品图片
+			$product_image_uri = isset ( $product->field_product_photo [LANGUAGE_NONE] ) && isset ( $product->field_product_photo [LANGUAGE_NONE] [0] ) ? $product->field_product_photo [LANGUAGE_NONE] [0] ['uri'] : '';
+			// $product_image_locate = explode('//', $product_image_uri);
+			// $product_image_filepath = $GLOBALS['base_url'] . '/sites/default/files/' . $product_image_locate[1];
+			$product_image_filepath = file_create_url ( $product_image_uri );
+			if ($pkey == 3) {
+				$build .= "<div id='node-" . $product->nid . "' class='block1 noMarginRight'>";
+			} else {
+				$build .= "<div id='node-" . $product->nid . "' class='block1'>";
+			}
+			if (user_is_logged_in () && module_exists ( 'collection' )) {
+				$collection_link = collection_get_collection_link ( $product );
 				$build .= $collection_link;
 			}
-            $build .= "<img src=".$product_image_filepath." /><a href='". url("product/{$product->nid}") . "' ><h3 class='product_title'>".$product->title."</h3></a>" .
-				        "<p class='product_price'><span class='floatRight'>". ( ( isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : '' ) ."</span><span class='floatRight'>￥</span></p>" .
-			        "</div>";
-            $count++;
-        }
-    }
-    $variables['content'] = $build;
+			$build .= "<img src=" . $product_image_filepath . " /><a href='" . url ( "product/{$product->nid}" ) . "' ><h3 class='product_title'>" . $product->title . "</h3></a>" . "<p class='product_price'><span class='floatRight'>" . ((isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] )) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '') . "</span><span class='floatRight'>￥</span></p>" . "</div>";
+			$count ++;
+		}
+	}
+	return $build;
+}
+function template_preprocess_product_page(&$variables) {
+	$variables ['farm_page'] = url ( 'farmshow/farm' );
+	$variables ['product_page'] = url ( 'farmshow/product' );
+	
+	$build = "<div class='bar'>
+            <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
+            <h1>农业展品</h1></div>".drupal_render ( drupal_get_form ( 'product_local_search_form' ) ) ;
+	$variables ['content'] = $build;
 }
 
-//utils
-function product_get_htmlview($product,$pkey)
-{
-    $image_uri = isset($product->field_product_photo[LANGUAGE_NONE]) && isset($product->field_product_photo[LANGUAGE_NONE][0]) ? $product->field_product_photo[LANGUAGE_NONE][0]['uri'] : '';
-	$product_image_filepath = file_create_url($image_uri);
-    $build="";
-	if ($pkey%4 == 0) {
-		$build .= "<div id='node-" . $product->nid  . "' class='block1 noMarginRight'>";
+// utils
+function product_get_htmlview($product, $pkey) {
+	$image_uri = isset ( $product->field_product_photo [LANGUAGE_NONE] ) && isset ( $product->field_product_photo [LANGUAGE_NONE] [0] ) ? $product->field_product_photo [LANGUAGE_NONE] [0] ['uri'] : '';
+	$product_image_filepath = file_create_url ( $image_uri );
+	$build = "";
+	if ($pkey % 4 == 0) {
+		$build .= "<div id='node-" . $product->nid . "' class='block1 noMarginRight'>";
 	} else {
-		$build .= "<div id='node-" . $product->nid  . "' class='block1'>";
+		$build .= "<div id='node-" . $product->nid . "' class='block1'>";
 	}
-	$build .= "<img src=".$product_image_filepath." />
-               <a href='". url("product/$product->nid")."' ><h3 class='product_title'>".$product->title."</h3></a>
+	$build .= "<img src=" . $product_image_filepath . " />
+               <a href='" . url ( "product/$product->nid" ) . "' ><h3 class='product_title'>" . $product->title . "</h3></a>
 			        <p class='product_price'>
-                        <span class='floatRight'>". (isset($product->field_product_price[LANGUAGE_NONE]) && isset($product->field_product_price[LANGUAGE_NONE][0]) ? $product->field_product_price[LANGUAGE_NONE][0]['value'] : '')."</span>
+                        <span class='floatRight'>" . (isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] ) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '') . "</span>
                         <span class='floatRight'>￥</span>
                     </p>
                </div>";
-    return $build;
+	return $build;
 }

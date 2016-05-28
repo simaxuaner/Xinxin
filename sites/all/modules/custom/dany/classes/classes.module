@@ -93,10 +93,33 @@ function classes_admission_page_callback(){
     $module_path = drupal_get_path('module', 'classes');
     return theme("admission_page", array());
 }
+function class_local_search_form() {
+	$form ['class_keywords'] = array (
+			'#id' => 'class_keywords',
+			'#type' => 'textfield'
+	);
 
-function classes_files_page_callback(){
-    $module_path = drupal_get_path('module', 'classes');
-    return theme("files_page", array());
+	$form ['class_keywords_search_submit'] = array (
+			'#id' => 'class_keywords_search_submit',
+			'#type' => 'button',
+			'#value' => t ( 'Search' )
+	);
+
+	if (isset ( $_POST ['class_keywords'] ) && ! empty ( trim ( $_POST ['class_keywords'] ) )) {
+		$results = node_local_search_form_execute ( $_POST ['class_keywords'], 'class' );
+		$form ['class_keywords_search_results'] = array (
+				'#theme' => 'search_results',
+				'#results' => $results
+		);
+	} else {
+		$form ['class_keywords_search_results'] ['#markup'] = NULL;
+	}
+
+	$form ['#redirect'] = array (
+			drupal_get_normal_path ( $_GET ['q'] )
+	);
+
+	return $form;
 }
 
 function classes_detailclass_page_callback($nid){

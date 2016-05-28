@@ -5,6 +5,7 @@
         <!-- 子菜单导航! 0417丢弃-->
         <!-- 子菜单导航! 0423补充-->
         <?php print $secondMenuNav?>
+        <?php $build=""?>
 		<section class="w80">
 			<div class="bar">
               <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/classes_icon.png">
@@ -26,8 +27,8 @@
             <?php 
             foreach($classList as $key => $value)
             {
-            ?>           
-                <div id="node-<?php print $value['id'];?>" class="block1 <?php if(($key+1)%4==0):print "noMarginRight"; endif; ?>" title="<?php print $value['title']?>"> 
+	            ?>           
+	                <div id="node-<?php print $value['id'];?>" class="block1 <?php if(($key+1)%4==0):print "noMarginRight"; endif; ?>" title="<?php print $value['title']?>"> 
                         <?php print $value['collectionLink'];?>
                         <img src="<?php print $value['imgurl']?>" />
                         <a href="<?php print $value['detailurl']?>">
@@ -119,4 +120,13 @@
             }
             ?>
 		</section>
+		
+        <?php 
+//             $form=drupal_get_form ( 'class_local_search_form' );
+//             if(empty($form ['product_keywords_search_results'] ['#markup'])){
+//             	$form ['product_keywords_search_results'] ['#markup']=
+//             }
+//             drupal_render ($form);
+//             print_r($form);
+//         ?>
 	</main>

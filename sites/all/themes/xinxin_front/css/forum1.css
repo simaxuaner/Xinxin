@@ -95,8 +95,18 @@ table thead tr td{
 .floatLeft {
     float: left;
 }
-.floatRight {
+.floatRight1 {
     float: right;
+    height: 31px;
+    width: 35px;
+    margin-top: 4px;
+    margin-left: 9px;
+}
+.floatRight1 a{
+	padding: 0 10px;
+    line-height: 35px;
+    margin-top: -5px;
+    padding-top: 4px;
 }
 table {
     border-collapse: collapse;
