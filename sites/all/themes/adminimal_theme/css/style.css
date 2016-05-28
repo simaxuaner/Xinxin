@@ -469,8 +469,6 @@ div.vertical-tabs ul li.selected a:focus strong {
 
 #content {
   clear: left;
-  margin-left: -30px;
-    margin-bottom: -30px;
 }
 
 /**
@@ -481,10 +479,6 @@ div.vertical-tabs ul li.selected a:focus strong {
   background: #fff;
   position: relative;
   color: #333;
-  border: 1px solid #ddd;
-	margin-left:32px;
-	margin-right:32px;
-	font-family: simhei, arial, sans-serif;
 }
 
 #secondary-links ul.links li {
