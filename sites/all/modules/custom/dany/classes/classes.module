@@ -66,21 +66,41 @@ function classes_menu(){
         'page arguments'=> array(2),
         'access callback' => TRUE,
         'menu_name' => 'user-menu',
-    );    
+    );
+    $items['class_search_ajax'] = array(
+    	'page callback' => 'class_search_ajax_callback',
+    	'type' => MENU_CALLBACK,
+        'access callback' => true,
+    );
     return $items;
+}
+
+function class_search_ajax_callback() {
+	if (isset($_POST['class_search_keywords']) && isset($_POST['class_search_keywords_type'])) {
+		$results = node_local_search_form_execute ($_POST['class_search_keywords'], $_POST['class_search_keywords_type']);
+		drupal_json_output(array('code' => 200, 'html' => theme('search_results', $results)));
+	}
+	else {
+    	drupal_json_output(array('code' => 400, 'html' => '请输入关键字'));
+	}
 }
 
 /*
  * functions of page callback
  */
 function classes_class_page_callback() {
-
     $module_path = drupal_get_path('module', 'classes');
+	drupal_add_js($module_path. '/js/search_class.js');
+	$request_search_ajax_url = array('search_class_url' => url('class_search_ajax'), 'class_search_keywords_type'=>'class');
+	drupal_add_js(array('classmodule' => $request_search_ajax_url), 'setting');
     return theme("classes_page", array());
 }
 
 function classes_teacher_page_callback(){
     $module_path = drupal_get_path('module', 'classes');
+	drupal_add_js($module_path. '/js/search_class.js');
+	$request_search_ajax_url = array('search_class_url' => url('class_search_ajax'), 'class_search_keywords_type'=>'teacher');
+	drupal_add_js(array('classmodule' => $request_search_ajax_url), 'setting');
     return theme("teachers_page", array());
 }
 

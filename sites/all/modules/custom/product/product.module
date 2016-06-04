@@ -254,44 +254,54 @@ function product_page_callback($pid) {
 	} else {
 		$build .= "<a href='#'><h2>不存在农场中</h2></a>";
 	}
-	$build .= "<table class='w100'>
+	$product_no = isset ( $product->field_product_num [LANGUAGE_NONE] ) && isset ( $product->field_product_num [LANGUAGE_NONE] [0] ) ? $product->field_product_num [LANGUAGE_NONE] [0] ['value'] : '';
+	$product_price = isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] ) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '';
+	$product_server = isset ( $product->field_product_server [LANGUAGE_NONE] ) && isset ( $product->field_product_server [LANGUAGE_NONE] [0] ) ? $product->field_product_server [LANGUAGE_NONE] [0] ['value'] : '';
+	$product_mode = isset ( $product->field_product_storage_mode [LANGUAGE_NONE] ) && isset ( $product->field_product_storage_mode [LANGUAGE_NONE] [0] ) ? $product->field_product_storage_mode [LANGUAGE_NONE] [0] ['value'] : '';
+	$product_weight = isset ( $product->field_product_net_weight [LANGUAGE_NONE] ) && isset ( $product->field_product_net_weight [LANGUAGE_NONE] [0] ) ? $product->field_product_net_weight [LANGUAGE_NONE] [0] ['value'] : '';
+	$product_telephone = isset ( $product->field_product_telephone [LANGUAGE_NONE] ) && isset ( $product->field_product_telephone [LANGUAGE_NONE] [0] ) ? $product->field_product_telephone [LANGUAGE_NONE] [0] ['value'] : '';
+	$product_saletime = isset ( $product->field_product_sale_time [LANGUAGE_NONE] ) && isset ( $product->field_product_sale_time [LANGUAGE_NONE] [0] ) ? $product->field_product_sale_time [LANGUAGE_NONE] [0] ['value'] : '';
+	$product_area = isset ( $product->field_product_area [LANGUAGE_NONE] ) && isset ( $product->field_product_area [LANGUAGE_NONE] [0] ) ? $product->field_product_area [LANGUAGE_NONE] [0] ['value'] : '';
+ 	$build .= <<<EOS
+ 			<table class='w100'>
 				  <tr>
 					<td>产品标准号</td>
-					<td> " . isset ( $product->field_product_num [LANGUAGE_NONE] ) && isset ( $product->field_product_num [LANGUAGE_NONE] [0] ) ? $product->field_product_num [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_no</td>
 				  </tr>
 				  <tr>
 					<td>价格</td>
-					<td>" . isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] ) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_price</td>
 				  </tr>
 				  <tr>
 					<td>配送服务</td>
-					<td>" . isset ( $product->field_product_server [LANGUAGE_NONE] ) && isset ( $product->field_product_server [LANGUAGE_NONE] [0] ) ? $product->field_product_server [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_server</td>
 				  </tr>
 				   <tr>
 					<td>储藏方式</td>
-					<td>" . isset ( $product->field_product_storage_mode [LANGUAGE_NONE] ) && isset ( $product->field_product_storage_mode [LANGUAGE_NONE] [0] ) ? $product->field_product_storage_mode [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_mode</td>
 				  </tr>
 				   <tr>
 					<td>净含量</td>
-					<td>" . isset ( $product->field_product_net_weight [LANGUAGE_NONE] ) && isset ( $product->field_product_net_weight [LANGUAGE_NONE] [0] ) ? $product->field_product_net_weight [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_weight</td>
 				  </tr>
 				   <tr>
 					<td>联系方式</td>
-					<td>" . isset ( $product->field_product_telephone [LANGUAGE_NONE] ) && isset ( $product->field_product_telephone [LANGUAGE_NONE] [0] ) ? $product->field_product_telephone [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_telephone</td>
 				  </tr>
 				   <tr>
 					<td>热卖时间</td>
-					<td>" . isset ( $product->field_product_sale_time [LANGUAGE_NONE] ) && isset ( $product->field_product_sale_time [LANGUAGE_NONE] [0] ) ? $product->field_product_sale_time [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_saletime</td>
 				  </tr>
 				   <tr>
 					<td>产地</td>
-					<td>" . isset ( $product->field_product_area [LANGUAGE_NONE] ) && isset ( $product->field_product_area [LANGUAGE_NONE] [0] ) ? $product->field_product_area [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+					<td>$product_area</td>
 				  </tr>
 			</table>
-		</div>";
-	$build .= "<div class='w100 floatLeft'>" . isset ( $product->body [LANGUAGE_NONE] ) && isset ( $product->body [LANGUAGE_NONE] [0] ) ? $product->body [LANGUAGE_NONE] [0] ['value'] : '' . "
-				</div>
-	</section>";
+EOS;
+ 	$build .= "</div>";
+ 	$build .= "<div class='w100 floatLeft'>" . isset ( $product->body [LANGUAGE_NONE] ) && isset ( $product->body [LANGUAGE_NONE] [0] ) ? $product->body [LANGUAGE_NONE] [0] ['value'] : '' . "
+				</div>";
+	$build .= "</section>";
 	$build .= "<section class='w80'>
 					<div class='bar w100'>
 						<h2 style='margin-left:20px;'>相关产品</h2>
@@ -337,7 +347,41 @@ function product_page_callback($pid) {
 	$build .= "</section></main>";
 	return $build;
 }
-
+function product_term_local_search_form($form, &$form_state, $html){
+	$form ['product_keywords_search_submit'] = array (
+			'#id' => 'product_keywords_search_submit',
+			'#attributes' => array (
+					'class' => array (
+							'local_search_form_div'
+					)
+			),
+			'#type' => 'button',
+			'#value' => t ( 'Search' )
+	);
+	
+	$form ['product_keywords'] = array (
+			'#id' => 'product_keywords',
+			'#type' => 'textfield'
+	);
+	
+	if (isset ( $_POST ['product_keywords'] ) && ! empty ( trim ( $_POST ['product_keywords'] ) )) {
+		$results = node_local_search_form_execute ( $_POST ['product_keywords'], 'product' );
+		$form ['product_keywords_search_results'] = array (
+				'#theme' => 'search_results',
+				'#results' => $results
+		);
+	} else {
+		if($html){
+			$form ['product_keywords_search_results'] ['#markup'] = $html;
+		}
+	}
+	
+	$form ['#redirect'] = array (
+			drupal_get_normal_path ( $_GET ['q'] )
+	);
+	
+	return $form;
+}
 /**
  *
  * @param $tid 类别的id        	
@@ -345,6 +389,28 @@ function product_page_callback($pid) {
  */
 function product_term_page_callback($tid) {
 	$term = taxonomy_term_load ( $tid );
+	
+	$html="";
+	$nids = taxonomy_select_nodes ( $term->tid, TRUE, variable_get ( 'default_nodes_main', 10 ) );
+	$products = node_load_multiple ( $nids );
+	foreach ( $products as $key => $product ) {
+		// 获取产品图片
+		$p_image_uri = (isset ( $product->field_product_photo [LANGUAGE_NONE] ) && isset ( $product->field_product_photo [LANGUAGE_NONE] [0] )) ? $product->field_product_photo [LANGUAGE_NONE] [0] ['uri'] : '';
+		// $p_image_locate = explode('//', $p_image_uri);
+		// $p_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $p_image_locate[1];
+		$p_image_filepath = file_create_url ( $p_image_uri );
+		$product_price = (isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] )) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '';
+		$html .= '<div class="block1" id="node-' . $product->nid . '">
+				';
+		if (user_is_logged_in () && module_exists ( 'collection' )) {
+			$collection_link = collection_get_collection_link ( $product );
+			$html .= $collection_link;
+		}
+		$html .= '<img src="' . $p_image_filepath . '"/>
+				<a href="' . url ( "product/$product->nid" ) . '"><h3 class="product_title">' . $product->title . '</h3></a>
+				<p class="product_price"><span class="floatRight">' . $product_price . '</span><span class="floatRight">￥</span></p>
+			</div>';
+	}
 	$build = "<main>
             <nav id='sideNav' class='w20'>
 			<ul>
@@ -356,37 +422,9 @@ function product_term_page_callback($tid) {
             <div class='bar'>
             <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
             <a href='" . url ( "farmshow/product" ) . "'><h1>农业展品</h1></a><h1> >" . $term->name . "</h1>
-            <div class='search floatRight'>
-					<a href='#'><img alt='search' src=" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/search_bar.png></a><input name='search' type='text'>
-				</div>
-            </div>";
-	
-	$nids = taxonomy_select_nodes ( $term->tid, TRUE, variable_get ( 'default_nodes_main', 10 ) );
-	$products = node_load_multiple ( $nids );
-	foreach ( $products as $key => $product ) {
-		// 获取产品图片
-		$p_image_uri = (isset ( $product->field_product_photo [LANGUAGE_NONE] ) && isset ( $product->field_product_photo [LANGUAGE_NONE] [0] )) ? $product->field_product_photo [LANGUAGE_NONE] [0] ['uri'] : '';
-		// $p_image_locate = explode('//', $p_image_uri);
-		// $p_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $p_image_locate[1];
-		$p_image_filepath = file_create_url ( $p_image_uri );
-		$product_price = (isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] )) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '';
-		$build .= '<a href="' . url ( "product/$product->nid" ) . '">
-				<div class="block1" id="node-' . $product->nid . '">
-				';
-		if (user_is_logged_in () && module_exists ( 'collection' )) {
-			$collection_link = collection_get_collection_link ( $product );
-			$build .= $collection_link;
-		}
-		$build .= '<img src="' . $p_image_filepath . '"/>
-				<h3 class="product_title">' . $product->title . '</h3>
-				<p class="product_price"><span class="floatRight">' . $product_price . '</span><span class="floatRight">￥</span></p>
-			</div>
-            </a>';
-	}
-	
+            </div>".drupal_render ( drupal_get_form ( 'product_term_local_search_form','<div class="farm_list">'.$html.'</div>'));
 	return $build;
 }
-
 /**
  *
  * @return 农业展品页面

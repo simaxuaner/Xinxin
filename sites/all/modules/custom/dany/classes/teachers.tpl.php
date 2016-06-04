@@ -7,12 +7,13 @@
             <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/teachers_icon.png">
         	<h1>农业名师</h1>
         	<div class="search floatRight">
-                <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search">
-                </a><input type="text" name="search">
+                <a href="#" id="search_class_button"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search">
+                </a><input type="text" name="search" id="search_class_form">
             </div> 
         </div>
         
         <!--动态获取课程列表 -->
+        <div class="search_class_form_list">
         <?php 
         foreach($teacherList as $key => $value)
         {
@@ -32,5 +33,6 @@
         <?php
         }
         ?>
+        </div>
     </section>
 </main>    
