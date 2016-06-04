@@ -146,26 +146,29 @@ function getNoteList($type)
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
-
+   
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
+        
         foreach ($nodes as $key => $node) {
             if(isset($node->field_news_type[LANGUAGE_NONE]) && isset($node->field_news_type[LANGUAGE_NONE][0]) && $node->field_news_type[LANGUAGE_NONE][0]['value']==$type)
             {
+                $imageurl="";
                 if (isset($node->field_image[LANGUAGE_NONE])&&isset($node->field_image[LANGUAGE_NONE][0])) {
                     $imgid = $node->field_image[LANGUAGE_NONE][0]['fid'];
                     $imgfile = file_load($imgid);
                     $imageurl = file_create_url($imgfile->uri);
-                    $noteList[$key]=array(
-                        'imgurl'      => $imageurl,
-                        'date'        => changeDateform(date('m-d',$node->created)),
-                        'title'       => $node->title,
-                        'content'     => (isset($node->body[LANGUAGE_NONE])&&isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '',
-                    );
                 }
+                $noteList[$key]=array(
+                    'imgurl'      => $imageurl,
+                    'date'        => changeDateform(date('m-d',$node->created)),
+                    'title'       => $node->title,
+                    'content'     => (isset($node->body[LANGUAGE_NONE])&&isset($node->body[LANGUAGE_NONE][0])) ? $node->body[LANGUAGE_NONE][0]['value'] : '',
+                );
             }
         }
     }
+    print_r($noteList);
     return $noteList;
 }
 

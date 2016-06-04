@@ -460,7 +460,7 @@ function lesson_get_htmlview($class,$pkey)
 	$build .= "<img src=".$class_image_filepath." />
                <a href='". url("classes/detailclass/$class->nid")."' ><h3 class='product_title'>".getShortTitle($class->title,7)."</h3></a>
 			        <p class='product_price'>
-                        <span class='floatRight'>查看更多"."</span>
+                        <span class='floatRight'>取消收藏x"."</span>
                         <span class='floatRight'></span></p>
                </div>";
     return $build;
@@ -480,7 +480,7 @@ function teacher_get_htmlview($teacher,$pkey)
 	$build .= "<img src=".$teacher_image_filepath." />
                <a href='". url("classes/detailteacher/$teacher->nid")."' ><h3 class='product_title'>".getShortTitle($teacher->title,7)."</h3></a>
 			        <p class='product_price'>
-                        <span class='floatRight'>查看更多"."</span>
+                        <span class='floatRight'>取消收藏x"."</span>
                         <span class='floatRight'></span></p>
                </div>";
     return $build;
