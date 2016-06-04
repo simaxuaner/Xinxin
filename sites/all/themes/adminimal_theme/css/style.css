@@ -3060,3 +3060,10 @@ body.adminimal-skin-alternative.adminimal-theme.page-admin-structure-features #e
 	margin-right:32px;
 	margin-top:32px;
 }
+
+h1.logout_button_position {
+  float: right !important;
+}
+h1.logout_button_position a{
+  color: white !important;
+}

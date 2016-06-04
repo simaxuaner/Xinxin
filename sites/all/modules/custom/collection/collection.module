@@ -237,6 +237,30 @@ function _collection_insert($node) {
 }
 
 /**
+ * Current user dis-collects an object.
+ */
+function _collection_delete($node) {
+	global $user;
+
+	$transaction = db_transaction();
+	try {
+		db_delete('collection')
+		->condition('uid', $user->uid)
+		->condition('nid', $node->nid)
+		->execute();
+
+		// update the statistics
+		$count = _collection_update_statistics($node);
+		return $count;
+
+	} catch (Exception $e) {
+		$transaction->rollback('collection');
+		watchdog_exception('collection', $e);
+		throw $e;
+	}
+}
+
+/**
  * Update collection statistics of an object in {collection_statistics} according to {collection} table.
  */
 function _collection_update_statistics($node) {

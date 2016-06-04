@@ -188,7 +188,6 @@ function taxonomy_overview_terms($form, &$form_state) {
         );
         $form_state['redirect'] = array($_GET['q'], (isset($_GET['page']) ? array('query' => array('page' => $_GET['page'])) : array()));
     }
-    $action_links = 'admin/structure/taxonomy/shelf/add';
 
     return $form;
 }
@@ -622,6 +621,7 @@ function shelf_form_term_submit($form, &$form_state) {
 
     $form_state['values']['tid'] = $term->tid;
     $form_state['tid'] = $term->tid;
+    $form_state['redirect'] = "admin/productShelf";
 }
 
 /**

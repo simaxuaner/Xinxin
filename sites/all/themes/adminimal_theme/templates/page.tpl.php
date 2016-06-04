@@ -16,6 +16,8 @@
 	<?php endif; ?>
 
 	<?php print render($title_suffix); ?>
+	
+	<h1 class="page-title logout_button_position"><a href="<?php print url('user/logout'); ?>">退出</a></h1>
 
 </div>
 
