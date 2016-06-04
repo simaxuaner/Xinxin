@@ -103,10 +103,13 @@ function farm_menu()
 function farm_page_callback($fid){
     $farm = node_load($fid);
     //查找出农场图片
-    $farm_image_uri = $farm->field_farm_image[LANGUAGE_NONE][1]['uri'];
-    //$farm_image_locate = explode('//', $farm_image_uri);
-    //$farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
-    $farm_image_filepath =file_create_url($farm_image_uri);
+    $farm_image_div="";
+    if(isset($farm->field_farm_image[LANGUAGE_NONE])){
+    	foreach ($farm->field_farm_image[LANGUAGE_NONE] as $img){
+    		$farm_image_div="<img src=".file_create_url($img['uri'])." alt='image' class='alignCenter'/>";
+    		break;
+    	}
+    }
     $build ="<main>
 		    <nav id='sideNav' class='w20'>
 			<ul>
@@ -118,7 +121,7 @@ function farm_page_callback($fid){
 			<div class='bar'>
                 <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'>
 				<h1><a class='underline' href='".url("farmshow/farm")."'>休闲农庄</a> >".$farm->title."</h1></div>
-			<img src=".$farm_image_filepath." alt='Jackie Chan' class='alignCenter w100'/>
+			$farm_image_div
 		</section>";
     $build .="<section class='w80'>
 			<div class='bar w100'>
@@ -231,8 +234,8 @@ function farm_page(){
 	
 	foreach($nodes as $key=>$value){
 		//查找出农场图片
-		$farm_image_filepath = isset($value->field_farm_image[LANGUAGE_NONE]) && isset($value->field_farm_image[LANGUAGE_NONE][0]) ? file_create_url($value->field_farm_image[LANGUAGE_NONE][0]['uri']) : '';
-	
+		$farm_image_uri = isset($value->field_farm_image[LANGUAGE_NONE]) && isset($value->field_farm_image[LANGUAGE_NONE][0]) ? $value->field_farm_image[LANGUAGE_NONE][0]['uri'] : '';
+		$farm_image_filepath=image_style_url('large',$farm_image_uri);
 		//查询出此农场中的产品
 		$query = db_select('field_data_field_product_farm', 'f')->extend('PagerDefault');
 		$pids = $query
@@ -259,8 +262,8 @@ function farm_page(){
 		}
 		$build .= '<a href="'.url("farm/{$value->nid}") . '">';
 		$build .= "<div class='wideBlock'>";
-		$build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
-                <h3>地址：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '' ) ."</h3></div>";
+		$build .= "<div class='blockTitle'><h3 class='farm_title_label'>".$value->title."</h3><br/>
+                <h4 class='farm_title_label'>地址：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '' ) ."</h4></div>";
 		$build .="<img src='".$farm_image_filepath."' class='w30 floatLeft'/>";
 		$build .="<div class='blockInformation w70 floatLeft'>";
 		$build .="<p>". ( ( isset($value->body[LANGUAGE_NONE]) && isset($value->body[LANGUAGE_NONE][0]) ) ? $value->body[LANGUAGE_NONE][0]['value'] : '' ) ."</p>";

@@ -6,24 +6,19 @@
         <!-- 子菜单导航! 0423补充-->
         <?php print $secondMenuNav?>
         <?php $build=""?>
+        <div id="class_form_list">
 		<section class="w80">
 			<div class="bar">
               <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/classes_icon.png">
 			  <h1>课程</h1>
-              <!-- 
-              <select>
-                <option value="volvo">种植培养</option>
-                <option value="saab">市场</option>
-                <option value="mercedes">管理</option>
-                <option value="audi">金融</option>
-			  </select> -->
               <div class="search floatRight">
-                <a href="#"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search"></a>
-                <input type="text" name="search">
+                <a href="#" id="search_class_button"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search"></a>
+                <input type="text" name="search" id="search_class_form">
               </div> 
             </div>
 			
             <!--动态获取课程列表 -->
+            <div class="search_class_form_list">
             <?php 
             foreach($classList as $key => $value)
             {
@@ -43,9 +38,10 @@
             <?php
             }
             ?>
+            </div>
 		</section>
         
-		<section class="w80">
+		<section class="w80 search_class_form_list_append">
             <div class="bar">
 				<h2>推荐</h2>
 			</div>
@@ -70,7 +66,7 @@
             }
             ?>
 		</section>		
-		<section class="w80">
+		<section class="w80 search_class_form_list_append">
             <div class="bar">
 				<h2>收藏</h2>
 			</div>
@@ -95,13 +91,4 @@
             }
             ?>
 		</section>
-		
-        <?php 
-//             $form=drupal_get_form ( 'class_local_search_form' );
-//             if(empty($form ['product_keywords_search_results'] ['#markup'])){
-//             	$form ['product_keywords_search_results'] ['#markup']=
-//             }
-//             drupal_render ($form);
-//             print_r($form);
-//         ?>
 	</main>

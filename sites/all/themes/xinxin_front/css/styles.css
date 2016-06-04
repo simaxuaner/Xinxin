@@ -1,3 +1,7 @@
+.farm_title_label{
+	margin-bottom: 0;
+}
+
 button,
 fieldset,
 form,
@@ -447,7 +451,8 @@ h3 {
 	padding: 12px 16px;
 }
 table {
-	border-collapse: collapse;
+	border: 2px solid #ccc;
+	margin-bottom: 10px;
 }
 .schedule td{
 	min-width: 64px;
