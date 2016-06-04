@@ -537,6 +537,9 @@ function product_get_htmlview($product, $pkey) {
 	} else {
 		$build .= "<div id='node-" . $product->nid . "' class='block1'>";
 	}
+	$collectLinkRemove=collection_get_collection_delete_link($product);
+    //print_r($collectLinkRemove);
+    $build.=$collectLinkRemove;
 	$build .= "<img src=" . $product_image_filepath . " />
                <a href='" . url ( "product/$product->nid" ) . "' ><h3 class='product_title'>" . $product->title . "</h3></a>
 			        <p class='product_price'>

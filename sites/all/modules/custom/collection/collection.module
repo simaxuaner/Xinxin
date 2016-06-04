@@ -161,7 +161,8 @@ function collection_user_ajax_callback($action, $nid) {
 					}
 					break;
 				case 'delete':
-					if ($count = _collection_delete($node)) {
+					if (true) {
+						$count=_collection_delete($node);
 						entity_get_controller('node')->resetCache(array($node->nid));
 						$node_array = (array)$node;
 						$node_array['collection']['collected'] = FALSE;
@@ -337,22 +338,23 @@ function collection_get_collection_delete_link($node){
 	if($node->collection['collected']){
 		$class = 'node-collect';
 		$url = "collection/delete/{$node->nid}/nojs";
-		return $url;
 	} else {
 		return "";
 	}
-	/*
+	if(($node->collection['collected']))
+		$title = l(t('取消'), $url, array('attributes'=>array('class'=>"use-ajax {$class}")));
+	//return "";
 	return theme('html_tag', array(
 	    'element' => array(
 	      '#tag' => 'span',
 	      '#attributes' => array(
 	        'id' => array('node-collection-wrapper'),
 			'class' => array('node-collection-wrapper fav'),
-			'title' => t('收藏')
+			'title' => t('取消收藏')
 	      ),
 	      '#value' => $title,
 	    ),
-  	));*/
+  	));
 }
 
 /**
