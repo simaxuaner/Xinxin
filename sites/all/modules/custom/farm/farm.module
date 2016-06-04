@@ -261,8 +261,8 @@ function farm_page(){
 		$build .= "<div class='wideBlock'>";
 		$build .= "<div class='blockTitle'><h2>".$value->title."</h2><br/>
                 <h3>地址：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '' ) ."</h3></div>";
-		$build .="<img src='".$farm_image_filepath."' class='w40 floatLeft'/>";
-		$build .="<div class='blockInformation w60 floatLeft'>";
+		$build .="<img src='".$farm_image_filepath."' class='w30 floatLeft'/>";
+		$build .="<div class='blockInformation w70 floatLeft'>";
 		$build .="<p>". ( ( isset($value->body[LANGUAGE_NONE]) && isset($value->body[LANGUAGE_NONE][0]) ) ? $value->body[LANGUAGE_NONE][0]['value'] : '' ) ."</p>";
 		$build .="<p class='alignRight'><a href='". url("farm/{$value->nid}") ."'>详细信息 ></a></p>" ;
 		$build .="<div class='alignRight products'>";
@@ -288,15 +288,20 @@ function farm_local_search_form() {
 	return $form;
 }
 function set_form(){
+	$form ['farm_keywords_search_submit'] = array (
+			'#id' => 'farm_keywords_search_submit',
+			'#attributes' => array (
+					'class' => array (
+							'local_search_form_div'
+					) 
+			),
+			'#type' => 'button',
+			'#value' => t ( 'Search' )
+	);
+	
 	$form ['farm_keywords'] = array (
 			'#id' => 'farm_keywords',
 			'#type' => 'textfield'
-	);
-	
-	$form ['farm_keywords_search_submit'] = array (
-			'#id' => 'farm_keywords_search_submit',
-			'#type' => 'button',
-			'#value' => t ( 'Search' )
 	);
 
 	$form ['#redirect'] = array (
@@ -313,7 +318,7 @@ function farms_local_search_form() {
 				'#results' => $results
 		);
 	} else {
-		$form ['farm_keywords_search_results'] ['#markup'] = farms_page();
+		$form ['farm_keywords_search_results'] ['#markup'] = "<div class='farm_list'>".farms_page()."</div>";
 	}
 	return $form;
 }
@@ -335,8 +340,6 @@ function farms_page(){
 	foreach($nodes as $key=>$value){
 		//查找出农场图片
 		$farm_image_uri = ( isset($value->field_farm_image[LANGUAGE_NONE]) && isset($value->field_farm_image[LANGUAGE_NONE][0]) ) ? $value->field_farm_image[LANGUAGE_NONE][0]['uri'] : '';
-		//        $farm_image_locate = explode('//', $farm_image_uri);
-		//        $farm_image_filepath = $GLOBALS['base_url'].'/sites/default/files/' . $farm_image_locate[1];
 		if (user_is_logged_in() && module_exists('collection')) {
 			$collection_link = collection_get_collection_link($value);
 		}
@@ -346,8 +349,8 @@ function farms_page(){
 				<a href='". url("farm/{$value->nid}")."'>
                     <h3>".$value->title."</h3>
                 </a>
-				<p><span class='farmName'>地点：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '') ."</span><span class='floatRight'>&gt;</span><span class='floatRight'><a href='". url("farm/{$value->nid}")."'>详细信息<a href='". url("farm/{$value->nid}")."'></span></p>
-			</div>";
+				<p><span class='farmName'>地点：". ( ( isset($value->field_farm_location[LANGUAGE_NONE]) && isset($value->field_farm_location[LANGUAGE_NONE][0]) ) ? $value->field_farm_location[LANGUAGE_NONE][0]['value'] : '') ."</span><span class='floatRight'>&gt;</span><span class='floatRight'><a href='". url("farm/{$value->nid}")."'>详细信息</a></span></p>
+		</div>";
 	
 	}
 	return $build;
@@ -362,7 +365,7 @@ function template_preprocess_farms_page(&$variables){
     $build_search = "<div class='bar'><img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'><h1>休闲农庄</h1>
                     </div>";
     $variables['search'] = $build_search;
-    $variables['content'] = "<div class='button floatRight1'><a href='".url("farmshow/farm")."'>三</a></div>".drupal_render ( drupal_get_form ( 'farms_local_search_form' ) );
+    $variables['content'] = "<div class='button floatRight1'><a href='".url("farmshow/farm")."'>三</a></div>" . drupal_render( drupal_get_form ( 'farms_local_search_form' ) );
 }
 
 function farm_get_htmlview($farm,$pkey)
