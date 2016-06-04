@@ -281,6 +281,7 @@ EOS;
 function advertistment_form($form, &$form_state){
 
     $form['#attributes']['enctype'] = 'multipart/form-data';
+    $form['#attributes']['class'] = array('advertisement_app_input_div');
 
     $form['adimage'] = array(
         '#type' => 'file',
@@ -306,30 +307,6 @@ function advertistment_form($form, &$form_state){
         '#value' => t('申请'),
     );
     return $form;
-
-    /*<form class="alignCenter" >
-                <table>
-                    <tr>
-                        <td>
-                            <label class="alignLeft" for="image">广告图片</label>
-                        </td>
-                        <td>
-                            <input type="file" name="image">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="alignLeft" for="website">广告链接</label>
-                        </td>
-                        <td>
-                            <input type="text" name="link">
-                        </td>
-                    </tr>
-                </table>
-                <div class="button">
-                    <a href="#">申请</a>
-                </div>
-                </form>*/
 }
 
 /**

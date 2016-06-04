@@ -1184,3 +1184,6 @@ fieldset.collapsible .fieldset-legend {
 	display:block;
 	padding-top: 50px;
 }
+.advertisement_app_input_div input {
+	float: none;
+}
