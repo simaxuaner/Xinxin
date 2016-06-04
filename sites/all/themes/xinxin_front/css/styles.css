@@ -535,6 +535,9 @@ table {
 .w60 {
     width: 60%;
 }
+.w70 {
+    width: 70%;
+}
 .w75 {
     width: 75%;
 }
@@ -642,7 +645,7 @@ section video {
 	position: absolute;
 	color: white;
 	font-size: 1.2em;
-	line-height: 64px;
+	line-height: 32px;
 	width: 64px;
 	background-color: #4d93e3;
 	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
@@ -837,19 +840,6 @@ section > #slider img {
 .noMarginRight {
 	margin-right: 0 !important;
 }
-.fav {
-	text-align: center;
-	right: 0;
-	position: absolute;
-	color: white;
-	font-size: 1.2em;
-	line-height: 64px;
-	width: 64px;
-	background-color: #4d93e3;
-	-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
-	-moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
-	box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
-}
 #section401{
 	margin-left:20%; 
 	float: left;
@@ -901,9 +891,11 @@ h3.product_title{
 	float: left;
     width: 48px;
     min-width: 48px !important;
-    margin: 0;
+    margin-top: -1px;
+    margin-left: 0;
+    height: 48px;
     background-color: #e3e3e3;
-	background: url(../images/icons/search_bar.png) no-repeat;
+    background: url(../images/icons/search_bar.png) no-repeat;
 }
 #user-login{
 	margin: 0 auto;
@@ -935,7 +927,6 @@ h3.product_title{
 }
 #user-login div input{
 	background-color: rgb(250, 255, 189);
-	padding: 5%;
 }
 
 #user-register-form{
@@ -970,22 +961,39 @@ h3.product_title{
 	background-color: rgb(250, 255, 189);
 	padding: 1%;
 }
-.form-submit{
-	font-weight: bold;
+.local_search_form_div {
+    font-weight: bold;
     text-decoration: none;
     color: #ffffff;
-    padding: 0 24px !important;
+    /* padding: 0 24px !important; */
     line-height: 35px;
     cursor: pointer;
     border: 0;
     box-sizing: border-box;
     font-family: calibri, arial, sans-serif;
-    margin-top: 3px;
+    margin-top: 5px;
     background-color: #4d93e3 !important;
     min-width: 0px;
-    width: 8%;
-    height: 35px;
-    margin-right: -50px;
+    width: 55px;
+    height: 30px;
+    margin-left: 3px;
+}
+#edit-submit{
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    /* padding: 0 24px !important; */
+    line-height: 35px;
+    cursor: pointer;
+    border: 0;
+    box-sizing: border-box;
+    font-family: calibri, arial, sans-serif;
+    /* margin-top: 5px; */
+    background-color: #4d93e3 !important;
+    min-width: 0px;
+    width: 80px;
+    height: 40px;
+    /* margin-left: 3px; */
 }
 
 #edit-preview{
@@ -1167,9 +1175,7 @@ fieldset.collapsible .fieldset-legend {
 .region-content-before p{
 	margin:0;
 }
-#node-33 {
-    margin: 4em 4% 16px 0;
-}
-#node-20{
-	margin: 4em 4% 16px 0;
+.farm_list{
+	display:block;
+	padding-top: 50px;
 }

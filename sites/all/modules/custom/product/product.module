@@ -122,7 +122,7 @@ function product_user_page($action, $nid) {
 /**
  *
  * Ajax callback for on shelf action
- * 
+ *
  * @return An array of ajax commands.
  */
 function onshelf_ajax_callback($nid) {
@@ -138,7 +138,7 @@ function onshelf_ajax_callback($nid) {
 
 /**
  * Generate a on shelf form
- * 
+ *
  * @param
  *        	$node
  */
@@ -179,7 +179,7 @@ function on_shelf_form($form, &$form_state, $node) {
 
 /**
  * Ajax out shelf form callback function.
- * 
+ *
  * @param
  *        	$form
  * @param
@@ -244,8 +244,8 @@ function product_page_callback($pid) {
             <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
 			<h1><a href='" . url ( "farmshow/product" ) . "'>农业展品</a>" . $product->title . "</h1>
 			</div>
-			<img class='w50 floatLeft productImage' src='" . $farm_image_filepath . "'/>
-			<div class='productInfo w50 floatLeft'>
+			<img class='w30 floatLeft productImage' src='" . $farm_image_filepath . "'/>
+			<div class='productInfo w70 floatLeft'>
 			<h1>" . $product->title . "</h1><br/>";
 	if ($myfarm) {
 		$fid = $myfarm ['value'];
@@ -290,8 +290,7 @@ function product_page_callback($pid) {
 	</table>
 	</div>";
 	$build .= "<div class='w100 floatLeft'>" . isset ( $product->body [LANGUAGE_NONE] ) && isset ( $product->body [LANGUAGE_NONE] [0] ) ? $product->body [LANGUAGE_NONE] [0] ['value'] : '' . "
-			</div>
-	</section>";
+			</div></section>";
 	$build .= "<section class='w80'>
 			<div class='bar w100'>
 				<h2 style='margin-left:20px;'>相关产品</h2>
@@ -373,8 +372,7 @@ function product_term_page_callback($tid) {
 		}
 		$build .='<img src="' . $p_image_filepath . '"/>
 				<h3 class="product_title">' . $product->title . '</h3>
-				<p class="product_price"><span class="floatRight">'.$product_price
-						.'</span><span class="floatRight">￥</span></p>
+				<p class="product_price"><span class="floatRight">' . $product_price . '</span><span class="floatRight">￥</span></p>
 			</div>
             </a>';
 	}
@@ -405,15 +403,20 @@ function product_theme() {
 	);
 }
 function product_local_search_form() {
+	$form ['product_keywords_search_submit'] = array (
+			'#id' => 'product_keywords_search_submit',
+			'#attributes' => array (
+					'class' => array (
+							'local_search_form_div'
+					) 
+			),
+			'#type' => 'button',
+			'#value' => t ( 'Search' ) 
+	);
+	
 	$form ['product_keywords'] = array (
 			'#id' => 'product_keywords',
 			'#type' => 'textfield' 
-	);
-	
-	$form ['product_keywords_search_submit'] = array (
-			'#id' => 'product_keywords_search_submit',
-			'#type' => 'button',
-			'#value' => t ( 'Search' ) 
 	);
 	
 	if (isset ( $_POST ['product_keywords'] ) && ! empty ( trim ( $_POST ['product_keywords'] ) )) {
@@ -423,7 +426,7 @@ function product_local_search_form() {
 				'#results' => $results 
 		);
 	} else {
-		$form ['product_keywords_search_results'] ['#markup'] = product_page();
+		$form ['product_keywords_search_results'] ['#markup'] = product_page ();
 	}
 	
 	$form ['#redirect'] = array (
@@ -438,7 +441,7 @@ function product_page() {
 		return array ();
 	}
 	$tree = taxonomy_get_tree ( $vocabulary->vid );
-	$build="";
+	$build = "";
 	foreach ( $tree as $key => $term ) {
 		$build .= "<div class='bar'><h2>" . $term->name . "</h2> <a href='" . url ( "product/term/$term->tid" ) . "'><span class='floatRight'>更多 ></span></a>";
 		$build .= "</div>";
@@ -475,7 +478,7 @@ function template_preprocess_product_page(&$variables) {
 	
 	$build = "<div class='bar'>
             <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
-            <h1>农业展品</h1></div>".drupal_render ( drupal_get_form ( 'product_local_search_form' ) ) ;
+            <h1>农业展品</h1></div>" . drupal_render ( drupal_get_form ( 'product_local_search_form' ) );
 	$variables ['content'] = $build;
 }
 
