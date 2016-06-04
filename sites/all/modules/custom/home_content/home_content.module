@@ -24,6 +24,11 @@ function home_content_menu()
 
 function homepage_page_callback()
 {
+	if (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset') {
+		global $user;
+		if (in_array('administrator', $user->roles))
+			drupal_goto('admin');
+	}
     return '';
 }
 

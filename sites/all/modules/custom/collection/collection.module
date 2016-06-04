@@ -161,7 +161,17 @@ function collection_user_ajax_callback($action, $nid) {
 					}
 					break;
 				case 'delete':
-					
+					if (true) {
+						$count=_collection_delete($node);
+						entity_get_controller('node')->resetCache(array($node->nid));
+						$node_array = (array)$node;
+						$node_array['collection']['collected'] = FALSE;
+						$node_array['collection']['count'] = $count;
+						$commands[] = ajax_command_remove("#node-{$node->nid}.block1");
+					}
+					else {
+						$commands[] = ajax_command_alert(t("Error happened in sending the request. Please try again later."));
+					}
 					break;
 				default:
 					break;
@@ -237,6 +247,30 @@ function _collection_insert($node) {
 }
 
 /**
+ * Current user dis-collects an object.
+ */
+function _collection_delete($node) {
+	global $user;
+
+	$transaction = db_transaction();
+	try {
+		db_delete('collection')
+		->condition('uid', $user->uid)
+		->condition('nid', $node->nid)
+		->execute();
+
+		// update the statistics
+		$count = _collection_update_statistics($node);
+		return $count;
+
+	} catch (Exception $e) {
+		$transaction->rollback('collection');
+		watchdog_exception('collection', $e);
+		throw $e;
+	}
+}
+
+/**
  * Update collection statistics of an object in {collection_statistics} according to {collection} table.
  */
 function _collection_update_statistics($node) {
@@ -304,22 +338,23 @@ function collection_get_collection_delete_link($node){
 	if($node->collection['collected']){
 		$class = 'node-collect';
 		$url = "collection/delete/{$node->nid}/nojs";
-		return $url;
 	} else {
 		return "";
 	}
-	/*
+	if(($node->collection['collected']))
+		$title = l(t('取消'), $url, array('attributes'=>array('class'=>"use-ajax {$class}")));
+	//return "";
 	return theme('html_tag', array(
 	    'element' => array(
 	      '#tag' => 'span',
 	      '#attributes' => array(
 	        'id' => array('node-collection-wrapper'),
 			'class' => array('node-collection-wrapper fav'),
-			'title' => t('收藏')
+			'title' => t('取消收藏')
 	      ),
 	      '#value' => $title,
 	    ),
-  	));*/
+  	));
 }
 
 /**

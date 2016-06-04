@@ -414,7 +414,7 @@ function product_term_page_callback($tid) {
 	$build = "<main>
             <nav id='sideNav' class='w20'>
 			<ul>
-			    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a> </li>
+			    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a></li>
 				<li> <a href='" . url ( "farmshow/farm" ) . "'>休闲农庄</a> </li>
 			</ul>
 		    </nav>
@@ -537,6 +537,9 @@ function product_get_htmlview($product, $pkey) {
 	} else {
 		$build .= "<div id='node-" . $product->nid . "' class='block1'>";
 	}
+	$collectLinkRemove=collection_get_collection_delete_link($product);
+    //print_r($collectLinkRemove);
+    $build.=$collectLinkRemove;
 	$build .= "<img src=" . $product_image_filepath . " />
                <a href='" . url ( "product/$product->nid" ) . "' ><h3 class='product_title'>" . $product->title . "</h3></a>
 			        <p class='product_price'>

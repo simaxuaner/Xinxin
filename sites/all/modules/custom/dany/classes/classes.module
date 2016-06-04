@@ -477,10 +477,13 @@ function lesson_get_htmlview($class,$pkey)
 	} else {
 		$build .= "<div id='node-" . $class->nid  . "' class='block1'>";
 	}
+    $collectLinkRemove=collection_get_collection_delete_link($class);
+    //print_r($collectLinkRemove);
+    $build.=$collectLinkRemove;
 	$build .= "<img src=".$class_image_filepath." />
                <a href='". url("classes/detailclass/$class->nid")."' ><h3 class='product_title'>".getShortTitle($class->title,7)."</h3></a>
 			        <p class='product_price'>
-                        <span class='floatRight'>取消收藏x"."</span>
+                        <span class='floatRight'>"."</span>
                         <span class='floatRight'></span></p>
                </div>";
     return $build;
@@ -497,11 +500,17 @@ function teacher_get_htmlview($teacher,$pkey)
 	} else {
 		$build .= "<div id='node-" . $teacher->nid  . "' class='block1'>";
 	}
+    $collectLinkRemove=collection_get_collection_delete_link($teacher);
+    //print_r($collectLinkRemove);
+    $build.=$collectLinkRemove;
 	$build .= "<img src=".$teacher_image_filepath." />
-               <a href='". url("classes/detailteacher/$teacher->nid")."' ><h3 class='product_title'>".getShortTitle($teacher->title,7)."</h3></a>
+               <a href='". url("classes/detailteacher/$teacher->nid")."' >
+                    <h3 class='product_title'>".getShortTitle($teacher->title,4)."</h3>
+               </a>
 			        <p class='product_price'>
-                        <span class='floatRight'>取消收藏x"."</span>
-                        <span class='floatRight'></span></p>
+                        <span class='floatRight'>"."</span>
+                        <span class='floatRight'></span>
+                    </p>
                </div>";
     return $build;
 }

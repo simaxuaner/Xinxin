@@ -6,7 +6,7 @@
 	<?php print $secondMenuNav?>
 	<section class="w80">
 		<div class="bar">
-			<h1><a class="underline" href="?q=classes.php">农业课堂</a> &gt;详细信息</h1>
+			<h1><a class="underline" href="?q=classes">农业课堂</a> &gt;详细信息</h1>
 		</div>
 		<div class="paddingRight w80 floatLeft">
 			<video controls preload=""><source src="<?php print $detailClass['dataurl']?>"></video>

@@ -208,8 +208,8 @@ function template_preprocess_farm_page(&$variables){
     $variables['farm_page']=url("farmshow/farm");
     $variables['product_page']=url("farmshow/product");
 
-    
-    $variables['content'] = "<div class='button floatRight1'><a href='". url("farms") . "'>㗊</a></div>".drupal_render ( drupal_get_form ( 'farm_local_search_form' ) );
+    $local_search_form = drupal_get_form ( 'farm_local_search_form' );
+    $variables['content'] = "<div class='button floatRight1'><a href='". url("farms") . "'>㗊</a></div>".drupal_render($local_search_form);
 
     $build_search = "<div class='bar'>
                     <img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'>
@@ -381,6 +381,9 @@ function farm_get_htmlview($farm,$pkey)
 	} else {
 		$build .= "<div id='node-" . $farm->nid  . "' class='block1'>";
 	}
+	$collectLinkRemove=collection_get_collection_delete_link($farm);
+    //print_r($collectLinkRemove);
+    $build.=$collectLinkRemove;
 	$build .= "<img src=".$farm_image_filepath." />
                <a href='". url("farm/{$farm->nid}")."' ><h3 class='product_title'>".getShortTitle($farm->title,7)."</h3></a>
 			        <p class='product_price'>

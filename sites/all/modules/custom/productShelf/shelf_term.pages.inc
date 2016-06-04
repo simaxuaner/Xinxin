@@ -19,24 +19,7 @@ function productShelf_term_page($term)
     // the active trail, and the link name becomes the page title. Thus, we must
     // explicitly set the page title to be the term title.
     drupal_set_title($term->name);
-
-    // Build breadcrumb based on the hierarchy of the term.
-    $current = (object)array(
-        'tid' => $term->tid,
-    );
-    // @todo This overrides any other possible breadcrumb and is a pure hard-coded
-    //   presumption. Make this behavior configurable per vocabulary or term.
-    $breadcrumb = array();
-    while ($parents = taxonomy_get_parents($current->tid)) {
-        $current = array_shift($parents);
-        $breadcrumb[] = l($current->name, 'admin/productShelf/' . $current->tid);
-    }
-    $breadcrumb[] = l(t('Home'), NULL);
-    $breadcrumb = array_reverse($breadcrumb);
-    drupal_set_breadcrumb($breadcrumb);
-    drupal_add_feed('admin/productShelf/' . $term->tid . '/feed', 'RSS - ' . $term->name);
     drupal_add_css(drupal_get_path('module', 'productShelf') . '/shelf_term.css');
-
     // Set the term path as the canonical URL to prevent duplicate content.
     $uri = entity_uri('taxonomy_term', $term);
     drupal_add_html_head_link(array('rel' => 'canonical', 'href' => url($uri['path'], $uri['options'])), TRUE);
