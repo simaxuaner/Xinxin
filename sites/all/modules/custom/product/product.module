@@ -236,7 +236,7 @@ function product_page_callback($pid) {
                <nav id='sideNav' class='w20'>
 			<ul>
 			    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a> </li>
-				<li> <a href='" . url ( "farmshow/form" ) . "'>农庄</a> </li>
+				<li> <a href='" . url ( "farmshow/form" ) . "'>休闲农庄</a> </li>
 			</ul>
 		</nav>
 		<section class='w80'>
@@ -316,7 +316,12 @@ function product_page_callback($pid) {
 		$image = isset ( $myfield_array [0] ) ? $myfield_array [0] : '';
 		if (! empty ( $image )) {
 			$product_image_filepath = file_create_url ( $image ['uri'] );
-			$build .= "<div class='block1'> <span class='fav'>收藏</span> <img src=" . $product_image_filepath . " />
+			$build .= "<div class='block1' id='node-" . $node->nid."'>";
+			if (user_is_logged_in () && module_exists ( 'collection' )) {
+				$collection_link = collection_get_collection_link ( $node );
+				$build .= $collection_link;
+			}
+			$build .= "<img src=" . $product_image_filepath . " />
                     <a href='" . url ( "product/$node->nid" ) . "' ><h3 class='product_title'>" . $node->title . "</h3></a>
                     <p class='product_price'><span class='farmName'>产品类型：" . $type->name . "</span><span class='floatRight'>" . ((isset ( $node->field_product_price [LANGUAGE_NONE] ) && isset ( $node->field_product_price [LANGUAGE_NONE] [0] )) ? $node->field_product_price [LANGUAGE_NONE] [0] ['value'] : '') . "</span><span class='floatRight'>￥</span></p>
                 </div>";
@@ -360,8 +365,13 @@ function product_term_page_callback($tid) {
 		$p_image_filepath = file_create_url ( $p_image_uri );
 		$product_price = (isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] )) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '';
 		$build .= '<a href="' . url ( "product/$product->nid" ) . '">
-				<div class="block1">
-				<span class="fav">收藏</span> <img src="' . $p_image_filepath . '"/>
+				<div class="block1" id="node-' . $product->nid.'">
+				';
+		if (user_is_logged_in () && module_exists ( 'collection' )) {
+				$collection_link = collection_get_collection_link ( $product );
+				$build .= $collection_link;
+		}
+		$build .='<img src="' . $p_image_filepath . '"/>
 				<h3 class="product_title">' . $product->title . '</h3>
 				<p class="product_price"><span class="floatRight">'.$product_price
 						.'</span><span class="floatRight">￥</span></p>

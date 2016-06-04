@@ -12,7 +12,7 @@
 			<video controls preload=""><source src="<?php print $detailClass['dataurl']?>"></video>
 		</div>
 		<!--等待填充-->
-		
+		<?php if (!empty($teacher)): ?>
 			<div id="node-<?php print $teacher['id'];?>" class="block1 w20 floatRight noMargin">
 				<?php print $teacher['collectLink'] ?>
 				<img src="<?php print $teacher['imgurl']?>">
@@ -21,6 +21,9 @@
 				</a>
 				<p><span class="farmName"><?php print $teacher['career']?></span><span class="floatRight">01</span><span class="floatRight">02</span></p>
 			</div>
+		<?php else : ?>
+		<?php endif; ?>
+			
 		
 	</section>
 	<section class="w80">

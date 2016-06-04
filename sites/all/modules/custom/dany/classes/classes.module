@@ -167,6 +167,9 @@ function classes_detailclass_page_callback($nid){
         $teacher['collectLink']=collection_get_collection_link($node);
         $teacher['id']=$node->nid;
     }
+    else{
+        $class['teacherName']='待定';
+    }
     return theme("detailclass_page", array(
         'detailClass' => $class,
         'classList'   => array(),

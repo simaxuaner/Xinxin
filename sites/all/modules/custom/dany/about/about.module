@@ -292,6 +292,7 @@ EOS;
 		      });
 		</script>
 EOS;
+	drupal_add_js($module_path . '/js/recruit.js');
 	return theme ( "aboutpage_page", array (
 			"pagemain" => $recruitmenttml ,
 			"sidebarleft"=>get_sidebar_menu_list($class),
