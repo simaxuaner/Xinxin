@@ -1037,6 +1037,7 @@ function product_form_submit($form, &$form_state) {
         drupal_set_message(t('The post could not be saved.'), 'error');
         $form_state['rebuild'] = TRUE;
     }
+    $form_state['redirect'] = "admin/product";
     // Clear the page and block caches.
     cache_clear_all();
 }
