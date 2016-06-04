@@ -1,6 +1,6 @@
 name = Wysiwyg
 description = Allows to edit content with client-side editors.
-package = User interface
+package = Download
 ;dependencies[] = libraries
 ;dependencies[] = ctools
 ;dependencies[] = debug
