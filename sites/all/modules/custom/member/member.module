@@ -100,10 +100,10 @@ function memberIndividual_call_back()
         ->execute()
         ->fetchCol();
         
-    $sex =  isset($sex_1) ? $sex_1[0] : '';
-    $company =  isset($company_1) ? $company_1[0] : '';
-    $real_name =  isset($real_name_1) ? $real_name_1[0] : '';
-    $register_location =  isset($register_location_1) ? $register_location_1[0] : '';
+    $sex =  isset($sex_1)&&isset($sex_1[0]) ? $sex_1[0] : '';
+    $company =  isset($company_1)&&isset($company_1[0]) ? $company_1[0] : '';
+    $real_name =  isset($real_name_1)&&isset($real_name_1[0]) ? $real_name_1[0] : '';
+    $register_location =  isset($register_location_1)&&isset($register_location_1[0]) ? $register_location_1[0] : '';
     
     if($sex==0)
         $sex_value='男';
@@ -214,9 +214,9 @@ function memberCompany_call_back()
         ->execute()
         ->fetchCol();
         
-    $tel =  isset($tel_1) ? $tel_1[0] : '';
-    $address =  isset($address_1) ? $address_1[0] : '';
-    $register_location =  isset($register_location_1) ? $register_location_1[0] : '';
+    $tel =  isset($tel_1)&&isset($tel_1[0]) ? $tel_1[0] : '';
+    $address =  isset($address_1)&&isset($address_1[0]) ? $address_1[0] : '';
+    $register_location =  isset($register_location_1)&& isset($register_location_1[0]) ? $register_location_1[0] : '';
     
     
     //user register location
