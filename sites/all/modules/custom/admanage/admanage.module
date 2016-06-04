@@ -38,8 +38,8 @@ function admanage_page()
     $rows[$index]['pos']=$block->info;
     $rows[$index]['image']="<div class='admanage-img'>".$block->body."</div>";
     $rows[$index]['user']="无";
-    $rows[$index]['link']=l('配置','admin/structure/block/manage/block/'.$block->bid.'/config');
-    $rows[$index]['delete']=l('删除','admin/structure/block/manage/block/'.$block->bid.'/config');
+    $rows[$index]['link']=l('配置','admin/structure/block/manage/block/'.$block->bid.'/config', array('query' => drupal_get_destination()));
+    $rows[$index]['delete']=l('删除','admin/structure/block/manage/block/'.$block->bid.'/delete', array('query' => drupal_get_destination()));
     foreach($nodes as $nkey=>$node){
       if ( isset($node->field_ad_block_id) && isset($node->field_ad_block_id[LANGUAGE_NONE]) && isset($node->field_ad_block_id[LANGUAGE_NONE][0]) ) {
         if($node->field_ad_block_id[LANGUAGE_NONE][0]['value']==$block->bid){

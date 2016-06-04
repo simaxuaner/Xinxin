@@ -25,6 +25,9 @@
 
 	<main id="mainSection"> 
 		<div id="container" class="clearfix container">
+			<?php if ($messages): ?>
+				<div id="console" class="clearfix"><?php print $messages; ?></div>
+			<?php endif; ?>
 			<?php if (isset($page['content_before'])): ?>
 				<div id="content-before">
 					<?php print render($page['content_before']); ?>

@@ -59,23 +59,7 @@ function memberIndividual_call_back()
         $imgthumbnailurl = file_create_url($filepath);
         //print_r($imgthumbnailurl);
     }
-    /*
-    if( isset($user->picture) && is_object($user->picture) ) {
-        $imgfile = $user->picture;
-        print_r($user->picture);
-        $file_path = file_unmanaged_copy($imgfile->uri);
-        print_r($file_path);
-        $imgthumbnailurl = image_style_url('thumbnail', $file_path) ? $file_path : $imgthumbnailurl;
-    }*/
-
-    //0 for male and 1 for female
-    //$sex = ( isset($user->sex) && isset($user->sex[LANGUAGE_NONE]) ) ? $user->sex[LANGUAGE_NONE][0]['value'] : '';
-    //$company = ( isset($user->personal_company) && isset($user->personal_company[LANGUAGE_NONE]) ) ? $user->personal_company[LANGUAGE_NONE][0]['value'] : '';
-    //$real_name = ( isset($user->real_name) && isset($user->real_name[LANGUAGE_NONE]) ) ? $user->real_name[LANGUAGE_NONE][0]['value'] : '';
-    //user register location
-    //$register_location = ( isset($user->field_user_location) && isset($user->field_user_location[LANGUAGE_NONE]) ) ? $user->field_user_location[LANGUAGE_NONE][0]['value'] : '';
     
-    //0 for male and 1 for female
     $sex_1 = db_select('field_data_field_sex', 'f')
         ->fields('f', array('field_sex_value'))
         ->condition('f.entity_id', $user->uid)
@@ -297,6 +281,7 @@ EOS;
 function advertistment_form($form, &$form_state){
 
     $form['#attributes']['enctype'] = 'multipart/form-data';
+    $form['#attributes']['class'] = array('advertisement_app_input_div');
 
     $form['adimage'] = array(
         '#type' => 'file',
@@ -322,30 +307,6 @@ function advertistment_form($form, &$form_state){
         '#value' => t('申请'),
     );
     return $form;
-
-    /*<form class="alignCenter" >
-                <table>
-                    <tr>
-                        <td>
-                            <label class="alignLeft" for="image">广告图片</label>
-                        </td>
-                        <td>
-                            <input type="file" name="image">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="alignLeft" for="website">广告链接</label>
-                        </td>
-                        <td>
-                            <input type="text" name="link">
-                        </td>
-                    </tr>
-                </table>
-                <div class="button">
-                    <a href="#">申请</a>
-                </div>
-                </form>*/
 }
 
 /**
@@ -431,6 +392,8 @@ function advertistment_form_submit($form, $form_state){
         ),
     );
     node_save((object)$nodeuri);
+    
+    drupal_set_message("已经收到您的广告位申请，请耐心等待审核！！");
 
     return $form;
 }
