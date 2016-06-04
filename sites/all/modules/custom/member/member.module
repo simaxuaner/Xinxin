@@ -43,11 +43,30 @@ function memberIndividual_call_back()
     global $user;
     global $base_url;
     $imgthumbnailurl = path_to_theme() . '/images/users/user0.jpg';
+    
+    if(isset($user->picture)){
+        if (is_numeric($user->picture)) {
+            $user->picture = file_load($user->picture);
+        }
+        if (!empty($user->picture->uri)) {
+            //print_r($user->picture);
+            //print_r($user->picture->uri);
+            $filepath = $user->picture->uri;
+        }
+    }
+    
+    if (isset($filepath)) {
+        $imgthumbnailurl = file_create_url($filepath);
+        //print_r($imgthumbnailurl);
+    }
+    /*
     if( isset($user->picture) && is_object($user->picture) ) {
         $imgfile = $user->picture;
+        print_r($user->picture);
         $file_path = file_unmanaged_copy($imgfile->uri);
+        print_r($file_path);
         $imgthumbnailurl = image_style_url('thumbnail', $file_path) ? $file_path : $imgthumbnailurl;
-    }
+    }*/
 
     //0 for male and 1 for female
     //$sex = ( isset($user->sex) && isset($user->sex[LANGUAGE_NONE]) ) ? $user->sex[LANGUAGE_NONE][0]['value'] : '';
@@ -160,10 +179,21 @@ function memberCompany_call_back()
     global $user;
     global $base_url;
     $imgthumbnailurl = path_to_theme() . '/images/users/company0.jpg';
-    if( isset($user->picture) && is_object($user->picture) ) {
-        $imgfile = $user->picture;
-        $file_path = file_unmanaged_copy($imgfile->uri);
-        $imgthumbnailurl = image_style_url('thumbnail', $file_path) ? $file_path : $imgthumbnailurl;
+    
+    if(isset($user->picture)){
+        if (is_numeric($user->picture)) {
+            $user->picture = file_load($user->picture);
+        }
+        if (!empty($user->picture->uri)) {
+            //print_r($user->picture);
+            //print_r($user->picture->uri);
+            $filepath = $user->picture->uri;
+        }
+    }
+    
+    if (isset($filepath)) {
+        $imgthumbnailurl = file_create_url($filepath);
+        //print_r($imgthumbnailurl);
     }
     
     $tel_1 = db_select('field_data_field_user_tel', 'f')
