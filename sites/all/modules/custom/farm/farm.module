@@ -368,7 +368,8 @@ function template_preprocess_farms_page(&$variables){
     $build_search = "<div class='bar'><img class='icon' src='".$GLOBALS['base_url']."/sites/all/themes/xinxin_front/images/icons/farms_icon.png'><h1>休闲农庄</h1>
                     </div>";
     $variables['search'] = $build_search;
-    $variables['content'] = "<div class='button floatRight1'><a href='".url("farmshow/farm")."'>三</a></div>" . drupal_render( drupal_get_form ( 'farms_local_search_form' ) );
+    $local_search_form=drupal_get_form ( 'farms_local_search_form' );
+    $variables['content'] = "<div class='button floatRight1'><a href='".url("farmshow/farm")."'>三</a></div>" . drupal_render($local_search_form);
 }
 
 function farm_get_htmlview($farm,$pkey)

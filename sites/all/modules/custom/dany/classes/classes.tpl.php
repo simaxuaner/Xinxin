@@ -11,12 +11,13 @@
 			<div class="bar">
               <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/classes_icon.png">
 			  <h1>课程</h1>
-              <div class="search floatRight">
-                <a href="#" id="search_class_button"><img src="<?php print $imageLinkPathHead?>/images/icons/search_bar.png" alt="search"></a>
-                <input type="text" name="search" id="search_class_form">
-              </div> 
             </div>
-			
+			<div class="search floatRight">
+                <a href="#" id="search_class_button" class="local_search_form_div form-submit">搜索</a>
+                <div class="form-item form-type-textfield form-item-farm-keywords">
+ 					<input type="text" id="search_class_form" name="farm_keywords" value="" size="60" maxlength="128" class="form-text">
+				</div>
+             </div> 
             <!--动态获取课程列表 -->
             <div class="search_class_form_list">
             <?php 

@@ -411,6 +411,7 @@ function product_term_page_callback($tid) {
 				<p class="product_price"><span class="floatRight">' . $product_price . '</span><span class="floatRight">￥</span></p>
 			</div>';
 	}
+	$local_search_form=drupal_get_form ( 'product_term_local_search_form','<div class="farm_list">'.$html.'</div>');
 	$build = "<main>
             <nav id='sideNav' class='w20'>
 			<ul>
@@ -422,7 +423,7 @@ function product_term_page_callback($tid) {
             <div class='bar'>
             <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
             <a href='" . url ( "farmshow/product" ) . "'><h1>农业展品</h1></a><h1> >" . $term->name . "</h1>
-            </div>".drupal_render ( drupal_get_form ( 'product_term_local_search_form','<div class="farm_list">'.$html.'</div>'));
+            </div>".drupal_render ($local_search_form);
 	return $build;
 }
 /**
@@ -520,10 +521,10 @@ function product_page() {
 function template_preprocess_product_page(&$variables) {
 	$variables ['farm_page'] = url ( 'farmshow/farm' );
 	$variables ['product_page'] = url ( 'farmshow/product' );
-	
+	$local_search_form=drupal_get_form ( 'product_local_search_form' );
 	$build = "<div class='bar'>
             <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
-            <h1>农业展品</h1></div>" . drupal_render ( drupal_get_form ( 'product_local_search_form' ) );
+            <h1>农业展品</h1></div>" . drupal_render ($local_search_form);
 	$variables ['content'] = $build;
 }
 

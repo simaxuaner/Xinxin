@@ -966,23 +966,6 @@ h3.product_title{
 	background-color: rgb(250, 255, 189);
 	padding: 1%;
 }
-.local_search_form_div {
-    font-weight: bold;
-    text-decoration: none;
-    color: #ffffff;
-    /* padding: 0 24px !important; */
-    line-height: 35px;
-    cursor: pointer;
-    border: 0;
-    box-sizing: border-box;
-    font-family: calibri, arial, sans-serif;
-    margin-top: 5px;
-    background-color: #4d93e3 !important;
-    min-width: 0px;
-    width: 55px;
-    height: 30px;
-    margin-left: 3px;
-}
 #edit-submit{
     font-weight: bold;
     text-decoration: none;
@@ -1186,4 +1169,40 @@ fieldset.collapsible .fieldset-legend {
 }
 .advertisement_app_input_div input {
 	float: none;
+}
+#search_class_form{
+    background-color: white;
+    border: 1px solid #ddd;
+    float: left;
+    height: 30px;
+    color: #333;
+    vertical-align: baseline;
+    box-sizing: inherit;
+    outline: 2px solid transparent;
+    outline-offset: 0px;
+    transition: all, 0.1s;
+    border: 1px solid #ddd;
+    min-width: 128px;
+    margin-top: -11px;
+    margin-left: 15px;
+}
+#search_class_button{
+    float: right;
+    padding-left: 10px;
+}
+.search_class_form_list{
+	padding-top: 60px;
+}
+
+.local_search_form_div {
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    line-height: 30px;
+    box-sizing: border-box;
+    font-family: calibri, arial, sans-serif;
+    margin-top: 5px;
+    background-color: #4d93e3 !important;
+    width: 55px;
+    height: 29px;
 }
