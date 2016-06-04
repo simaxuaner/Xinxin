@@ -161,7 +161,16 @@ function collection_user_ajax_callback($action, $nid) {
 					}
 					break;
 				case 'delete':
-					
+					if ($count = _collection_delete($node)) {
+						entity_get_controller('node')->resetCache(array($node->nid));
+						$node_array = (array)$node;
+						$node_array['collection']['collected'] = FALSE;
+						$node_array['collection']['count'] = $count;
+						$commands[] = ajax_command_remove("#node-{$node->nid}.block1");
+					}
+					else {
+						$commands[] = ajax_command_alert(t("Error happened in sending the request. Please try again later."));
+					}
 					break;
 				default:
 					break;
