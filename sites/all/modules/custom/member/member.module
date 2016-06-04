@@ -59,23 +59,7 @@ function memberIndividual_call_back()
         $imgthumbnailurl = file_create_url($filepath);
         //print_r($imgthumbnailurl);
     }
-    /*
-    if( isset($user->picture) && is_object($user->picture) ) {
-        $imgfile = $user->picture;
-        print_r($user->picture);
-        $file_path = file_unmanaged_copy($imgfile->uri);
-        print_r($file_path);
-        $imgthumbnailurl = image_style_url('thumbnail', $file_path) ? $file_path : $imgthumbnailurl;
-    }*/
-
-    //0 for male and 1 for female
-    //$sex = ( isset($user->sex) && isset($user->sex[LANGUAGE_NONE]) ) ? $user->sex[LANGUAGE_NONE][0]['value'] : '';
-    //$company = ( isset($user->personal_company) && isset($user->personal_company[LANGUAGE_NONE]) ) ? $user->personal_company[LANGUAGE_NONE][0]['value'] : '';
-    //$real_name = ( isset($user->real_name) && isset($user->real_name[LANGUAGE_NONE]) ) ? $user->real_name[LANGUAGE_NONE][0]['value'] : '';
-    //user register location
-    //$register_location = ( isset($user->field_user_location) && isset($user->field_user_location[LANGUAGE_NONE]) ) ? $user->field_user_location[LANGUAGE_NONE][0]['value'] : '';
     
-    //0 for male and 1 for female
     $sex_1 = db_select('field_data_field_sex', 'f')
         ->fields('f', array('field_sex_value'))
         ->condition('f.entity_id', $user->uid)
