@@ -93,6 +93,12 @@ function classes_admission_page_callback(){
     $module_path = drupal_get_path('module', 'classes');
     return theme("admission_page", array());
 }
+
+function classes_files_page_callback(){
+    $module_path = drupal_get_path('module', 'classes');
+    return theme("files_page", array());
+}
+
 function class_local_search_form() {
 	$form ['class_keywords'] = array (
 			'#id' => 'class_keywords',

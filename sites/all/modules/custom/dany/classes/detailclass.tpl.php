@@ -24,6 +24,7 @@
 		
 	</section>
 	<section class="w80">
+		<!--0604丢弃
 		<div class="bar">
 			<div class="w20 floatRight marginLeft alignRight">
 				<a class="favLink" href="#">加入收藏</a>
@@ -35,6 +36,7 @@
 				</div>
 			</div>
 		</div>
+		-->
 		<table class="schedule w20 floatRight">
 			<tr>
 				<td>讲师:</td>
