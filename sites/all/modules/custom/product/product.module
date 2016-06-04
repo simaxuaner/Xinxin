@@ -234,19 +234,19 @@ function product_page_callback($pid) {
 	
 	$build = "<main id='mainSection'>
                <nav id='sideNav' class='w20'>
-			<ul>
-			    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a> </li>
-				<li> <a href='" . url ( "farmshow/form" ) . "'>休闲农庄</a> </li>
-			</ul>
-		</nav>
+					<ul>
+					    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a> </li>
+						<li> <a href='" . url ( "farmshow/form" ) . "'>休闲农庄</a> </li>
+					</ul>
+			   </nav>
 		<section class='w80'>
 			<div class='bar'>
-            <img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
-			<h1><a href='" . url ( "farmshow/product" ) . "'>农业展品</a>" . $product->title . "</h1>
+            	<img class='icon' src='" . $GLOBALS ['base_url'] . "/sites/all/themes/xinxin_front/images/icons/products_icon.png'>
+				<h1><a href='" . url ( "farmshow/product" ) . "'>农业展品</a>" . $product->title . "</h1>
 			</div>
 			<img class='w30 floatLeft productImage' src='" . $farm_image_filepath . "'/>
 			<div class='productInfo w70 floatLeft'>
-			<h1>" . $product->title . "</h1><br/>";
+				<h1>" . $product->title . "</h1><br/>";
 	if ($myfarm) {
 		$fid = $myfarm ['value'];
 		$product_farm = node_load ( $fid );
@@ -255,46 +255,47 @@ function product_page_callback($pid) {
 		$build .= "<a href='#'><h2>不存在农场中</h2></a>";
 	}
 	$build .= "<table class='w100'>
-	  <tr>
-		<td>产品标准号</td>
-		<td> " . isset ( $product->field_product_num [LANGUAGE_NONE] ) && isset ( $product->field_product_num [LANGUAGE_NONE] [0] ) ? $product->field_product_num [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	  <tr>
-		<td>价格</td>
-		<td>" . isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] ) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	  <tr>
-		<td>配送服务</td>
-		<td>" . isset ( $product->field_product_server [LANGUAGE_NONE] ) && isset ( $product->field_product_server [LANGUAGE_NONE] [0] ) ? $product->field_product_server [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	   <tr>
-		<td>储藏方式</td>
-		<td>" . isset ( $product->field_product_storage_mode [LANGUAGE_NONE] ) && isset ( $product->field_product_storage_mode [LANGUAGE_NONE] [0] ) ? $product->field_product_storage_mode [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	   <tr>
-		<td>净含量</td>
-		<td>" . isset ( $product->field_product_net_weight [LANGUAGE_NONE] ) && isset ( $product->field_product_net_weight [LANGUAGE_NONE] [0] ) ? $product->field_product_net_weight [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	   <tr>
-		<td>联系方式</td>
-		<td>" . isset ( $product->field_product_telephone [LANGUAGE_NONE] ) && isset ( $product->field_product_telephone [LANGUAGE_NONE] [0] ) ? $product->field_product_telephone [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	   <tr>
-		<td>热卖时间</td>
-		<td>" . isset ( $product->field_product_sale_time [LANGUAGE_NONE] ) && isset ( $product->field_product_sale_time [LANGUAGE_NONE] [0] ) ? $product->field_product_sale_time [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	   <tr>
-		<td>产地</td>
-		<td>" . isset ( $product->field_product_area [LANGUAGE_NONE] ) && isset ( $product->field_product_area [LANGUAGE_NONE] [0] ) ? $product->field_product_area [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
-	  </tr>
-	</table>
-	</div>";
+				  <tr>
+					<td>产品标准号</td>
+					<td> " . isset ( $product->field_product_num [LANGUAGE_NONE] ) && isset ( $product->field_product_num [LANGUAGE_NONE] [0] ) ? $product->field_product_num [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+				  <tr>
+					<td>价格</td>
+					<td>" . isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] ) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+				  <tr>
+					<td>配送服务</td>
+					<td>" . isset ( $product->field_product_server [LANGUAGE_NONE] ) && isset ( $product->field_product_server [LANGUAGE_NONE] [0] ) ? $product->field_product_server [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+				   <tr>
+					<td>储藏方式</td>
+					<td>" . isset ( $product->field_product_storage_mode [LANGUAGE_NONE] ) && isset ( $product->field_product_storage_mode [LANGUAGE_NONE] [0] ) ? $product->field_product_storage_mode [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+				   <tr>
+					<td>净含量</td>
+					<td>" . isset ( $product->field_product_net_weight [LANGUAGE_NONE] ) && isset ( $product->field_product_net_weight [LANGUAGE_NONE] [0] ) ? $product->field_product_net_weight [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+				   <tr>
+					<td>联系方式</td>
+					<td>" . isset ( $product->field_product_telephone [LANGUAGE_NONE] ) && isset ( $product->field_product_telephone [LANGUAGE_NONE] [0] ) ? $product->field_product_telephone [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+				   <tr>
+					<td>热卖时间</td>
+					<td>" . isset ( $product->field_product_sale_time [LANGUAGE_NONE] ) && isset ( $product->field_product_sale_time [LANGUAGE_NONE] [0] ) ? $product->field_product_sale_time [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+				   <tr>
+					<td>产地</td>
+					<td>" . isset ( $product->field_product_area [LANGUAGE_NONE] ) && isset ( $product->field_product_area [LANGUAGE_NONE] [0] ) ? $product->field_product_area [LANGUAGE_NONE] [0] ['value'] : '' . "</td>
+				  </tr>
+			</table>
+		</div>";
 	$build .= "<div class='w100 floatLeft'>" . isset ( $product->body [LANGUAGE_NONE] ) && isset ( $product->body [LANGUAGE_NONE] [0] ) ? $product->body [LANGUAGE_NONE] [0] ['value'] : '' . "
-			</div></section>";
+				</div>
+	</section>";
 	$build .= "<section class='w80'>
-			<div class='bar w100'>
-				<h2 style='margin-left:20px;'>相关产品</h2>
-			</div>";
+					<div class='bar w100'>
+						<h2 style='margin-left:20px;'>相关产品</h2>
+					</div>";
 	// 查询产品的类型
 	$mytype_array = field_get_items ( 'node', $product, 'field_product_type' );
 	$mytype = isset ( $mytype_array [0] ) ? $mytype_array [0] : '';
@@ -315,19 +316,25 @@ function product_page_callback($pid) {
 		$image = isset ( $myfield_array [0] ) ? $myfield_array [0] : '';
 		if (! empty ( $image )) {
 			$product_image_filepath = file_create_url ( $image ['uri'] );
-			$build .= "<div class='block1' id='node-" . $node->nid."'>";
+			$build .= "<div class='block1' id='node-" . $node->nid . "'>";
 			if (user_is_logged_in () && module_exists ( 'collection' )) {
 				$collection_link = collection_get_collection_link ( $node );
 				$build .= $collection_link;
 			}
 			$build .= "<img src=" . $product_image_filepath . " />
-                    <a href='" . url ( "product/$node->nid" ) . "' ><h3 class='product_title'>" . $node->title . "</h3></a>
-                    <p class='product_price'><span class='farmName'>产品类型：" . $type->name . "</span><span class='floatRight'>" . ((isset ( $node->field_product_price [LANGUAGE_NONE] ) && isset ( $node->field_product_price [LANGUAGE_NONE] [0] )) ? $node->field_product_price [LANGUAGE_NONE] [0] ['value'] : '') . "</span><span class='floatRight'>￥</span></p>
+                       <a href='" . url ( "product/$node->nid" ) . "' >
+                       		<h3 class='product_title'>" . $node->title . "</h3>
+                       </a>
+                       <p class='product_price'>
+                    		<span class='farmName'>产品类型：" . $type->name . "</span>
+                    		<span class='floatRight'>" . ((isset ( $node->field_product_price [LANGUAGE_NONE] ) && isset ( $node->field_product_price [LANGUAGE_NONE] [0] )) ? $node->field_product_price [LANGUAGE_NONE] [0] ['value'] : '') . "</span>
+                    		<span class='floatRight'>￥</span>
+                       </p>
                 </div>";
 			$count ++;
 		}
 	}
-	$build .= "</section>";
+	$build .= "</section></main>";
 	return $build;
 }
 
@@ -342,7 +349,7 @@ function product_term_page_callback($tid) {
             <nav id='sideNav' class='w20'>
 			<ul>
 			    <li class='activeNavItem'> <a href='" . url ( "farmshow/product" ) . "'>农业展品</a> </li>
-				<li> <a href='" . url ( "farmshow/farm" ) . "'>农庄</a> </li>
+				<li> <a href='" . url ( "farmshow/farm" ) . "'>休闲农庄</a> </li>
 			</ul>
 		    </nav>
             <section class='w80'>
@@ -364,13 +371,13 @@ function product_term_page_callback($tid) {
 		$p_image_filepath = file_create_url ( $p_image_uri );
 		$product_price = (isset ( $product->field_product_price [LANGUAGE_NONE] ) && isset ( $product->field_product_price [LANGUAGE_NONE] [0] )) ? $product->field_product_price [LANGUAGE_NONE] [0] ['value'] : '';
 		$build .= '<a href="' . url ( "product/$product->nid" ) . '">
-				<div class="block1" id="node-' . $product->nid.'">
+				<div class="block1" id="node-' . $product->nid . '">
 				';
 		if (user_is_logged_in () && module_exists ( 'collection' )) {
-				$collection_link = collection_get_collection_link ( $product );
-				$build .= $collection_link;
+			$collection_link = collection_get_collection_link ( $product );
+			$build .= $collection_link;
 		}
-		$build .='<img src="' . $p_image_filepath . '"/>
+		$build .= '<img src="' . $p_image_filepath . '"/>
 				<h3 class="product_title">' . $product->title . '</h3>
 				<p class="product_price"><span class="floatRight">' . $product_price . '</span><span class="floatRight">￥</span></p>
 			</div>
@@ -407,7 +414,7 @@ function product_local_search_form() {
 			'#id' => 'product_keywords_search_submit',
 			'#attributes' => array (
 					'class' => array (
-							'local_search_form_div'
+							'local_search_form_div' 
 					) 
 			),
 			'#type' => 'button',
