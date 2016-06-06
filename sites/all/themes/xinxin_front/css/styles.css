@@ -1189,12 +1189,6 @@ fieldset.collapsible .fieldset-legend {
 #search_class_button{
     float: right;
     padding-left: 10px;
-}
-.search_class_form_list{
-	padding-top: 60px;
-}
-
-.local_search_form_div {
     font-weight: bold;
     text-decoration: none;
     color: #ffffff;
@@ -1205,4 +1199,21 @@ fieldset.collapsible .fieldset-legend {
     background-color: #4d93e3 !important;
     width: 55px;
     height: 29px;
+}
+.search_class_form_list{
+	padding-top: 60px;
+}
+.local_search_form_div {
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    line-height: 30px;
+    box-sizing: border-box;
+    font-family: calibri, arial, sans-serif;
+    margin-top: 5px;
+    background-color: #4d93e3 !important;
+    min-width: 55px !important;
+    width: 0px;
+    height: 29px;
+    margin-left: 2px;
 }
