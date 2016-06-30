@@ -181,3 +181,25 @@ function home_content_user_login(&$edit, $account) {
 	drupal_goto('homepage');
 }
 
+/**
+ * Implements hook_node_view().
+ */
+function home_content_node_view($node, $view_mode, $langcode) {
+	if ($view_mode == 'full' && arg(0) == 'node') {
+		switch($node->type) {
+		case 'product':
+			drupal_goto('product/' . $node->nid);
+			break;
+		case 'farm':
+			drupal_goto('farm/' . $node->nid);
+			break;
+		case 'lesson':
+			drupal_goto('classes/detailclass/'.$node->nid);
+		case 'teacher':
+			drupal_goto('classes/detailteacher/'.$node->nid);
+		default:
+			break;
+		}
+	}
+}
+

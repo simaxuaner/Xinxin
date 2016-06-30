@@ -17,7 +17,7 @@
         {
         ?>  
 			<li>
-				<a href="<?php print $value['url']?>">
+				<a target="_blank" href="<?php print $value['url']?>">
 				<?php print $value['filename']?>
 				<img class="icon" src="<?php print $modulePath?>/images/icons/pdf.png" alt=".pdf"/></a>				
 			</li>

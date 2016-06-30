@@ -2,16 +2,14 @@
 	<?php print $secondMenuNav?>
 	<section class="w80">
 		<div class="bar">
-			<h1><a class="underline" href="teachers">农业名师</a> &gt;详细信息</h1>
+			<img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/teachers_icon.png">
+			<h1><a class="underline" href="<?php print url('classes/teachers') ?>">农业名师</a> &gt;详细信息</h1>
 		</div><img alt="<?php print $teacher['teacherName']?>" class="alignCenter w100" src="<?php print $teacher['imgurl']?>">
 	</section>
 	<section class="w80">
 		<div class="bar w100">
 			<h2><?php print $teacher['teacherName']?></h2>
 			<h3><?php print $teacher['career']?></h3>
-			<div id="node-<?php print $teacher['id'];?>" class="floatRight alignRight">
-				<?php print $teacher['collectLink'] ?>
-			</div>
 		</div>
 		<div class="w100">
 			<p><?php print $teacher['info']?></p>

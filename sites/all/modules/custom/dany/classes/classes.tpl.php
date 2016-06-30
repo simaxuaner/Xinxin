@@ -10,7 +10,7 @@
 		<section class="w80">
 			<div class="bar">
               <img class="icon" src="<?php print $imageLinkPathHead?>/images/icons/classes_icon.png">
-			  <h1>课程</h1>
+			  <h1>农业课堂</h1>
             </div>
 			<div class="search floatRight">
                 <a href="#" id="search_class_button" class="local_search_form_div form-submit">搜索</a>

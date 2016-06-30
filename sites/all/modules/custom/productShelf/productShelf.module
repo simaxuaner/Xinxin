@@ -89,7 +89,27 @@ function out_shelf_form($form, &$form_state, $node) {
             'effect' => 'fade',
         ),
     );
+
+    $form['cancel'] = array(
+        '#type' => 'button',
+        '#value' => t('取消'),
+        '#ajax' => array(
+       	    'callback' => 'shelf_cancel_form_ajax_submit',
+     	    'wrapper' => $form['#id'],
+            'effect' => 'fade',
+        ),
+    );
+
     return $form;
+}
+
+/**
+ * Ajax out shelf  form callback function.
+ * @param $form
+ * @param $form_state
+ */
+function shelf_cancel_form_ajax_submit($form, $form_state){
+    return '';
 }
 
 /**
@@ -103,21 +123,21 @@ function shelf_node_del_form_ajax_submit($form, $form_state){
         return $form;
 
     $node_uri = $form['#node'];
-    $shelfid = $node_uri['field_product_shelf'][und][0]['tid'];
+    $shelfid = $node_uri['field_product_shelf'][LANGUAGE_NONE][0]['tid'];
     $shelf = taxonomy_term_load($shelfid);
-    $count = $shelf->field_shelf_product_count[und][0]['value'];
+    $count = $shelf->field_shelf_product_count[LANGUAGE_NONE][0]['value'];
 
     $node_uri['field_product_shelf'] = array();
     $count++;
     $shelf_uri = (array)$shelf;
-    $shelf_uri['field_shelf_product_count'][und][0]['value'] = $count;
+    $shelf_uri['field_shelf_product_count'][LANGUAGE_NONE][0]['value'] = $count;
     //更新数据保存到数据库中
     $node = node_submit((object)$node_uri);
     node_save((object)$node_uri);
-
-    $update_node = node_load($node->vid);
+    entity_get_controller('node')->resetCache(array($node->nid));
+    $update_node = node_load($node->nid);
     $shelf = $update_node->field_product_shelf;
-    if(count($shelf)==0){
+    if(!isset($update_node->field_product_shelf[LANGUAGE_NONE])){
         return '产品下架成功!';
     }
     else{

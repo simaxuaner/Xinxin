@@ -195,6 +195,7 @@ function classes_detailclass_page_callback($nid){
         'classList'   => array(),
         'secondMenuNav' =>getSecondMenuNav('/danyClass/'),
         'teacher'=>$teacher,
+        'imageLinkPathHead' => drupal_get_path('module','classes'),
     ));
 }
 
@@ -221,6 +222,8 @@ function classes_detailteacher_page_callback($nid){
     if (!empty($nids)) {
         $nodes = node_load_multiple($nids);
         foreach ($nodes as $key => $node) {
+            if(!isset($node->field_lesson_lecturer[LANGUAGE_NONE]))
+                continue;
             if($class['teacherName']=$node->field_lesson_lecturer[LANGUAGE_NONE][0]['value'] == $teacher['teacherName'])
             {
                 $imgid = $node->field_lesson_pic[LANGUAGE_NONE][0]['fid'];
@@ -243,6 +246,7 @@ function classes_detailteacher_page_callback($nid){
         'teacher'   => $teacher,
         'refClassList'=> $refClassList,
         'secondMenuNav' =>getSecondMenuNav('/danyTeacher/'),
+        'imageLinkPathHead' => drupal_get_path('module','classes'),
     ));
 }
 
@@ -341,7 +345,7 @@ function template_preprocess_teachers_page(&$variables) {
                 'detailurl' => url("classes/detailteacher/".$key),
                 'imgurl'    => $imageurl,
                 'teacherName'=> $node->title,
-                'career'    => $node->field_career[LANGUAGE_NONE][0]['value'],
+                'career'    => isset($node->field_career[LANGUAGE_NONE])?$node->field_career[LANGUAGE_NONE][0]['value']:"",
                 'collectionLink' => $collectLink,
                 );
         }
